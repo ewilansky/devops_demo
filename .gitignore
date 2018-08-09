@@ -23,5 +23,3 @@
 hs_err_pid*
 
 # added for devops demo project
-# jenkins_home content is generated when the docker container starts
-jenkins_home/*
