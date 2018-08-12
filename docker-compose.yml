@@ -3,10 +3,21 @@ version: '3.2'
 services:
 
   jenkins:
-    image: jenkins/jenkins:latest
+    # image: jenkins/jenkins:latest
+    # created image derived from jenkins/jenkins:latest, but also 
+    # contains Docker
+    image: ahl/jenkins:latest
+    # build the image 
+    build:
+      context: ./jenkins_build_def
+      dockerfile: Jenkins_Dockerfile
+    user: root
     ports:
       - "8080:8080"
       - "50000:50000"
     volumes:
       - ./jenkins_home:/var/jenkins_home
+      # run Docker from the host system when the container calls it. Note, Docker is stll 
+      # required in the jenkins container
+      - /var/run/docker.sock:/var/run/docker.sock
     container_name: jenkins
