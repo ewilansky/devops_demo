@@ -1,12 +1,27 @@
+// pipeline {
+//     agent { docker { image 'gradle:latest' } }
+//     stages {
+//         stage('build') {
+//             steps {
+//                 sh 'gradle --version'
+//             }
+//         }
+//     }
+// }
+
 pipeline {
-    agent { docker { image 'maven:3.3.3' } }
+    agent {
+        docker {
+            args '--rm -v "$PWD":/home/gradle/project -w /home/gradle/project gradle'
+            image 'gradle:latest'
+            reuseNode true
+        }
+    }
     stages {
         stage('build') {
             steps {
-                sh 'mvn --version'
+                sh 'gradle --version'
             }
         }
     }
 }
-
-
