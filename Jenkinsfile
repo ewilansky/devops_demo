@@ -1,16 +1,16 @@
 pipeline {
     agent { docker {
             image 'gradle:latest'
-            // args '--rm -v /Users/ethanw/code/ahl/devops_demo/spring_boot_app:/home/gradle/project -w /home/gradle/project'
+            args '--rm -v /Users/ethanw/code/ahl/devops_demo/spring_boot_app:/home/gradle/project -w /home/gradle/project'
             // args '--rm -v "$PWD":/home/gradle/project -w /home/gradle/project gradle 
         } 
     }
     stages {
         stage('build') {
             steps {
-                sh 'gradle --version'
+                // sh 'gradle --version'
                 // sh 'gradle tasks'
-                // sh 'gradle build'
+                sh 'gradle build'
             }
         }
     }
