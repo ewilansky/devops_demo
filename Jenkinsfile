@@ -11,7 +11,9 @@ pipeline {
             steps {
                 // sh 'gradle --version'
                 // sh 'gradle tasks'
-                sh 'gradle build'
+                sh 'pwd'
+                sh 'ls -la'
+                // sh 'gradle build'
             }
         }
     }
