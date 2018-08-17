@@ -1,3 +1,10 @@
+System.setProperty("user.dir", project.projectDir.toString())
+println " project dir" + System.getProperty("user.dir");
+println  "Root project:   ${project.rootProject}";
+println  "  rootDir:      ${project.rootDir}"
+println  "  projectDir:   ${project.projectDir}";
+println  "  project dir:  ${System.getProperty("user.dir")}";
+
 buildscript {
     repositories {
         mavenCentral()
