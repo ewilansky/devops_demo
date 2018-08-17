@@ -1,7 +1,7 @@
 pipeline {
     agent { docker {
             image 'gradle:latest'
-            args '-v /Users/ethanw/code/ahl/devops_demo/spring_boot_app:/home/gradle/project -w /home/gradle/project'
+            // args '-v "$PWD"/spring_boot_app:/home/gradle/project -w /home/gradle/project'
             // customWorkspace '/home/gradle/project'
             // args '--rm -v "$PWD":/home/gradle/project -w /home/gradle/project gradle 
         } 
@@ -13,7 +13,8 @@ pipeline {
                 // sh 'gradle tasks'
                 sh 'pwd'
                 sh 'ls -la'
-                // sh 'gradle build'
+                sh 'cd spring_boot_app'
+                sh 'gradle build'
             }
         }
     }
