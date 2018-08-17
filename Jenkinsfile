@@ -14,7 +14,8 @@ pipeline {
                 sh 'pwd'
                 sh 'ls -la'
                 sh 'cd spring_boot_app'
-                sh 'gradle build'
+                sh 'gradle projects'
+                sh 'gradle build --scan'
             }
         }
     }
