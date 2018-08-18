@@ -6,12 +6,12 @@ pipeline {
     stages {
         stage('Build') {
             steps {
+                // commented lines for testing and inspection
                 // sh 'gradle --version'
                 // sh 'gradle tasks'
                 // sh 'gradle projects'
                 // sh 'pwd'
                 // sh 'ls -la'
-                // sh 'cd spring_boot_app'
                 sh 'gradle build -p /home/gradle/project'
             }
         }
