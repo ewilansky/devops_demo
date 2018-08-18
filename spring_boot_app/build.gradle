@@ -1,3 +1,4 @@
+termsOfServiceUrl = 'https://gradle.com/terms-of-service'; termsOfServiceAgree = 'yes'
 System.setProperty("user.dir", project.projectDir.toString())
 println " project dir" + System.getProperty("user.dir");
 println  "Root project:   ${project.rootProject}";
