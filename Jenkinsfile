@@ -12,7 +12,7 @@ pipeline {
                 // sh 'gradle projects'
                 // sh 'pwd'
                 // sh 'ls -la'
-                sh 'gradle build -p /home/gradle/project --scan'
+                sh 'gradle build -p /home/gradle/project'
             }
         }
     }
