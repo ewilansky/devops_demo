@@ -13,6 +13,7 @@ pipeline {
                 // sh 'pwd'
                 // sh 'ls -la'
                 sh 'gradle build -p /home/gradle/project'
+                sh 'gradle build -p /home/gradle/project docker'
             }
         }
     }
