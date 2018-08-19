@@ -12,25 +12,14 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.3.RELEASE")
-        // docker plugin
-        // classpath('gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.20.0')
     }
 }
-
-plugins {
-    id 'com.palantir.docker' version '0.20.1'
-}
-
-// added for docker plugin
-group = 'springio'
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
-// docker plugin
-apply plugin: 'com.palantir.docker'
 
 bootJar {
     baseName = 'gs-spring-boot-docker'
@@ -47,12 +36,4 @@ targetCompatibility = 1.8
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     testCompile("org.springframework.boot:spring-boot-starter-test")
-}
-
-// docker plugin
-docker {
-    dependsOn build
-    name "${project.group}/${bootJar.baseName}"
-    files bootJar.archivePath
-    buildArgs(['JAR_FILE': "${bootJar.archiveName}"])
 }
