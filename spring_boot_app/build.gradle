@@ -17,12 +17,12 @@ buildscript {
     }
 }
 
-// added for docker plugin
-group = 'springio'
-
 plugins {
     id 'com.palantir.docker' version '0.20.1'
 }
+
+// added for docker plugin
+group = 'springio'
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
