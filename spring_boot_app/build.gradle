@@ -13,12 +13,16 @@ buildscript {
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.3.RELEASE")
         // docker plugin
-        classpath('gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.13.0')
+        // classpath('gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.20.0')
     }
 }
 
 // added for docker plugin
 group = 'springio'
+
+plugins {
+    id 'com.palantir.docker' version '0.20.1'
+}
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
