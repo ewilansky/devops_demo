@@ -6,11 +6,16 @@ services:
     # image: jenkins/jenkins:latest
     # created image derived from jenkins/jenkins:latest, but also 
     # contains Docker
-    image: ahl/jenkins:latest
+    # image: ahl/jenkins:latest
+    # alternatively, switch to blueocean enabled version of Jenkins
+    # this doesn't require a custom image, it's smaller and contains the 
+    # embedded docker client
+    image: jenkinsci/blueocean
+    # no need to do this either because the based blueocean image is adequate
     # build the image 
-    build:
-      context: ./jenkins_build_def
-      dockerfile: Jenkins_Dockerfile
+    # build:
+    #   context: ./jenkins_build_def
+    #   dockerfile: Jenkins_Dockerfile
     user: root
     ports:
       - "8080:8080"
@@ -20,8 +25,9 @@ services:
       # run Docker from the host system when the container calls it. Note, Docker is stll 
       # required in the jenkins container
       - /var/run/docker.sock:/var/run/docker.sock
-      # adding a volume for the Gradle build to see if this allows the Gradle container
-      # to find and run the code
+      # adding a volume for the Gradle build so the Gradle container
+      # can run the code. The Gradle container isn't here because the Jenkins
+      # docker agent spins it up
       - /Users/ethanw/code/ahl/devops_demo/spring_boot_app:/home/gradle/project
 
     container_name: jenkins
