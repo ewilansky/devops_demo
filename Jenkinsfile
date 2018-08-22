@@ -18,3 +18,6 @@ node {
         }
     }
 }
+node {
+    docker.build('springboot', './spring_boot_app')
+}
