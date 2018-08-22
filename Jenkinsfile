@@ -19,5 +19,5 @@ node {
     }
 }
 node {
-    docker.build('springboot', './spring_boot_app')
+    docker.build('springboot', '--build-arg JAR_FILE=./build/libs/gs-spring-boot-docker-0.1.0.jar ./spring_boot_app')
 }
