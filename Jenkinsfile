@@ -21,7 +21,7 @@ node {
 node {
     stage('AppImageBuild')
     docker.build(
-        'springboot', \
+        'springboot',
         '--build-arg JAR_FILE=/home/gradle/project//build/libs/gs-spring-boot-docker-0.1.0.jar' \
         ' ./spring_boot_app')
 }
