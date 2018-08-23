@@ -1,4 +1,8 @@
 FROM openjdk:8
+
+# maintainer
+LABEL maintainer "ethan@arrowheadlabs.io"
+
 # VOLUME /tmp
 # WORKDIR /home/gradle/project
 # ARG JAR_FILE
