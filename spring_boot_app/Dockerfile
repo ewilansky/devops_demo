@@ -16,8 +16,8 @@ LABEL maintainer "ethan@arrowheadlabs.io"
 # RUN /bin/bash -c 'echo $PWD'
 # RUN ["/bin/bash", "-c", "echo ${PWD}"]
 
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
-EXPOSE 8888
+# ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+# EXPOSE 8888
 
 
 # FROM openjdk:8
