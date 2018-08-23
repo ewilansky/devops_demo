@@ -20,11 +20,11 @@ node {
 }
 node {
     stage('AppImageBuild') {
-    sh 'pwd'
-    sh 'ls -la'
+    // sh 'pwd'
+    // sh 'ls -la'
     docker.build(
         'springboot',
-        '--build-arg JAR_FILE=gs-spring-boot-docker-0.1.0.jar ./spring_boot_app')
+        '--build-arg JAR_FILE=./spring_boot_app/build/libs/gs-spring-boot-docker-0.1.0.jar .')
     }
 
 }
