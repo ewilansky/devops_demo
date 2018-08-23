@@ -1,4 +1,4 @@
-# FROM openjdk
+FROM openjdk:8
 # VOLUME /tmp
 # WORKDIR /home/gradle/project
 # ARG JAR_FILE
@@ -12,11 +12,11 @@
 # RUN /bin/bash -c 'echo $PWD'
 # RUN ["/bin/bash", "-c", "echo ${PWD}"]
 
-# ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
-# EXPOSE 8888
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+EXPOSE 8888
 
 
-FROM openjdk:8
+# FROM openjdk:8
 # COPY ./libs/libs/gs-spring-boot-docker-0.1.0.jar /usr/src/myapp
 # WORKDIR /usr/src/myapp
 # RUN javac Main.java
