@@ -3,9 +3,9 @@ VOLUME /tmp
 # WORKDIR /home/gradle/project
 ARG JAR_FILE
 
-# COPY ${JAR_FILE} app.jar
+COPY ${JAR_FILE} app.jar
 # Trying this as the preferred form...
-COPY ["${JAR_FILE}" "/app.jar"]
+# COPY ["${JAR_FILE}" "/app.jar"]
 
 # RUN ["/bin/bash", "-c", "cp ${JAR_FILE} app.jar"]
 # RUN /bin/bash -c 'pwd'
