@@ -17,8 +17,8 @@
 
 
 FROM openjdk:8
-COPY ./libs/libs/gs-spring-boot-docker-0.1.0.jar /usr/src/myapp
-WORKDIR /usr/src/myapp
+# COPY ./libs/libs/gs-spring-boot-docker-0.1.0.jar /usr/src/myapp
+# WORKDIR /usr/src/myapp
 # RUN javac Main.java
-CMD ["java", "libs/gs-spring-boot-docker-0.1.0.jar"]
-EXPOSE 8888
+# CMD ["java", "libs/gs-spring-boot-docker-0.1.0.jar"]
+# EXPOSE 8888
