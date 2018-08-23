@@ -17,7 +17,8 @@ LABEL maintainer "ethan@arrowheadlabs.io"
 # RUN ["/bin/bash", "-c", "echo ${PWD}"]
 
 # ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
-# EXPOSE 8888
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","./spring_boot_app/build/libs/gs-spring-boot-docker-0.1.0.jar"]
+EXPOSE 8888
 
 
 # FROM openjdk:8
