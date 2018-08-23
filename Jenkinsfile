@@ -22,9 +22,13 @@ node {
     stage('AppImageBuild') {
     // sh 'pwd'
     // sh 'ls -la'
-    docker.build(
-        'springboot',
-        '--build-arg JAR_FILE=./spring_boot_app/build/libs/gs-spring-boot-docker-0.1.0.jar .')
+        def custom_app_image = docker.build("springboot", "./spring_boot_app")
+
+        custom_app_image.inside {
+            sh 'cp /home/gradle/project/build/libs/gs-spring-boot-docker-0.1.0.jar /app.jar'
+        }
+
+        // "--build-arg JAR_FILE=./spring_boot_app/build/libs/gs-spring-boot-docker-0.1.0.jar .")
     }
 
 }
