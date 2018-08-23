@@ -27,9 +27,11 @@ node {
         custom_app_image.inside {
              sh 'echo Inside custom image'
              // sh 'ls -la'
-             // sh 'pwd'
-             // sh 'tree'
-             sh 'cp ./spring_boot_app/build/libs/gs-spring-boot-docker-0.1.0.jar /app.jar'
+             sh 'pwd'
+             sh 'cd spring_boot_app'
+             sh 'ls -la'
+             sh 'tree'
+             // sh 'cp ./spring_boot_app/build/libs/gs-spring-boot-docker-0.1.0.jar /app.jar'
              sh 'ls /'
         }
 
