@@ -1,5 +1,5 @@
-FROM openjdk
-VOLUME /tmp
+# FROM openjdk
+# VOLUME /tmp
 # WORKDIR /home/gradle/project
 # ARG JAR_FILE
 
@@ -14,3 +14,11 @@ VOLUME /tmp
 
 # ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
 # EXPOSE 8888
+
+
+FROM openjdk:8
+COPY ./libs/libs/gs-spring-boot-docker-0.1.0.jar /usr/src/myapp
+WORKDIR /usr/src/myapp
+# RUN javac Main.java
+CMD ["java", "libs/gs-spring-boot-docker-0.1.0.jar"]
+EXPOSE 8888
