@@ -5,7 +5,8 @@ LABEL maintainer "ethan@arrowheadlabs.io"
 
 USER root
 
-VOLUME /tmp
+VOLUME /tmp /spring_boot_app/build/libs
+
 # WORKDIR /home/gradle/project
 ARG JAR_FILE
 
@@ -17,7 +18,7 @@ ADD ${JAR_FILE} app.jar
 # RUN /bin/bash -c 'echo $PWD'
 # RUN ["/bin/bash", "-c", "echo ${PWD}"]
 
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/spring_boot_app/build/libs/gs-spring-boot-docker-0.1.0.jar"]
 # ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","./spring_boot_app/build/libs/gs-spring-boot-docker-0.1.0.jar"]
 EXPOSE 8888
 
