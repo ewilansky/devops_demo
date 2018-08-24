@@ -5,7 +5,7 @@ LABEL maintainer "ethan@arrowheadlabs.io"
 
 USER root
 
-VOLUME /tmp /spring_boot_app/build/libs
+VOLUME /tmp
 
 # WORKDIR /home/gradle/project
 ARG JAR_FILE
