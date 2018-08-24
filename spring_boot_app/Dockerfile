@@ -10,7 +10,7 @@ VOLUME /tmp /spring_boot_app/build/libs
 # WORKDIR /home/gradle/project
 ARG JAR_FILE
 
-ADD ${JAR_FILE} app.jar
+# ADD ${JAR_FILE} app.jar
 # COPY ${JAR_FILE} app.jar
 
 # RUN ["/bin/bash", "-c", "cp ${JAR_FILE} app.jar"]
