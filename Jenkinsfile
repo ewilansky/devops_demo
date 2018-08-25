@@ -22,11 +22,14 @@ node {
     stage('AppImageBuild') {
 
         def custom_app_image = docker.build("springboot", "-f springbootapp/Dockerfile ./springbootapp")
-
+        sh 'echo In Jenkins file, but outside of container'
+        sh 'echo $(docker --version)'
         // def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=./spring_boot_app/build/libs/gs-spring-boot-docker-0.1.0.jar ./spring_boot_app")
 
         custom_app_image.inside {
              sh 'echo Inside custom image'
+             sh 'echo $(docker --version'
+             sh 'echo $(ls /hoe/gradle/project'
              // sh 'ls -la'
              // sh 'pwd'
              // sh 'cd spring_boot_app/build/libs; ls -la'

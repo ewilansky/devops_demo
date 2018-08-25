@@ -5,7 +5,9 @@ LABEL maintainer "ethan@arrowheadlabs.io"
 VOLUME /tmp
 # ARG JAR_FILE=build/libs/gsspringbootdocker0.1.0.jar
 # COPY ${JAR_FILE} app.jar
+RUN echo $(docker --version)
 COPY build/libs /app
+RUN echo $(ls -1 /app/)
 EXPOSE 8080
 # ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app/gsspringbootdocker0.1.0.jar"]
