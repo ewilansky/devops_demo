@@ -24,3 +24,6 @@ hs_err_pid*
 
 # added for devops demo project
 upd.sh
+
+## gradle build files
+*.lock
