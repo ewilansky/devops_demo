@@ -3,7 +3,7 @@ FROM openjdk:8-jdk-alpine
 # maintainer
 LABEL maintainer "ethan@arrowheadlabs.io"
 VOLUME /tmp
-ARG JAR_FILE=build/libs/gs-springbootdocker0.1.0.jar
+ARG JAR_FILE=./build/libs/gs-springbootdocker0.1.0.jar
 COPY ${JAR_FILE} app.jar
 EXPOSE 8080
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
