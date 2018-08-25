@@ -7,8 +7,6 @@ node {
             // sh 'gradle --version'
             // sh 'gradle tasks'
             // sh 'gradle projects'
-            // sh 'pwd'
-            // sh 'ls -la'
             sh 'gradle build -p /home/gradle/project'
         }
         stage('Test') {
@@ -21,20 +19,14 @@ node {
 node {
     stage('AppImageBuild') {
 
-        def custom_app_image = docker.build("springboot", "-f springbootapp/Dockerfile ./springbootapp")
-        sh 'echo In Jenkins file, but outside of container'
-        sh 'echo $(docker --version)'
-        // def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=./spring_boot_app/build/libs/gs-spring-boot-docker-0.1.0.jar ./spring_boot_app")
+        // def custom_app_image = docker.build("springboot", "-f springbootapp/Dockerfile ./springbootapp")
+        def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=./springbootapp/build/libs/gs-spring-boot-docker-0.1.0.jar -f springbootapp/Dockerfile .")
+
+        sh 'echo In Jenkins def, outside of container'
+        sh 'echo $(docker --version)' // returns docker version on host
 
         custom_app_image.inside {
              sh 'echo Inside custom image'
-             sh 'echo $(docker --version)'
-             sh 'echo $(ls /hoe/gradle/project)'
-             // sh 'ls -la'
-             // sh 'pwd'
-             // sh 'cd spring_boot_app/build/libs; ls -la'
-             // sh 'cp ./spring_boot_app/build/libs/gs-spring-boot-docker-0.1.0.jar /app.jar'
-             // sh 'ls -la spring_boot_app/build/libs'
         }
 
         // "--build-arg JAR_FILE=./spring_boot_app/build/libs/gs-spring-boot-docker-0.1.0.jar .")
