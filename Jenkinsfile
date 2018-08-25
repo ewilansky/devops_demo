@@ -21,7 +21,7 @@ node {
 node {
     stage('AppImageBuild') {
 
-        def custom_app_image = docker.build("springboot", "./spring_boot_app")
+        def custom_app_image = docker.build("springboot", "-f ./spring_boot_app/Dockerfile ./spring_boot_app")
 
         // def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=./spring_boot_app/build/libs/gs-spring-boot-docker-0.1.0.jar ./spring_boot_app")
 
