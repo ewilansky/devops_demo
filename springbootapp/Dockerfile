@@ -4,6 +4,7 @@ FROM openjdk:8-jdk-alpine
 LABEL maintainer "ethan@arrowheadlabs.io"
 VOLUME /tmp
 # ARG JAR_FILE=build/libs/gsspringbootdocker0.1.0.jar
+ARG JAR_FILE
 COPY ${JAR_FILE} app/app.jar
 # RUN echo $(docker --version)
 # COPY build/libs /app

@@ -28,10 +28,10 @@ node {
         custom_app_image.inside {
              sh 'echo Inside custom image'
         }
-
-        // "--build-arg JAR_FILE=./spring_boot_app/build/libs/gs-spring-boot-docker-0.1.0.jar .")
-
-    
     }
-
+}
+node {
+    stage ('AppRunImage') {
+        
+    }
 }
