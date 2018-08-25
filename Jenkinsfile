@@ -28,8 +28,8 @@ node {
 
         custom_app_image.inside {
              sh 'echo Inside custom image'
-             sh 'echo $(docker --version'
-             sh 'echo $(ls /hoe/gradle/project'
+             sh 'echo $(docker --version)'
+             sh 'echo $(ls /hoe/gradle/project)'
              // sh 'ls -la'
              // sh 'pwd'
              // sh 'cd spring_boot_app/build/libs; ls -la'
