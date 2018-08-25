@@ -3,10 +3,13 @@ FROM openjdk:8-jdk-alpine
 # maintainer
 LABEL maintainer "ethan@arrowheadlabs.io"
 VOLUME /tmp
-ARG JAR_FILE=./build/libs/gsspringbootdocker0.1.0.jar
-COPY ${JAR_FILE} app.jar
+# ARG JAR_FILE=build/libs/gsspringbootdocker0.1.0.jar
+# COPY ${JAR_FILE} app.jar
+COPY build/libs /app
 EXPOSE 8080
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+# ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app/gsspringbootdocker0.1.0.jar"]
+
 
 # maintainer
 # LABEL maintainer "ethan@arrowheadlabs.io"
