@@ -15,8 +15,7 @@ node {
             sh 'gradle --version'
         }
     }
-}
-node {
+
     stage('AppImageBuild') {
 
         // def custom_app_image = docker.build("springboot", "-f springbootapp/Dockerfile ./springbootapp")
@@ -29,9 +28,8 @@ node {
              sh 'echo Inside custom image'
         }
     }
-}
-node {
+
     stage ('AppRunImage') {
-        
+
     }
 }
