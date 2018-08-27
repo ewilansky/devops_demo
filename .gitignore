@@ -27,3 +27,4 @@ upd.sh
 
 ## gradle build files
 *.lock
+.DS_Store
