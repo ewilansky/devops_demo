@@ -1,0 +1,78 @@
+plugins {
+	id 'java'
+	id 'maven'
+	id 'com.gradle.build-scan' version '1.15.2'
+	// TODO: unremarked the next line to see whether this plugin is necessary to
+	// be able to find the springboot tests. The build works without the next line
+	// but trying to resolve the Task :processTestResources NO-SOURCE error/warning
+	id 'org.springframework.boot' version '2.0.3.RELEASE'
+	id 'application'
+}
+
+mainClassName = 'Application'
+
+sourceSets {
+    main {
+        java {
+            'main/java'
+        }
+    }
+    test {
+        java {
+            'test/java'
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+
+group = 'org.springframework.boot'
+version = '0.0.1-SNAPSHOT'
+
+description = """spring-boot-starter"""
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+tasks.withType(JavaCompile) {
+	options.encoding = 'UTF-8'
+}
+
+repositories {
+     maven { url "https://repo.spring.io/snapshot" }
+     maven { url "https://repo.spring.io/milestone" }
+     maven { url "http://repo.maven.apache.org/maven2" }
+}
+dependencies {
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version:'2.1.0.M2'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version:'2.1.0.M2'
+    compile group: 'com.h2database', name: 'h2', version:'1.4.197'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version:'2.1.0.M2'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version:'2.1.0.M2'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version:'3.7'
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version:'2.1.0.M2'
+    testCompile group: 'io.rest-assured', name: 'rest-assured', version:'3.1.1'
+    testCompile 'org.junit.jupiter:junit-jupiter-api:5.0.0'
+	testCompile 'org.junit.jupiter:junit-jupiter-params:5.0.0'
+	testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.0.0'
+    
+    
+    testImplementation(
+            'org.junit.jupiter:junit-jupiter-api:5.1.0'
+    )
+    testRuntimeOnly(
+            'org.junit.jupiter:junit-jupiter-engine:5.1.0'
+    )
+}
+
+buildScan {
+
+    always accept the terms of service
+    termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+    termsOfServiceAgree = 'yes'
+
+    always publish a build scan
+    publishAlways()
+}

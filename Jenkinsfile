@@ -24,7 +24,7 @@ node {
         // def custom_app_image = docker.build("springboot", "-f springbootapp/Dockerfile ./springbootapp")
         // NOTE: When building a different application, simply change the build-arg to point to the replacement jar
         // def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=./springbootapp/build/libs/gs-spring-boot-docker-0.1.0.jar -f springbootapp/Dockerfile .")
-        def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=../spring-boot-demo/build/libs/spring-boot-demo-0.0.1-SNAPSHOT.jar -f spring-boot-demo/Dockerfile .")
+        def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=./spring-boot-demo/build/libs/spring-boot-demo-0.0.1-SNAPSHOT.jar -f spring-boot-demo/Dockerfile .")
 
         sh 'echo In Jenkins def, outside of container'
         sh 'echo $(docker --version)' // returns docker version on host
