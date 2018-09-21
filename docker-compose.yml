@@ -28,6 +28,11 @@ services:
       # adding a volume for the Gradle build so the Gradle container
       # can run the code. The Gradle container isn't here because the Jenkins
       # agent bootstraps the Gradle container for the build
-      - /Users/ethanw/code/ahl/devops_demo/springbootapp:/home/gradle/project
+      # - /Users/ethanw/code/ahl/devops_demo/springbootapp:/home/gradle/project
+      # this demo project is completely outside of the devops_demo project containing things like 
+      # the Jenkins container and docker assets, except for Dockerfile, which is placed with the
+      # java project since it is the definition of the container where the java app is contained
+      - /Users/ethanw/code/ahl/spring-boot-demo:/home/gradle/project
+
 
     container_name: jenkins
