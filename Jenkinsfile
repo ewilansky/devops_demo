@@ -12,7 +12,7 @@ node {
         stage('Test') {
             // TODO: replace with junit test running from built container
             // might move this to a later stage after building the container
-            sh 'gradle test'
+            sh 'gradle test -p /home/gradle/project'
 
             // TODO: add Cucumber for acceptance testing. Consider plugins to tools like Jira, however
             // another tool is being considered...
