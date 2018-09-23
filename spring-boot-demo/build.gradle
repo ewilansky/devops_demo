@@ -1,7 +1,8 @@
 plugins {
 	id 'java'
 	id 'maven'
-	id 'com.gradle.build-scan' version '1.15.2'
+	// id 'com.gradle.build-scan' version '1.15.2'
+    id "com.gradle.build-scan" version "1.16"
 	// TODO: unremarked the next line to see whether this plugin is necessary to
 	// be able to find the springboot tests. The build works without the next line
 	// but trying to resolve the Task :processTestResources NO-SOURCE error/warning
@@ -17,6 +18,15 @@ sourceSets {
             'main/java'
         }
     }
+    // integrationTest {
+    //     java {
+    //         // 'test/java'
+    //         compileClasspath += main.output + test.output
+    //         runtimeClasspath += main.output + test.output
+    //         srcDir file('src/test/java')
+    //     }
+    //     resources.srcDir = file('src/test/resources')
+    // }
     test {
         java {
             'test/java'
@@ -41,18 +51,39 @@ tasks.withType(JavaCompile) {
 }
 
 repositories {
-     maven { url "https://repo.spring.io/snapshot" }
-     maven { url "https://repo.spring.io/milestone" }
-     maven { url "http://repo.maven.apache.org/maven2" }
+    jcenter()
+    maven {url "https://mvnrepository.com" }
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+    maven { url "http://repo.maven.apache.org/maven2" }
+    //maven { url "https://plugins.gradle.org" }
+        maven {
+      url "https://plugins.gradle.org/m2/"
+    }
 }
 dependencies {
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version:'2.1.0.M2'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version:'2.1.0.M2'
+    // compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version:'2.1.0.M2'
+
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.0.5.RELEASE'
+
+    // compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version:'2.1.0.M2'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.0.5.RELEASE'
+    
+    // compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version:'2.1.0.M2'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.0.5.RELEASE'
+
+    // compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version:'2.1.0.M2'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.0.5.RELEASE'
+
+    // testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version:'2.1.0.M2'
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.0.5.RELEASE'
+
+    
     compile group: 'com.h2database', name: 'h2', version:'1.4.197'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version:'2.1.0.M2'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version:'2.1.0.M2'
     compile group: 'org.apache.commons', name: 'commons-lang3', version:'3.7'
-    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version:'2.1.0.M2'
+    
+    
     testCompile group: 'io.rest-assured', name: 'rest-assured', version:'3.1.1'
     testCompile 'org.junit.jupiter:junit-jupiter-api:5.0.0'
 	testCompile 'org.junit.jupiter:junit-jupiter-params:5.0.0'
@@ -68,11 +99,10 @@ dependencies {
 }
 
 buildScan {
-
-    always accept the terms of service
+    // always accept the terms of service
     termsOfServiceUrl = 'https://gradle.com/terms-of-service'
     termsOfServiceAgree = 'yes'
 
-    always publish a build scan
+    // always publish a build scan
     publishAlways()
 }
