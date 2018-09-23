@@ -1,6 +1,15 @@
 # Compiled class file
 *.class
 
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
 # Log file
 *.log
 
@@ -28,3 +37,13 @@ upd.sh
 ## gradle build files
 *.lock
 .DS_Store
+
+## pattern to exclude everything in the build directory except for the jar
+## eventually the jar will come from another repository, like Nexus
+!spring-boot-demo/
+
+spring-boot-demo/*
+!spring-boot-demo/build/
+
+spring-boot-demo/build/*
+!spring-boot-demo/build/libs/
