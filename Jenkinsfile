@@ -17,10 +17,10 @@ node {
             // TODO: add Cucumber for acceptance testing. Consider plugins to tools like Jira, however
             // another tool is being considered...
         }
-        stage('CodeAnalysis') {
-            // will run sonarqube here
-            sh 'gradle sonarqube -p /home/gradle/project'
-        }
+        // stage('CodeAnalysis') {
+        //     // will run sonarqube here
+        //     sh 'gradle sonarqube -p /home/gradle/project'
+        // }
     }
 
     stage('AppImageBuild') {
