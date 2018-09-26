@@ -8,6 +8,9 @@ plugins {
 	// but trying to resolve the Task :processTestResources NO-SOURCE error/warning
 	id 'org.springframework.boot' version '2.0.5.RELEASE'
 	id 'application'
+
+    // sonarqube analysis
+    id "org.sonarqube" version "2.6.2"
 }
 
 mainClassName = "org.ahl.springbootdemo.Application"
