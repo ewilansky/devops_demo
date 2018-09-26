@@ -19,7 +19,7 @@ node {
         }
         stage('CodeAnalysis') {
             // will run sonarqube here
-            sh 'gradle sonarqube'
+            sh 'gradle sonarqube -p /home/gradle/project'
         }
     }
 
