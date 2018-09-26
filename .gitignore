@@ -47,3 +47,8 @@ spring-boot-demo/*
 
 spring-boot-demo/build/*
 !spring-boot-demo/build/libs/
+
+
+### Not required for Gradle container-based build ###
+/gradle
+gradleew.*
