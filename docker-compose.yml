@@ -10,13 +10,17 @@ services:
     # alternatively, switch to blueocean enabled version of Jenkins
     # this doesn't require a custom image, it's smaller and contains the 
     # embedded docker client
-    image: jenkinsci/blueocean
+    image: jenkinsci/blueocean:latest
     # no need to do this either because the based blueocean image is adequate
     # build the image 
     # build:
     #   context: ./jenkins_build_def
     #   dockerfile: Jenkins_Dockerfile
     user: root
+    networks:
+        demo-net:
+          aliases: 
+            - "orchestrate"
     ports:
       - "8080:8080"
       - "50000:50000"
@@ -25,10 +29,23 @@ services:
       # run Docker from the host system when the container calls it. Note, Docker is stll 
       # required in the jenkins container
       - /var/run/docker.sock:/var/run/docker.sock
-      # adding a volume for the Gradle build so the Gradle container
-      # can run the code. The Gradle container isn't here because the Jenkins
-      # agent bootstraps the Gradle container for the build
+      # adding a volume for the Gradle build so the Gradle container can run the code. 
+      # The Gradle container isn't specified here because the Jenkins agent bootstraps the build
       - /Users/ethanw/code/ahl/devops_demo/spring-boot-demo:/home/gradle/project
-
-
     container_name: jenkins
+
+  # add sonarqube as a service since it needs to materialize and be available during orchestration 
+  # activities, specifically collecting and reviewing the results of code analysis
+  sonarqube:
+    image: sonarqube:latest
+    networks:
+      demo-net:
+        aliases: 
+          - "analyze"
+    ports: 
+      - "9000:9000"
+      - "9092:9092"
+    container_name: sonarqube
+
+networks:
+  demo-net:

@@ -37,7 +37,9 @@ node {
         }
     }
 
-    stage ('AppRunImage') {
-
+    stage ('DeployImageToKubernetes') {
+        // this uses a Minikube container for this local demo. Mechanics of a large, remote deployment do not change
+        sh 'echo Deploying to Kubernetes Minikube cluster'
+        
     }
 }
