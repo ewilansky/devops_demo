@@ -52,3 +52,4 @@ spring-boot-demo/build/*
 ### Not required for Gradle container-based build ###
 /gradle
 gradleew.*
+.gradle
