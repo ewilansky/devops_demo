@@ -7,20 +7,21 @@ node {
             // sh 'gradle --version'
             // sh 'gradle tasks'
             // sh 'gradle projects'
-            sh 'gradle build -p /home/gradle/project'
+            // sh  'gradle buid --scan' find build dependencies including transitive and build report
+            // sh ' gradle dependencies' just list the dependencies, no report
+            sh 'gradle bootJar -p /home/gradle/project'
         }
         stage('Test') {
-            // TODO: replace with junit test running from built container
-            // might move this to a later stage after building the container
-            sh 'gradle test -p /home/gradle/project'
+            // all verification tasks, including tests and linting
+            sh 'gradle check -p /home/gradle/project'
 
             // TODO: add Cucumber for acceptance testing. Consider plugins to tools like Jira, however
             // another tool is being considered...
         }
-        // stage('CodeAnalysis') {
-        //     // will run sonarqube here
-        //     sh 'gradle sonarqube -p /home/gradle/project'
-        // }
+        stage('CodeAnalysis') {
+            // run sonarqube
+            sh 'gradle sonarqube -p /home/gradle/project'
+        }
     }
 
     stage('AppImageBuild') {

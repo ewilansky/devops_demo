@@ -1,6 +1,5 @@
 plugins {
     id 'com.gradle.build-scan' version '1.16'
-    // id 'com.gradle.build-scan' version '1.15.2'
 	id 'java'
 	id 'maven'
 	// TODO: unremarked the next line to see whether this plugin is necessary to
@@ -10,7 +9,8 @@ plugins {
 	id 'application'
 
     // sonarqube analysis
-    id "org.sonarqube" version "2.6.2"
+    id 'jacoco'
+    id 'org.sonarqube' version '2.6.2'
 }
 
 mainClassName = "org.ahl.springbootdemo.Application"
@@ -53,14 +53,19 @@ tasks.withType(JavaCompile) {
 	options.encoding = 'UTF-8'
 }
 
+// two short-cut methods to common repositories. Per Lance, Nexus will be the internal
+// repository and the only one available so all dependencies must be put there.
 repositories {
     jcenter()
-    maven {url "https://mvnrepository.com" }
-    maven { url "https://repo.spring.io/snapshot" }
-    maven { url "https://repo.spring.io/milestone" }
-    maven { url "http://repo.maven.apache.org/maven2" }
+    mavenCentral()
+    // maven {url "https://mvnrepository.com" }
+    // maven { url "https://repo.spring.io/snapshot" }
+    // maven { url "https://repo.spring.io/milestone" }
+    // maven { url "http://repo.maven.apache.org/maven2" }
     // maven { url "https://plugins.gradle.org/m2" }
 }
+
+apply plugin: 'jacoco'
 
 dependencies {
     // compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version:'2.1.0.M2'
@@ -95,6 +100,8 @@ dependencies {
             'org.junit.jupiter:junit-jupiter-engine:5.1.0'
     )
 }
+
+apply plugin: org.sonarqube.gradle.SonarQubePlugin
 
 buildScan {
     // always accept the terms of service
