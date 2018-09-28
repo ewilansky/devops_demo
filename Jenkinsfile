@@ -20,7 +20,7 @@ node {
         }
         stage('CodeAnalysis') {
             // run sonarqube
-            sh 'gradle sonarqube -p /home/gradle/project --network=devops_demo_demo-net'
+            sh '--network=devops_demo_demo-net gradle sonarqube -p /home/gradle/project'
         }
     }
 
