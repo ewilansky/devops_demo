@@ -43,6 +43,7 @@ upd.sh
 !spring-boot-demo/
 
 spring-boot-demo/*
+!spring_boot_demo/gradle.properties
 !spring-boot-demo/build/
 
 spring-boot-demo/build/*
