@@ -1,6 +1,7 @@
 node {
     checkout scm
     /* Docker pipeline plugin installed in Jenkins container */
+    docker.network='devops_demo_demo-net'
     docker.image('gradle:latest').inside {
         stage('Build') {
             // commented lines for testing and inspection
@@ -20,7 +21,7 @@ node {
         }
         stage('CodeAnalysis') {
             // run sonarqube
-            sh '--network=devops_demo_demo-net gradle sonarqube -p /home/gradle/project'
+            sh 'gradle sonarqube -p /home/gradle/project'
         }
     }
 
