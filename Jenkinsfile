@@ -20,7 +20,7 @@ node {
         }
         stage('CodeAnalysis') {
             // run sonarqube
-            sh 'gradle sonarqube -p /home/gradle/project'
+            sh 'gradle sonarqube -p /home/gradle/project --network=devops_demo_demo-net'
         }
     }
 
@@ -40,6 +40,6 @@ node {
     stage ('DeployImageToKubernetes') {
         // this uses a Minikube container for this local demo. Mechanics of a large, remote deployment do not change
         sh 'echo Deploying to Kubernetes Minikube cluster'
-        
+
     }
 }
