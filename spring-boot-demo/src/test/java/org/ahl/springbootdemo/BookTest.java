@@ -10,7 +10,7 @@ public class BookTest {
 	@Test
 	void ShouldReturnBookTitleAndAuthor() {
 		Book book = new Book("Abaddon's Gate", "James S. A. Corey");
-		assertEquals("Abaddon's Gate", book.getTitle());
-		assertEquals("James S. A. Corey", book.getAuthor());
+		assertEquals("Abaddon's Gate", book.getTitle(), "unable to return book title");
+		assertEquals("James S. A. Corey", book.getAuthor(), "unable to return author title");
 	}
 }
