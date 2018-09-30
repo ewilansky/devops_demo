@@ -42,12 +42,22 @@ upd.sh
 ## eventually the jar will come from another repository, like Nexus
 !spring-boot-demo/
 
+# ignore everything at the root
 spring-boot-demo/*
+# but don't ignore this file
 !spring_boot_demo/gradle.properties
+# but don't ignore this directory
 !spring-boot-demo/build/
-
+# don't ignore this directory
+!spring-boot-demo/src/
+# ignore this directoyr
 spring-boot-demo/build/*
+# but don't ignore this subdir
 !spring-boot-demo/build/libs/
+
+!spring-boot-demo/src/main/
+!spring-boot-demo/src/test/
+
 
 
 ### Not required for Gradle container-based build ###
