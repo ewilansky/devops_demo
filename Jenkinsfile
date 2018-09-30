@@ -4,10 +4,7 @@ node {
     // docker.network='devops_demo_demo-net'
     docker.image('gradle:latest').inside('--network=devops_demo_demo-net') {
         stage('Build') {
-            // commented lines for testing and inspection
-            // sh 'gradle --version'
-            // sh 'gradle tasks'
-            // sh 'gradle projects'
+            // commented lines for inspection
             // sh  'gradle buid --scan' find build dependencies including transitive and build report
             // sh ' gradle dependencies' just list the dependencies, no report
             sh 'gradle bootJar -p /home/gradle/project'
