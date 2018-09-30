@@ -36,10 +36,15 @@ public class BookController {
  
     @GetMapping("/{id}")
     public Book findOne(@PathVariable Long id) {
-        return bookRepository.findById(id)
-          .orElseThrow(BookNotFoundException::new);
+    	
+    	return 
+    			bookRepository.findById(id)
+    				.orElseThrow(() -> new BookNotFoundException());
+    	
+    	// return bookRepository.findById(id)
+    	//    .orElseThrow(BookNotFoundException::new);
     }
- 
+    
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Book create(@RequestBody Book book) {
@@ -48,9 +53,11 @@ public class BookController {
  
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        bookRepository.findById(id)
-          .orElseThrow(BookNotFoundException::new);
-        bookRepository.deleteById(id);
+        if (bookRepository.findById(id) == null) {
+        	throw new BookNotFoundException();
+        }
+        else
+        	bookRepository.deleteById(id);
     }
  
     @PutMapping("/{id}")
