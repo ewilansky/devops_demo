@@ -1,6 +1,8 @@
 package org.ahl.springbootdemo.web.controller;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.ahl.springbootdemo.web.exception.BookIdMismatchException;
 import org.ahl.springbootdemo.web.exception.BookNotFoundException;
@@ -52,12 +54,13 @@ public class BookController {
     }
  
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        if (bookRepository.findById(id) == null) {
-        	throw new BookNotFoundException();
-        }
-        else
-        	bookRepository.deleteById(id);
+    public void delete(@PathVariable Long id) { 
+    	Optional<Book> optional = bookRepository.findById(id);
+    	if (optional.isPresent()) {
+    		bookRepository.deleteById(id);
+    	} else {
+    		throw new BookNotFoundException();
+    	}
     }
  
     @PutMapping("/{id}")
