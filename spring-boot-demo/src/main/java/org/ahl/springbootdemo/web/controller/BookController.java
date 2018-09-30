@@ -38,13 +38,8 @@ public class BookController {
  
     @GetMapping("/{id}")
     public Book findOne(@PathVariable Long id) {
-    	
-    	return 
-    			bookRepository.findById(id)
-    				.orElseThrow(() -> new BookNotFoundException());
-    	
-    	// return bookRepository.findById(id)
-    	//    .orElseThrow(BookNotFoundException::new);
+    	return bookRepository.findById(id)
+    	    .orElseThrow(BookNotFoundException::new);
     }
     
     @PostMapping
@@ -68,10 +63,11 @@ public class BookController {
         if (book.getId() != id) {
           throw new BookIdMismatchException();
         }
-        bookRepository.findById(id)
-          .orElseThrow(BookNotFoundException::new);
-        return bookRepository.save(book);
+        Optional<Book> optional = bookRepository.findById(id);
+        if (optional.isPresent()) {
+        	return bookRepository.save(book);
+        } else {
+        	throw new BookNotFoundException();
+        } 
     }
-
-
 }
