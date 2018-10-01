@@ -56,7 +56,10 @@ spring-boot-demo/build/*
 !spring-boot-demo/build/libs/
 
 
-### Not required for Gradle container-based build ###
+# Not required for Gradle container-based build ###
 /gradle
 gradleew.*
 .gradle
+
+# Removing from SCM, this was an altenrative direction for jenkins, but decided not to build a custom image for jenkins
+jenkins_build_def/*
