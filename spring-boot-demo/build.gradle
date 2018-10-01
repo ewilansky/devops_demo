@@ -92,13 +92,11 @@ dependencies {
 	testCompile 'org.junit.jupiter:junit-jupiter-params:5.0.0'
 	testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.0.0'
     
-    
-    testImplementation(
-            'org.junit.jupiter:junit-jupiter-api:5.1.0'
-    )
-    testRuntimeOnly(
-            'org.junit.jupiter:junit-jupiter-engine:5.1.0'
-    )
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.1.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.1.0'
+
+    // for cucumber BDD 
+    testCompile 'io.cucumber:cucumber-java:3.0.2'
 }
 
 apply plugin: org.sonarqube.gradle.SonarQubePlugin
@@ -110,4 +108,16 @@ buildScan {
 
     // always publish a build scan
     publishAlways()
+}
+
+// cucumber task definition
+task cucumber() {
+    dependsOn assemble, compileTestJava
+    doLast {
+        javaexec {
+            main = "cucumber.api.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args = ['--plugin', 'pretty', '--glue', 'gradle.cucumber', 'src/test/resources']
+        }
+    }
 }
