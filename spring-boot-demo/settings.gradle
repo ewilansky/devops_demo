@@ -1,1 +1,9 @@
 rootProject.name = 'spring-boot-demo'
+
+// configure the local build cache
+buildCache {
+    local(DirectoryBuildCache) {
+        directory = new File(rootDir, 'build-cache')
+        removeUnusedEntriesAfterDays = 30
+    }
+}
