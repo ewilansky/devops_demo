@@ -13,4 +13,15 @@ public class BookTest {
 		assertEquals("Abaddon's Gate", book.getTitle(), "unable to return book title");
 		assertEquals("James S. A. Corey", book.getAuthor(), "unable to return author title");
 	}
+	
+	@Test
+	void ShouldSetAndGetIdBookTitleAndAuthor() {
+		Book book = new Book();
+		book.setAuthor("James S. A. Corey");
+		book.setTitle("Abaddon's Gate");
+		book.setId(12345);
+		assertEquals("Abaddon's Gate", book.getTitle(), "unable to return book title");
+		assertEquals("James S. A. Corey", book.getAuthor(), "unable to return author title");
+		assertEquals(12345, book.getId(), "unable to return book id");
+	}
 }
