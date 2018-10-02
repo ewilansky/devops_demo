@@ -11,6 +11,9 @@ plugins {
     // sonarqube analysis
     id 'jacoco'
     id 'org.sonarqube' version '2.6.2'
+
+    // cucumber plugin to run Cucumber BDD in Gradle
+    id "com.commercehub.cucumber-jvm" version "0.14"
 }
 
 mainClassName = "org.ahl.springbootdemo.Application"
@@ -58,11 +61,6 @@ tasks.withType(JavaCompile) {
 repositories {
     jcenter()
     mavenCentral()
-    // maven {url "https://mvnrepository.com" }
-    // maven { url "https://repo.spring.io/snapshot" }
-    // maven { url "https://repo.spring.io/milestone" }
-    // maven { url "http://repo.maven.apache.org/maven2" }
-    // maven { url "https://plugins.gradle.org/m2" }
 }
 
 apply plugin: 'jacoco'
@@ -96,10 +94,10 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.1.0'
 
     // for cucumber BDD 
-    testCompile 'io.cucumber:cucumber-java:3.0.2'
+    // testCompile 'io.cucumber:cucumber-java:3.0.2'
 }
 
-apply plugin: org.sonarqube.gradle.SonarQubePlugin
+// apply plugin: org.sonarqube.gradle.SonarQubePlugin
 
 buildScan {
     // always accept the terms of service
@@ -111,13 +109,13 @@ buildScan {
 }
 
 // cucumber task definition
-task cucumber() {
-    dependsOn assemble, compileTestJava
-    doLast {
-        javaexec {
-            main = "cucumber.api.cli.Main"
-            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
-            args = ['--plugin', 'pretty', '--glue', 'gradle.cucumber', 'src/test/resources']
-        }
-    }
-}
+// task cucumber() {
+//     dependsOn assemble, compileTestJava
+//     doLast {
+//         javaexec {
+//             main = "cucumber.api.cli.Main"
+//             classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+//             args = ['--plugin', 'pretty', '--glue', 'gradle.cucumber', 'src/test/resources']
+//         }
+//     }
+// }
