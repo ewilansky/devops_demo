@@ -56,6 +56,10 @@ spring-boot-demo/build/*
 !spring-boot-demo/build/libs/
 
 spring-boot-demo/bin/
+spring-boot-demo/build-cache/
+spring-boot-demo/gradle/
+spring-boot-demo/target/
+
 
 
 # Not required for Gradle container-based build ###
