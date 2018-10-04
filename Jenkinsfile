@@ -9,20 +9,20 @@ node {
             // sh ' gradle dependencies' just list the dependencies, no report
             sh 'gradle bootJar -p /home/gradle/project'
         }
-        stage('Test') {
+        stage('UnitTest And Linting') {
             // all verification tasks, including tests and linting
             sh 'gradle check -p /home/gradle/project'
-
-            // TODO: add Cucumber for acceptance testing. Consider plugins to tools like Jira, however
-            // another tool is being considered...
         }
-        stage('CodeAnalysis') {
+        stage('BDD Test') {
+            sh 'gradle cucumber -p /home/gradle/project'
+        }
+        stage('Code Analysis') {
             // run sonarqube
             sh 'gradle sonarqube -p /home/gradle/project'
         }
     }
 
-    stage('AppImageBuild') {
+    stage('App Image Build') {
 
         // NOTE: When building a different application, simply change the build-arg to point to the replacement jar
         def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=./spring-boot-demo/build/libs/spring-boot-demo-0.0.1-SNAPSHOT.jar -f spring-boot-demo/Dockerfile .")
