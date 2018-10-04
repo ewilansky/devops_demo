@@ -34,7 +34,7 @@ hs_err_pid*
 # added for devops demo project
 upd.sh
 
-## gradle build files
+## file system files
 *.lock
 .DS_Store
 
@@ -43,7 +43,7 @@ upd.sh
 !spring-boot-demo/
 
 # ignore everything at the root
-spring-boot-demo/*
+# spring-boot-demo/*
 # but don't ignore this file
 !spring_boot_demo/gradle.properties
 # but don't ignore this directory
@@ -54,6 +54,8 @@ spring-boot-demo/*
 spring-boot-demo/build/*
 # but don't ignore this subdir
 !spring-boot-demo/build/libs/
+
+spring-boot-demo/bin/
 
 
 # Not required for Gradle container-based build ###
