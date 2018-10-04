@@ -31,7 +31,7 @@ public class BookTest {
 	
 	@Test
 	public void ShouldReturnAHashCode() {
-		Book book = new Book();
+		Book book = new Book("test", "test");
 		Integer code = book.hashCode();
 		
 		assertTrue(code.intValue() != 0);
