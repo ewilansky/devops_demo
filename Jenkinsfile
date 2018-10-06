@@ -10,11 +10,14 @@ node {
             sh 'gradle bootJar -p /home/gradle/project'
         }
         stage('UnitTest And Linting') {
-            // all verification tasks, including tests and linting
-            sh 'gradle check -p /home/gradle/project'
+            // all unit test tasks, includes linting
+            sh 'gradle test -p /home/gradle/project'
         }
         stage('BDD Test') {
             sh 'gradle cucumber -p /home/gradle/project'
+        }
+        stage('Integration Test') {
+            sh 'gradle integrationTest -p /home/gradle/project'
         }
         stage('Code Analysis') {
             // run sonarqube
