@@ -9,50 +9,11 @@ plugins {
     id 'jacoco'
     id 'org.sonarqube' version '2.6.2'
     // cucumber bdd plugin
-    id "com.github.samueltbrown.cucumber" version "0.9"
+    // decided not to use a plugin for this capability, none provided by cucumber
+    // source author. Also, the following plugin is no longer maintained
+    // id "com.github.samueltbrown.cucumber" version "0.9"
+
 }
-
-mainClassName = "org.ahl.springbootdemo.Application"
-
-sourceSets {
-    main {
-        java {
-            'main/java'
-        }
-    }
-    intTest {
-        compileClasspath += sourceSets.main.output
-        runtimeClasspath += sourceSets.main.output
-    }
-
-
-    // integrationTest {
-    //     java {
-    //         // 'test/java'
-    //         compileClasspath += main.output + test.output
-    //         runtimeClasspath += main.output + test.output
-    //         srcDir file('src/test/java')
-    //     }
-    //     resources.srcDir = file('src/test/resources')
-    // }
-    test {
-        java {
-            'test/java'
-        }
-    }
-    cucumber {
-        java {
-            'cucumber/java'
-        }
-    }
-}
-
-configurations {
-    intTestImplementation.extendsFrom implementation
-    intTestRuntimeOnly.extendsFrom runtimeOnly
-}
-
-
 
 group = 'org.springframework.boot'
 version = '0.0.1-SNAPSHOT'
@@ -65,6 +26,52 @@ tasks.withType(JavaCompile) {
 	options.encoding = 'UTF-8'
 }
 
+mainClassName = "org.ahl.springbootdemo.Application"
+
+sourceSets {
+    main {
+        java {
+            'main/java'
+        }
+    }
+    integrationTest {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
+    cucumberTest {
+        java {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            // 'cucumber/java'
+            srcDir file('src/cucumber/java')
+        }
+        resources.srcDir file('src/cucumber/resources')
+    }
+    
+}
+
+configurations {
+    integrationTestImplementation.extendsFrom implementation
+    integrationTestRuntimeOnly.extendsFrom runtimeOnly
+
+    // include unit test dependencies for BDD tests (junit)
+    cucumberTestCompile.extendsFrom testCompile
+    cucumberTestRuntime.extendsFrom testRuntime
+}
+
+// Ensure cucumber BDD tests run before check task & check task fails the build
+// if there are failing cucumber tests.
+// check.dependsOn cucumberTest
+// Ensure unit tests run before BDD tests to guarantee unit tests run even 
+// if cucumber tests fail.
+// cucumberTest.mustRunAfter test
+
+// Ensure HTML reports of unit and BDD tests are created in different locations
+// build/reports/cucumberTest directory contains the BDD results report.
+tasks.withType(Test) {
+    reports.html.destination = file("${reporting.baseDir}/${name}")
+}
+
 // two short-cut methods to common repositories. Per Lance, Nexus will be the internal
 // repository and the only one available so all dependencies must be put there.
 repositories {
@@ -72,43 +79,79 @@ repositories {
     mavenCentral()
 }
 
-// apply plugin: 'jacoco'
+def cukesVer = '1.2.5'
+def sbVer = '2.0.5.RELEASE'
+def jUnitVer = '4.12'
+def restAssuredVer = '3.1.1'
 
 dependencies {
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.0.5.RELEASE'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.0.5.RELEASE'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.0.5.RELEASE'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.0.5.RELEASE'
-    compile group: 'com.h2database', name: 'h2', version:'1.4.197'
-    compile group: 'org.apache.commons', name: 'commons-lang3', version:'3.7'
-    
-    testImplementation 'junit:junit:4.12'
-    intTestImplementation 'junit:junit:4.12'
-    
 
-    intTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.0.5.RELEASE'
-    intTestCompile group: 'io.rest-assured', name: 'rest-assured', version:'3.1.1'
+    compile(
+        [group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: sbVer],
+        [group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: sbVer],
+        [group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: sbVer],
+        [group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: sbVer],
+        [group: 'com.h2database', name: 'h2', version:'1.4.197'],
+        [group: 'org.apache.commons', name: 'commons-lang3', version:'3.7'] ,
+        [group: 'io.rest-assured', name: 'rest-assured', version:restAssuredVer]
+    )
 
-    // for cucumber BDD 
-    cucumberRuntime 'info.cukes:cucumber-groovy:1.2.2'
-    cucumberCompile 'info.cukes:cucumber-groovy:1.2.2'
+    testImplementation group: 'junit', name: 'junit', version: jUnitVer
+ 
+    integrationTestImplementation group: 'junit', name:'junit', version: jUnitVer
+    integrationTestCompile(
+        [group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: sbVer],
+        [group: 'io.rest-assured', name: 'rest-assured', version:restAssuredVer]
+    )
+ 
+    cucumberTestCompile(
+        [group:'info.cukes', name: 'cucumber-core', version: cukesVer],
+        [group:'info.cukes' name: 'cucumber-java:', version: cukesVer]],
+        [group:'info.cukes': name: 'cucumber-junit:', version: cukesVer]
+        // 'info.cukes:cucumber-spring:' + cucumberVersion,
+        // 'org.springframework:spring-beans:4.2.5.RELEASE'
+        // for cucumber BDD - other cucumber classes, research difference between info.cukes...
+        // testCompile 'io.cucumber:cucumber-java:4.0.0'
+        // testCompile 'io.cucumber:cucumber-junit:4.0.0'
+    )
 }
 
 test {
     useJUnit()
     maxHeapSize = '1G'
+    // use parallel test execution if tests are properly isolated from one another
+    maxParallelForks=3
+    // good for potentially long-running tests or tests running on CI servers
+    failFast= true
+}
+
+task cucumberTest(type: Test) {
+    description = 'Runs cucumber BDD tests.'
+    group = 'verification'
+    
+    testClassesDir = sourceSets.cucumberTest.output.classesDir
+    classpath = sourceSets.cucumberTest.runtimeClasspath
+    // shouldRunAfter test
+
+    // Gradle skips tasks whose input and output are up to date.
+    // To ensure that cucumber tests are run every time,
+    // tell Gradle that the outputs of the cucumber task should 
+    // always be considered out of date.
+    // outputs.upToDateWhen { false }
 }
 
 task integrationTest(type: Test) {
     description = 'Runs integration tests.'
     group = 'verification'
 
-    testClassesDirs = sourceSets.intTest.output.classesDirs
-    classpath = sourceSets.intTest.runtimeClasspath
-    shouldRunAfter test
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+    shouldRunAfter cucumberTest
 }
 
-check.dependsOn integrationTest
+// not sure I want to use this right now. Check shoudln't depend on running
+// integrationTest. Maybe cucumberTest (will consider)
+// check.dependsOn integrationTest
 
 buildScan {
     // always accept the terms of service
