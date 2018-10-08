@@ -4,7 +4,6 @@ plugins {
 	id 'maven'
 	id 'org.springframework.boot' version '2.0.5.RELEASE'
 	id 'application'
-
     // sonarqube analysis
     id 'jacoco'
     id 'org.sonarqube' version '2.6.2'
@@ -31,23 +30,26 @@ mainClassName = "org.ahl.springbootdemo.Application"
 sourceSets {
     main {
         java {
-            'main/java'
+            // 'main/java'
+            sourceSets.main.output.classesDir = new File(buildDir, "classes/main")
         }
     }
     integrationTest {
         compileClasspath += sourceSets.main.output
         runtimeClasspath += sourceSets.main.output
+        sourceSets.main.output.classesDir = new File(buildDir, "classes/integrationTest")
     }
     cucumberTest {
-        java {
-            compileClasspath += main.output + test.output
-            runtimeClasspath += main.output + test.output
-            // 'cucumber/java'
-            srcDir file('src/cucumber/java')
-        }
-        resources.srcDir file('src/cucumber/resources')
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+        // compileClasspath += main.output + test.output
+        // runtimeClasspath += main.output + test.output
+        // 'cucumberTest/java'
+        // srcDir file('src/cucumberTest/java')
+        sourceSets.main.output.classesDir = new File(buildDir, "classes/cucumberTest")
     }
-    
+        // resources.srcDir file('src/cucumberTest/resources')
+    // }
 }
 
 configurations {
@@ -55,8 +57,10 @@ configurations {
     integrationTestRuntimeOnly.extendsFrom runtimeOnly
 
     // include unit test dependencies for BDD tests (junit)
-    cucumberTestCompile.extendsFrom testCompile
-    cucumberTestRuntime.extendsFrom testRuntime
+    // cucumberTestCompile.extendsFrom testCompile
+    // cucumberTestRuntime.extendsFrom testRuntime
+    cucumberTestCompile.extendsFrom implementation
+    cucumberTestRuntime.extendsFrom runtimeOnly
 }
 
 // Ensure cucumber BDD tests run before check task & check task fails the build
@@ -79,7 +83,8 @@ repositories {
     mavenCentral()
 }
 
-def cukesVer = '1.2.5'
+def cukesVer = '4.0.0'
+// def cukesVer = '1.2.5'
 def sbVer = '2.0.5.RELEASE'
 def jUnitVer = '4.12'
 def restAssuredVer = '3.1.1'
@@ -105,14 +110,9 @@ dependencies {
     )
  
     cucumberTestCompile(
-        [group:'info.cukes', name: 'cucumber-core', version: cukesVer],
-        [group:'info.cukes' name: 'cucumber-java:', version: cukesVer]],
-        [group:'info.cukes': name: 'cucumber-junit:', version: cukesVer]
-        // 'info.cukes:cucumber-spring:' + cucumberVersion,
-        // 'org.springframework:spring-beans:4.2.5.RELEASE'
-        // for cucumber BDD - other cucumber classes, research difference between info.cukes...
-        // testCompile 'io.cucumber:cucumber-java:4.0.0'
-        // testCompile 'io.cucumber:cucumber-junit:4.0.0'
+        [group: 'io.cucumber', name: 'cucumber-java', version: cukesVer],
+        [group: 'io.cucumber', name: 'cucumber-junit', version: cukesVer],
+        [group: 'io.cucumber', name: 'cucumber-spring', version: cukesVer]
     )
 }
 
@@ -146,7 +146,7 @@ task integrationTest(type: Test) {
 
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
-    shouldRunAfter cucumberTest
+    // shouldRunAfter cucumberTest
 }
 
 // not sure I want to use this right now. Check shoudln't depend on running
