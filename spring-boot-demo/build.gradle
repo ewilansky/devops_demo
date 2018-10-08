@@ -2,6 +2,7 @@ plugins {
     id 'com.gradle.build-scan' version '1.16'
 	id 'java'
 	id 'maven'
+    // id 'eclipse'
 	id 'org.springframework.boot' version '2.0.5.RELEASE'
 	id 'application'
     // sonarqube analysis
@@ -42,14 +43,8 @@ sourceSets {
     cucumberTest {
         compileClasspath += sourceSets.main.output
         runtimeClasspath += sourceSets.main.output
-        // compileClasspath += main.output + test.output
-        // runtimeClasspath += main.output + test.output
-        // 'cucumberTest/java'
-        // srcDir file('src/cucumberTest/java')
         sourceSets.main.output.classesDir = new File(buildDir, "classes/cucumberTest")
     }
-        // resources.srcDir file('src/cucumberTest/resources')
-    // }
 }
 
 configurations {
@@ -57,10 +52,10 @@ configurations {
     integrationTestRuntimeOnly.extendsFrom runtimeOnly
 
     // include unit test dependencies for BDD tests (junit)
-    // cucumberTestCompile.extendsFrom testCompile
-    // cucumberTestRuntime.extendsFrom testRuntime
-    cucumberTestCompile.extendsFrom implementation
-    cucumberTestRuntime.extendsFrom runtimeOnly
+    cucumberTestCompile.extendsFrom testCompile
+    cucumberTestRuntime.extendsFrom testRuntime
+    // cucumberTestCompile.extendsFrom implementation
+    // cucumberTestRuntime.extendsFrom runtimeOnly
 }
 
 // Ensure cucumber BDD tests run before check task & check task fails the build
@@ -108,11 +103,16 @@ dependencies {
         [group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: sbVer],
         [group: 'io.rest-assured', name: 'rest-assured', version:restAssuredVer]
     )
- 
-    cucumberTestCompile(
+
+    // cucumberTestCompile group: 'info.cukes', name: 'cucumber-java', version: '1.2.5'    
+    // cucumberTestCompile group: 'info.cukes', name: 'cucumber-junit', version: '1.2.5'
+    // cucumberTestCompile group: 'info.cukes', name: 'cucumber-spring', version: '1.2.5'
+
+    testCompile(
+        [group: 'io.cucumber', name: 'cucumber-core', version: cukesVer],
         [group: 'io.cucumber', name: 'cucumber-java', version: cukesVer],
         [group: 'io.cucumber', name: 'cucumber-junit', version: cukesVer],
-        [group: 'io.cucumber', name: 'cucumber-spring', version: cukesVer]
+        [group: 'io.cucumber', name: 'cucumber-spring', version: cukesVer]    
     )
 }
 
