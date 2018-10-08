@@ -14,7 +14,7 @@ node {
             sh 'gradle test -p /home/gradle/project'
         }
         stage('BDD Test') {
-            sh 'gradle cucumber -p /home/gradle/project'
+            sh 'gradle cucumberTest -p /home/gradle/project'
         }
         stage('Integration Test') {
             sh 'gradle integrationTest -p /home/gradle/project'
