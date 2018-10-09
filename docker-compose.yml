@@ -34,6 +34,34 @@ services:
       - /Users/ethanw/code/ahl/devops_demo/spring-boot-demo:/home/gradle/project
     container_name: jenkins
 
+  db:
+    image: postgres
+    networks:
+      demo-net:
+        aliases: 
+          - "db"
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: t7jsqtnL
+      POSTGRES_USER: admin
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      # contains the database(s) on the host
+      - ./postgres/data:/var/lib/postgresql/data/pgdata
+    container_name: postgres
+  
+  # admin interface for postgres and other db's:   
+  adminer:
+    image: adminer
+    networks:
+      demo-net:
+    restart: always
+    ports:
+      - 8082:8080
+    container_name: dbadmin
+
   # add sonarqube as a service since it needs to materialize and be available during orchestration 
   # activities, specifically collecting and reviewing the results of code analysis
   sonarqube:
@@ -45,6 +73,13 @@ services:
     ports: 
       - "9000:9000"
       - "9092:9092"
+    environment:
+      SONARQUBE_JDBC_USERNAME: admin
+      SONARQUBE_JDBC_PASSWORD: t7jsqtnL 
+      SONARQUBE_JDBC_URL: jdbc:postgresql://db/sonar
+    volumes:
+      - ./sonar_data/sonarqube/data:/opt/sonarqube/data \
+      - ./sonar_data/sonarqube/extensions:/opt/sonarqube/extensions \
     container_name: sonarqube
 
 networks:
