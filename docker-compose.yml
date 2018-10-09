@@ -52,16 +52,6 @@ services:
       - ./postgres/data:/var/lib/postgresql/data/pgdata
     container_name: postgres
   
-  # admin interface for postgres and other db's:   
-  adminer:
-    image: adminer
-    networks:
-      demo-net:
-    restart: always
-    ports:
-      - 8082:8080
-    container_name: dbadmin
-
   # add sonarqube as a service since it needs to materialize and be available during orchestration 
   # activities, specifically collecting and reviewing the results of code analysis
   sonarqube:
@@ -78,8 +68,12 @@ services:
       SONARQUBE_JDBC_PASSWORD: t7jsqtnL 
       SONARQUBE_JDBC_URL: jdbc:postgresql://db/sonar
     volumes:
-      - ./sonar_data/sonarqube/data:/opt/sonarqube/data \
-      - ./sonar_data/sonarqube/extensions:/opt/sonarqube/extensions \
+      #- ./sonar_data/sonarqube/data:/opt/sonarqube/data \
+      # - ./sonar_data/sonarqube/extensions:/opt/sonarqube/extensions \
+      - ./sonar_home/conf:/opt/sonarqube/conf
+      - ./sonar_home/data:/opt/sonarqube/data
+      - ./sonar_home/extensions:/opt/sonarqube/extensions
+      - ./sonar_home/bundled-plugins:/opt/sonarqube/lib/bundled-plugins
     container_name: sonarqube
 
 networks:
