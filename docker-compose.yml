@@ -1,7 +1,6 @@
 version: '3.2'
 
 services:
-
   jenkins:
     # image: jenkins/jenkins:latest
     # created image derived from jenkins/jenkins:latest, but also 
@@ -49,7 +48,7 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       # contains the database(s) on the host
-      - ./postgres/data:/var/lib/postgresql/data/pgdata
+      - ./postgres_home/data:/var/lib/postgresql/data/pgdata
     container_name: postgres
   
   # add sonarqube as a service since it needs to materialize and be available during orchestration 
