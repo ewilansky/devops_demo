@@ -2,7 +2,7 @@ node {
     checkout scm
     /* Docker pipeline plugin installed in Jenkins container */
     // docker.network='devops_demo_demo-net'
-    docker.image('gradle:latest').inside('--network=devops_demo_demo-net') {
+    docker.image('gradle:latest').inside('--network=toolchain_demo_demo-net') {
         stage('Build') {
             // commented lines for inspection
             // sh  'gradle buid --scan' find build dependencies including transitive and build report
