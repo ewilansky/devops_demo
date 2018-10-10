@@ -30,7 +30,9 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       # adding a volume for the Gradle build so the Gradle container can run the code. 
       # The Gradle container isn't specified here because the Jenkins agent bootstraps the build
-      - /Users/ethanw/code/ahl/toolchain_demo/spring-boot-demo:/home/gradle/project
+      # - /Users/ethanw/code/ahl/toolchain_demo/spring-boot-demo:/home/gradle/project
+      - ./spring-boot-demo:/home/gradle/project
+
     container_name: jenkins
 
   db:
