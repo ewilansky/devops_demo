@@ -1,4 +1,4 @@
-version: '3.2'
+version: '3.3'
 
 services:
   jenkins:
@@ -17,7 +17,7 @@ services:
     #   dockerfile: Jenkins_Dockerfile
     user: root
     networks:
-        demo-net:
+        tc-net:
           aliases: 
             - "orchestrate"
     ports:
@@ -28,17 +28,16 @@ services:
       # run Docker from the host system when the container calls it. Note, Docker is stll 
       # required in the jenkins container
       - /var/run/docker.sock:/var/run/docker.sock
-      # adding a volume for the Gradle build so the Gradle container can run the code. 
-      # The Gradle container isn't specified here because the Jenkins agent bootstraps the build
-      # - /Users/ethanw/code/ahl/toolchain_demo/spring-boot-demo:/home/gradle/project
+      # adding a bind for the Gradle build so the Gradle container can run the code. 
+      # the Gradle container isn't specified here because the Jenkins agent bootstraps the build
       - ./spring-boot-demo:/home/gradle/project
 
     container_name: jenkins
 
-  db:
+  db: 
     image: postgres
     networks:
-      demo-net:
+      tc-net:
         aliases: 
           - "db"
     ports:
@@ -54,11 +53,11 @@ services:
     container_name: postgres
   
   # add sonarqube as a service since it needs to materialize and be available during orchestration 
-  # activities, specifically collecting and reviewing the results of code analysis
-  sonarqube:
+  # # activities, specifically collecting and reviewing the results of code analysis
+  sonarqube: 
     image: sonarqube:latest
     networks:
-      demo-net:
+      tc-net:
         aliases: 
           - "analyze"
     ports: 
@@ -69,13 +68,23 @@ services:
       SONARQUBE_JDBC_PASSWORD: t7jsqtnL 
       SONARQUBE_JDBC_URL: jdbc:postgresql://db/sonar
     volumes:
-      #- ./sonar_data/sonarqube/data:/opt/sonarqube/data \
-      # - ./sonar_data/sonarqube/extensions:/opt/sonarqube/extensions \
       - ./sonar_home/conf:/opt/sonarqube/conf
       - ./sonar_home/data:/opt/sonarqube/data
       - ./sonar_home/extensions:/opt/sonarqube/extensions
       - ./sonar_home/bundled-plugins:/opt/sonarqube/lib/bundled-plugins
     container_name: sonarqube
 
+  # visualizer:
+  #   image: dockersamples/visualizer:stable
+  #   networks:
+  #     - tc-net
+  #   ports:
+  #     - "8090:8080"
+  #   volumes:
+  #     - "/var/run/docker.sock:/var/run/docker.sock"
+  #   deploy:
+  #     placement:
+  #       constraints: [node.role == manager]
+
 networks:
-  demo-net:
+  tc-net:
