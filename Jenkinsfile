@@ -39,8 +39,8 @@ node {
     }
 
     stage ('Deploy To Kube') {
-        sh 'echo Deploying to Kubernetes docker single-node cluster'
-        sh 'docker swarm init'
-        sh 'docker stack deploy --compose-file /home/project/kube-compose.yml tc'
+        sh 'echo Working on deploy to Kubernetes docker single-node cluster'
+        // sh 'docker swarm init'
+        // sh 'docker stack deploy --compose-file /home/project/kube-compose.yml tc'
     }
 }
