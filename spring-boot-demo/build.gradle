@@ -1,5 +1,5 @@
 plugins {
-    id 'com.gradle.build-scan' version '1.16'
+    // id 'com.gradle.build-scan' version '1.16'
 	id 'java'
 	id 'maven'
     // id 'eclipse'
@@ -153,11 +153,11 @@ task integrationTest(type: Test) {
 // integrationTest. Maybe cucumberTest (will consider)
 // check.dependsOn integrationTest
 
-buildScan {
-    // always accept the terms of service
-    termsOfServiceUrl = 'https://gradle.com/terms-of-service'
-    termsOfServiceAgree = 'yes'
+// buildScan {
+//     // always accept the terms of service
+//     termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+//     termsOfServiceAgree = 'yes'
 
-    // always publish a build scan
-    publishAlways()
-}
+//     // always publish a build scan
+//     publishAlways()
+// }
