@@ -38,11 +38,9 @@ node {
         }
     }
 
-    docker.stack().deploy('--compose-file /home/project/kube-compose.yml tc') {
-        stage ('Deploy To Kube') {
-            // this uses a Minikube container for this local demo. Mechanics of a large, remote deployment do not change
-            sh 'echo Deploying to Kubernetes docker single-node cluster'
-            // sh 'docker stack deploy --compose-file /home/project/kube-compose.yml tc'
-        }
+    stage ('Deploy To Kube') {
+        sh 'echo Deploying to Kubernetes docker single-node cluster'
+        sh 'docker swarm init'
+        sh 'docker stack deploy --compose-file /home/project/kube-compose.yml tc'
     }
 }
