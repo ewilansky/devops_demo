@@ -6,8 +6,7 @@ node {
             // commented lines for inspection
             // sh  'gradle buid --scan' find build dependencies including transitive and build report
             // sh ' gradle dependencies' just list the dependencies, no report
-            sh 'ls /home/project'
-            sh 'gradle bootJar -p /home/project'
+            sh 'gradle bootJar -p /home/project --info'
         }
         stage('UnitTest And Linting') {
             // all unit test tasks, includes linting
@@ -38,9 +37,10 @@ node {
         }
     }
 
-    stage ('Deploy To Kube') {
-        sh 'echo Working on deploy to Kubernetes docker single-node cluster'
-        // sh 'docker swarm init'
-        // sh 'docker stack deploy --compose-file /home/project/kube-compose.yml tc'
+    docker.withDockerServer() {
+        stage ('Deploy To Kube') {
+            sh 'echo Working on deploy to Kubernetes docker single-node cluster'
+            sh 'docker stack deploy --compose-file /home/project/kube-compose.yml tc'
+        }
     }
 }

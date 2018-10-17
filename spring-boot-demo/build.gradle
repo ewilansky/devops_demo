@@ -85,7 +85,6 @@ def jUnitVer = '4.12'
 def restAssuredVer = '3.1.1'
 
 dependencies {
-
     compile(
         [group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: sbVer],
         [group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: sbVer],
