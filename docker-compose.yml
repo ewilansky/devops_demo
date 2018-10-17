@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3'
 
 services:
   jenkins:
@@ -30,7 +30,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       # adding a bind for the Gradle build so the Gradle container can run the code. 
       # the Gradle container isn't specified here because the Jenkins agent bootstraps the build
-      - ./spring-boot-demo:/home/gradle/project
+      - ./spring-boot-demo:/home/project
 
     container_name: jenkins
 

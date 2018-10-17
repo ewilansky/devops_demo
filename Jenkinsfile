@@ -7,21 +7,21 @@ node {
             // commented lines for inspection
             // sh  'gradle buid --scan' find build dependencies including transitive and build report
             // sh ' gradle dependencies' just list the dependencies, no report
-            sh 'gradle bootJar -p /home/gradle/project' --info
+            sh 'gradle bootJar -p /home/project' --info
         }
         stage('UnitTest And Linting') {
             // all unit test tasks, includes linting
-            sh 'gradle test -p /home/gradle/project'
+            sh 'gradle test -p /home/project'
         }
         stage('BDD Test') {
-            sh 'gradle cucumberTest -p /home/gradle/project'
+            sh 'gradle cucumberTest -p /home/project'
         }
         stage('Integration Test') {
-            sh 'gradle integrationTest -p /home/gradle/project'
+            sh 'gradle integrationTest -p /home/project'
         }
         stage('Code Analysis') {
             // run sonarqube
-            sh 'gradle sonarqube -p /home/gradle/project'
+            sh 'gradle sonarqube -p /home/project'
         }
     }
 
@@ -38,9 +38,9 @@ node {
         }
     }
 
-    stage ('DeployImageToKubernetes') {
+    stage ('Deploy Image To Kubernetes Node') {
         // this uses a Minikube container for this local demo. Mechanics of a large, remote deployment do not change
         sh 'echo Deploying to Kubernetes Minikube cluster'
-
+        sh 'docker stack deploy --compose-file /home/project/kube-compose.yml tc'
     }
 }
