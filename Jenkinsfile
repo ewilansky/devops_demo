@@ -1,14 +1,13 @@
 node {
     checkout scm
     /* Docker pipeline plugin installed in Jenkins container */
-    // docker.network='devops_demo_demo-net'
     docker.image('gradle:latest').inside('--network=toolchain_demo_tc-net') {
         stage('Build') {
             // commented lines for inspection
             // sh  'gradle buid --scan' find build dependencies including transitive and build report
             // sh ' gradle dependencies' just list the dependencies, no report
             sh 'ls /home/project'
-            sh 'gradle bootJar -p /home/project --info'
+            sh 'gradle bootJar -p /home/project'
         }
         stage('UnitTest And Linting') {
             // all unit test tasks, includes linting
@@ -39,9 +38,11 @@ node {
         }
     }
 
-    stage ('Deploy Image To Kubernetes Node') {
-        // this uses a Minikube container for this local demo. Mechanics of a large, remote deployment do not change
-        sh 'echo Deploying to Kubernetes Minikube cluster'
-        sh 'docker stack deploy --compose-file /home/project/kube-compose.yml tc'
+    docker.stack().deploy('--compose-file /home/project/kube-compose.yml tc') {
+        stage ('Deploy To Kube') {
+            // this uses a Minikube container for this local demo. Mechanics of a large, remote deployment do not change
+            sh 'echo Deploying to Kubernetes docker single-node cluster'
+            // sh 'docker stack deploy --compose-file /home/project/kube-compose.yml tc'
+        }
     }
 }
