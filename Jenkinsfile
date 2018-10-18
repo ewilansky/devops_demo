@@ -43,6 +43,6 @@ node {
             sh 'echo Working on deploy to Kubernetes docker single-node cluster'
             sh 'docker stack deploy --compose-file /home/project/kube-compose.yml tc'
         }
-    }
 
+    
 }
