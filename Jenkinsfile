@@ -38,7 +38,7 @@ node {
     }
 
     stage ('Deploy To Kube') {
-        sh 'in progress...'
+        sh 'echo progressing...'
     }
     // docker.withDockerServer('unix:///var/run/docker.sock') {
     // docker.withServer('tcp://docker.for.mac.localhost') {
