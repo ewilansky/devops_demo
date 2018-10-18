@@ -39,10 +39,8 @@ node {
 
     stage ('Deploy To Kube') {}
     // docker.withDockerServer('unix:///var/run/docker.sock') {
-    docker.withServer(uri: 'tcp://docker.for.mac.localhost:2376') {
-            sh 'echo Working on deploy to Kubernetes docker single-node cluster'
-            sh 'docker stack deploy --compose-file /home/project/kube-compose.yml tc'
-        }
-
-    
+    docker.withDockerServer(uri: 'tcp://docker.for.mac.localhost:2345') {
+        sh 'echo Working on deploy to Kubernetes docker single-node cluster'
+        sh 'docker stack deploy --compose-file /home/project/kube-compose.yml tc'
+    }
 }
