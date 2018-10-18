@@ -38,7 +38,7 @@ node {
     }
 
     stage ('Deploy To Kube') {
-        docker.withDockerServer('unix:///var/run/docker.sock') {
+        docker.withServer('unix:///var/run/docker.sock') {
             sh 'echo Working on deploy to Kubernetes docker single-node cluster'
             sh 'docker stack deploy app --compose-file /home/project/kube-compose.yml'
         }
