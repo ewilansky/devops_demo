@@ -38,7 +38,7 @@ node {
     }
 
     stage ('Deploy To Kube') {
-        docker.withServer('tcp://docker.for.mac.localhost') {
+        docker.withServer('tcp://docker.for.mac.localhost:1234') {
             sh 'echo Working on deploy to Kubernetes docker single-node cluster'
             sh 'docker stack deploy app --compose-file /home/project/kube-compose.yml'
         }
