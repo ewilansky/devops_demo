@@ -39,14 +39,9 @@ node {
 
     stage ('Deploy To Kube') {
         // docker.withServer('tcp://docker.for.mac.localhost:1234')
-        docker.withServer('tcp://mac.local')
-            sh 'echo Working on deploy to Kubernetes Cocker CE integration w/Kuberneses orchestration'
-            sh 'docker stack deploy app --compose-file /home/project/kube-compose.yml'
+        // docker.withServer('tcp://mac.local')
+        //     sh 'echo Working on deploy to Kubernetes Cocker CE integration w/Kuberneses orchestration'
+        //     sh 'docker stack deploy app --compose-file /home/project/kube-compose.yml'
+        sh 'kubectl run sb --image=springboot --image-pull-policy=IfNotPresent'
     }
-    // docker.withDockerServer('unix:///var/run/docker.sock') {
-    // docker.withServer('tcp://docker.for.mac.localhost') {
-        //sh 'echo Working on deploy to Kubernetes docker single-node cluster'
-        //sh 'docker stack deploy --compose-file /home/project/kube-compose.yml tc'
-    //}
-        
 }
