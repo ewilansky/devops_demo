@@ -38,10 +38,7 @@ node {
     }
 
     stage ('Deploy To Kube') {
-        // docker.withServer('tcp://docker.for.mac.localhost:1234')
-        // docker.withServer('tcp://mac.local')
-        //     sh 'echo Working on deploy to Kubernetes Cocker CE integration w/Kuberneses orchestration'
-        //     sh 'docker stack deploy app --compose-file /home/project/kube-compose.yml'
         sh 'kubectl run sb --image=springboot --image-pull-policy=IfNotPresent'
+        sh 'kubectl expose service sb --port=8081 --target-port=8081 --name=sb-books --type=LoadBalancer --external-ip=192.168.1.240'
     }
 }
