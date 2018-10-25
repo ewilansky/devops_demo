@@ -38,10 +38,9 @@ node {
     }
 
     stage ('Deploy To Kube') {
-        // sh 'kubectl run sb --image=springboot --image-pull-policy=IfNotPresent'
-        sh 'kubectl create deployment sb --image=springboot'
+        sh 'kubectl create deployment -f ./kube_yamls/app_set/sb-demo-deployment.yaml'
     }
-    stage('Expose Load Balancer') {
-        sh 'kubectl expose service sb --port=8081 --target-port=8081 --name=sb-books --type=LoadBalancer --external-ip=192.168.1.240'
+    stage('Configure Kube Load Balancer') {
+        sh 'kubectl create service -f ./kube_yamls/app_set/sb-demo-service.yaml'
     }
 }
