@@ -2,19 +2,13 @@ version: '3.3'
 
 services:
   jenkins:
-    # image: jenkins/jenkins:latest
-    # created image derived from jenkins/jenkins:latest, but also 
-    # contains Docker
     # image: ahl/jenkins:latest
-    # alternatively, switch to blueocean enabled version of Jenkins
+    # alternatively, I've switched to the blueocean enabled version of Jenkins
     # this doesn't require a custom image, it's smaller and contains the 
     # embedded docker client
-    image: jenkinsci/blueocean:latest
-    # no need to do this either because the based blueocean image is adequate
-    # build the image 
-    # build:
-    #   context: ./jenkins_build_def
-    #   dockerfile: Jenkins_Dockerfile
+    # image: jenkinsci/blueocean:latest
+    build: ./jenkins_build_def
+    image: ahl/jenkins:v1
     user: root
     networks:
         tc-net:
@@ -31,6 +25,8 @@ services:
       # adding a bind for the Gradle build so the Gradle container can run the code. 
       # the Gradle container isn't specified here because the Jenkins agent bootstraps the build
       - ./spring-boot-demo:/home/project
+      # for kubernetes yamls
+      - ./kube_yamls:/kube/deploy
 
     container_name: jenkins
 
@@ -74,17 +70,17 @@ services:
       - ./sonar_home/bundled-plugins:/opt/sonarqube/lib/bundled-plugins
     container_name: sonarqube
 
-  # visualizer:
-  #   image: dockersamples/visualizer:stable
-  #   networks:
-  #     - tc-net
-  #   ports:
-  #     - "8090:8080"
-  #   volumes:
-  #     - "/var/run/docker.sock:/var/run/docker.sock"
-  #   deploy:
-  #     placement:
-  #       constraints: [node.role == manager]
+  nexus:
+    image: sonatype/nexus3:latest
+    networks:
+      tc-net:
+        aliases:
+          - "package-repo"
+    ports:
+      - "8088:8081"
+    volumes:
+      - ./nexus_home/nexus_data:/nexus-data
+    container_name: nexus
 
 networks:
   tc-net:

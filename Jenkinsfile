@@ -38,9 +38,9 @@ node {
     }
 
     stage ('Deploy To Kube') {
-        sh 'kubectl create -f ./kube_yamls/app_set/sb-demo-deployment.yaml'
+        sh 'kubectl create -f /kube/deploy/app_set/sb-demo-deployment.yaml'
     }
     stage('Configure Kube Load Balancer') {
-        sh 'kubectl create -f ./kube_yamls/app_set/sb-demo-service.yaml'
+        sh 'kubectl create -f /kube/deploy/app_set/sb-demo-service.yaml'
     }
 }
