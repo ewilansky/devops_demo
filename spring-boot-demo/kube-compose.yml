@@ -1,7 +1,0 @@
-version: '3.3'
-
-services:
-  springboot-demo:
-    image: springboot
-    ports:
-      - "8081:8081"
