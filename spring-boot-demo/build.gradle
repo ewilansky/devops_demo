@@ -74,8 +74,13 @@ tasks.withType(Test) {
 // two short-cut methods to common repositories. Per Lance, Nexus will be the internal
 // repository and the only one available so all dependencies must be put there.
 repositories {
-    jcenter()
-    mavenCentral()
+    // for nexus support
+    maven {
+        url "http://localhost:8088/repository/maven-public/"
+    }
+    // instead of using external, public repositories
+    // jcenter()
+    // mavenCentral()
 }
 
 def cukesVer = '4.0.0'
@@ -146,6 +151,20 @@ task integrationTest(type: Test) {
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
     // shouldRunAfter cucumberTest
+}
+
+// for Nexus gradle upload task. Uses variables defined in gradle.properties
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "${nexusUrl}/content/repositories/releases") {
+                authentication(userName: nexusUsername, password: nexusPassword)
+            }
+            snapshotRepository(url: "${nexusUrl}/content/repositories/snapshots") {
+                authentication(userName: nexusUsername, password: nexusPassword)
+            }
+        }
+    }
 }
 
 // not sure I want to use this right now. Check shoudln't depend on running
