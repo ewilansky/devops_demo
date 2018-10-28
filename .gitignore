@@ -69,3 +69,13 @@ gradleew.*
 
 # Removing from SCM, this was an altenrative direction for jenkins, but decided not to build a custom image for jenkins
 jenkins_build_def/*
+# docker-compose converted by kompose yaml files for kunbernetes deployments. These aren't being used, but useful local reference only
+
+# docker-compose converted by kompose yaml files for kunbernetes deployments. These aren't being used, but useful local reference only
+kube_yamls/converted_infrastructure/*
+
+# the following directories are automatically created when running docker-compose to generate
+# containers from these images
+nexus_home/*
+postgres_home/*
+sonar_home/*
