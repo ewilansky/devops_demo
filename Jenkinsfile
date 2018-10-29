@@ -24,7 +24,7 @@ node {
         }
 
         stage('Publish Package') {
-            nexusPublisher nexusInstanceId: 'nexusContainer', nexusRepositoryId: 'maven-snapshots', packages: [[$class: 'MavenPackage', mavenAssetList: [], mavenCoordinate: [artifactId: 'spring-boot-demo-0.0.1-SNAPSHOT.jar', groupId: 'org.ahl.springbootdemo', packaging: 'jar', version: '0.0.1-SNAPSHOT']]]
+            nexusPublisher nexusInstanceId: 'nexusContainer', nexusRepositoryId: 'maven-snapshots', packages: [[$class: 'MavenPackage', mavenAssetList: [], mavenCoordinate: [artifactId: 'spring-boot-demo', groupId: 'org.ahl.springbootdemo', packaging: 'jar', version: '0.0.1-SNAPSHOT']]]
         }
     }
 
