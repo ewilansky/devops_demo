@@ -177,10 +177,7 @@ uploadArchives {
     }
 }
 
-// not sure I want to use this right now. Check shoudln't depend on running
-// integrationTest. Maybe cucumberTest (will consider)
-// check.dependsOn integrationTest
-
+// not using this for current project.
 // buildScan {
 //     // always accept the terms of service
 //     termsOfServiceUrl = 'https://gradle.com/terms-of-service'
