@@ -24,8 +24,9 @@ node {
         }
 
         stage('Publish Package') {
+            sh 'echo in process...'
             // nexusPublisher nexusInstanceId: 'nexusContainer', nexusRepositoryId: 'maven-snapshots', packages: [[$class: 'MavenPackage', mavenAssetList: [], mavenCoordinate: [artifactId: 'spring-boot-demo', groupId: 'org.ahl.springbootdemo', packaging: 'jar', version: '0.0.1-SNAPSHOT']]]
-            nexusPublisher nexusInstanceId: 'nexusContainer', nexusRepositoryId: 'maven-snapshots', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: 'spring-boot-demo-0.0.1-SNAPSHOT', extension: 'jar', filePath: 'spring-boot-demo/build/libs/']], mavenCoordinate: [artifactId: 'spring-boot-demo', groupId: 'org.ahl.springbootdemo', packaging: 'jar', version: '0.0.1-SNAPSHOT']]]
+            // nexusPublisher nexusInstanceId: 'nexusContainer', nexusRepositoryId: 'maven-snapshots', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: 'spring-boot-demo-0.0.1-SNAPSHOT', extension: 'jar', filePath: 'spring-boot-demo/build/libs/']], mavenCoordinate: [artifactId: 'spring-boot-demo', groupId: 'org.ahl.springbootdemo', packaging: 'jar', version: '0.0.1-SNAPSHOT']]]
         }
     }
 
