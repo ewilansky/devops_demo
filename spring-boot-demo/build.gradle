@@ -8,6 +8,9 @@ plugins {
     // sonarqube analysis
     id 'jacoco'
     id 'org.sonarqube' version '2.6.2'
+
+    // for publishing to maven repository, like Nexus Repository Mgr.
+    id 'maven-publish'
     // cucumber bdd plugin
     // decided not to use a plugin for this capability, none provided by cucumber
     // source author. Also, the following plugin is no longer maintained
@@ -74,19 +77,14 @@ tasks.withType(Test) {
     reports.html.destination = file("${reporting.baseDir}/${name}")
 }
 
-// two short-cut methods to common repositories. Per Lance, Nexus will be the internal
-// repository and the only one available so all dependencies must be put there.
 repositories {
     // proxy nexus repository to retrieve package dependencies
     maven {
-        // to test with gradle wrapper
-        // url 'http://localhost:8088/repository/maven-public/'
         // to call from Gradle container
-        url 'http://package-repo:8081/repository/maven-public'
+        url "${nexusUrl}/repository/maven-public"
     }
-    // instead of using external, public repositories
-    // jcenter()
-    // mavenCentral()
+    // above is instead of using external, public repositories
+    // jcenter() or mavenCentral()
 }
 
 def cukesVer = '4.0.0'
@@ -160,20 +158,30 @@ task integrationTest(type: Test) {
 }
 
 // for Nexus gradle upload task. Uses variables defined in gradle.properties
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            // repository(url: "${nexusUrl}/content/repositories/releases") {
-            //     authentication(userName: nexusUsername, password: nexusPassword)
-            // }
-            snapshotRepository(url: "${nexusUrl}/repository/maven-snapshots") {
-            // repository(url: "http://localhost:8088/repository/maven-snapshots/") {
-                authentication(userName: nexusUsername, password: nexusPassword)
-            }
-            pom.groupId = "org.ahl.springbootdemo"
-            pom.artifactId = "spring-boot-demo"
-            pom.version = "0.0.1-SNAPSHOT"
+publishing {
+    publications {
+        springBootDemo(MavenPublication) {
+            // to publish the jar
+            from components.java
         }
+    }
+    repositories {
+        maven {
+            name = 'internal'
+            credentials {
+				username nexusUsername
+				password nexusPassword
+			}
+            url = "${nexusUrl}/repository/maven-snapshots"
+        }
+    }
+}
+
+// to filter where each publication gets deployed. This could be useful when
+// switching to environment branches
+tasks.withType(PublishToMavenLocal) {
+    onlyIf {
+        publication == publishing.publications.springBootDemo
     }
 }
 
