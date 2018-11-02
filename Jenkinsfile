@@ -23,7 +23,7 @@ node {
             sh 'gradle sonarqube -p /home/project'
         }
         stage('Publish Package') {
-            sh 'gradle publish'
+            sh 'gradle publish -p /home/project'
         }
     }
 
