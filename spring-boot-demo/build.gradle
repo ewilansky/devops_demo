@@ -2,8 +2,7 @@ plugins {
     // id 'com.gradle.build-scan' version '1.16'
 	id 'java'
 	id 'maven'
-    // id 'eclipse'
-	id 'org.springframework.boot' // version '2.0.5.RELEASE'
+	id 'org.springframework.boot' version '2.0.5.RELEASE'
 	id 'application'
     // sonarqube analysis
     id 'jacoco'
@@ -85,7 +84,7 @@ repositories {
     }
     // above is instead of using external, public repositories
     // jcenter() or mavenCentral()
-    mavenCentral()
+    // mavenCentral()
 }
 
 def cukesVer = '4.0.0'
@@ -168,7 +167,7 @@ publishing {
     }
     repositories {
         maven {
-            name = 'internal'
+            // name = 'internal'
             credentials {
 				username nexusUsername
 				password nexusPassword
