@@ -25,6 +25,9 @@ node {
         stage('Publish Package') {
             sh 'gradle publish -p /home/project'
         }
+        stage('Retrieve App') {
+            sh 'curl -u admin:admin123 -X GET "http://localhost:8088/repository/maven-snapshots/org/ahl/springbootdemo/spring-boot-demo/0.0.1-SNAPSHOT/spring-boot-demo-0.0.1-20181102.132114-1.jar" --output ./app.jar'
+        }
     }
 
     stage('App Image Build') {
