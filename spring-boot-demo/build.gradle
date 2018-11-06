@@ -99,6 +99,9 @@ dependencies {
         [group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: sbVer],
         [group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: sbVer],
         [group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: sbVer],
+
+        [group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: sbVer],
+
         [group: 'com.h2database', name: 'h2', version:'1.4.197'],
         [group: 'org.apache.commons', name: 'commons-lang3', version:'3.7'] ,
         [group: 'io.rest-assured', name: 'rest-assured', version:restAssuredVer]
