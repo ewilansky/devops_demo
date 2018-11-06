@@ -1,5 +1,11 @@
 node {
     checkout scm
+    stage('Scrub Pipeline') {
+        // important to cleanup pipeline artifacts
+        sh 'kubectl delete deployments spring-boot-demo'
+        sh 'kubectl delete services spring-boot-demo'
+        rm './spring-boot-demo/build/libs/*'
+    }
     /* Docker pipeline plugin installed in Jenkins container */
     docker.image('gradle:latest').inside('--network=toolchain_demo_tc-net') {
         stage('Build') {
