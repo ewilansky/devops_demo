@@ -5,7 +5,7 @@ node {
         // add conditional logic here to find deployment
         sh 'kubectl delete deployments --ignore-not-found=true spring-boot-demo'
         sh 'kubectl delete services --ignore-not-found=true spring-boot-demo'
-        rm './spring-boot-demo/build/libs/*'
+        sh 'rm ./spring-boot-demo/build/libs/*'
     }
     /* Docker pipeline plugin installed in Jenkins container */
     docker.image('gradle:latest').inside('--network=toolchain_demo_tc-net') {
