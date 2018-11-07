@@ -2,8 +2,9 @@ node {
     checkout scm
     stage('Scrub Pipeline') {
         // important to cleanup pipeline artifacts
-        sh 'kubectl delete deployments spring-boot-demo'
-        sh 'kubectl delete services spring-boot-demo'
+        // add conditional logic here to find deployment
+        sh 'kubectl delete deployments --ignore-not-found=true spring-boot-demo'
+        sh 'kubectl delete services --ignore-not-found=true spring-boot-demo'
         rm './spring-boot-demo/build/libs/*'
     }
     /* Docker pipeline plugin installed in Jenkins container */
