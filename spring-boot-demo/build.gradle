@@ -85,6 +85,7 @@ repositories {
     // above is instead of using external, public repositories
     // jcenter() or mavenCentral()
     // mavenCentral()
+    mavenLocal()
 }
 
 def cukesVer = '4.0.0'
