@@ -3,8 +3,10 @@ node {
     stage('Scrub Pipeline') {
         // important to cleanup pipeline artifacts
         // add conditional logic here to find deployment
-        sh 'kubectl delete deployments --ignore-not-found=true spring-boot-demo'
-        sh 'kubectl delete services --ignore-not-found=true spring-boot-demo'
+        // remove app POD and any replicas
+        sh 'kubectl delete deployments --ignore-not-found=true springboot-demo'
+        // remove load balancer service
+        sh 'kubectl delete services --ignore-not-found=true springboot-demo'
         sh 'rm -f /home/project/build/libs/*' // -f to avoid failure if dir is empty
     }
     /* Docker pipeline plugin installed in Jenkins container */
