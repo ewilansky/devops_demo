@@ -84,7 +84,7 @@ repositories {
     }
     // above is instead of using external, public repositories
     // jcenter() or mavenCentral()
-    // mavenCentral()
+    mavenCentral()
     mavenLocal()
 }
 
