@@ -173,8 +173,8 @@ publishing {
         maven {
             // name = 'internal'
             credentials {
-				username "${nexusUsername}"  //"nexusAdmin" // "${nexusUsername}" // "admin"
-				password "${nexusPassword}"  //"t7jsqtnL" // "${nexusPassword}" // "admin123" 
+				username "$nexusUsername"  //"nexusAdmin" // "${nexusUsername}" // "admin"
+				password "$nexusPassword"  //"t7jsqtnL" // "${nexusPassword}" // "admin123" 
 			}
             url = "${nexusUrl}/repository/maven-snapshots"
         }
