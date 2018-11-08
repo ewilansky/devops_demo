@@ -173,10 +173,15 @@ publishing {
         maven {
             // name = 'internal'
             credentials {
-				username "$nexusUsername"  //"nexusAdmin" // "${nexusUsername}" // "admin"
-				password "$nexusPassword"  //"t7jsqtnL" // "${nexusPassword}" // "admin123" 
+				username project.nexusUsername  //"nexusAdmin" // "${nexusUsername}" // "admin"
+				password project.nexusPassword  //"t7jsqtnL" // "${nexusPassword}" // "admin123" 
 			}
-            url = "${nexusUrl}/repository/maven-snapshots"
+            if (project.version.endsWith("-SNAPSHOT")) {
+                url = "${nexusUrl}/repository/maven-snapshots"
+            } else {
+                url = "${nexusUrl}/repository/maven-releases"
+            }
+            // url = "${nexusUrl}/repository/maven-snapshots"
         }
     }
 }
