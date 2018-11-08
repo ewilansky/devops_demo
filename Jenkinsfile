@@ -1,5 +1,5 @@
 node {
-    checkout scm
+    // checkout scm
     stage('Scrub Pipeline') {
         // important to cleanup pipeline artifacts
         // add conditional logic here to find deployment
