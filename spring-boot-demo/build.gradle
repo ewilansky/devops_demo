@@ -161,8 +161,12 @@ task integrationTest(type: Test) {
     // shouldRunAfter cucumberTest
 }
 
+
+
 // for Nexus gradle upload task. Uses variables defined in gradle.properties
 publishing {
+    println nexusUsername
+    println nexusPassword
     publications {
         springBootDemo(MavenPublication) {
             // to publish the jar
@@ -171,10 +175,9 @@ publishing {
     }
     repositories {
         maven {
-            // name = 'internal'
             credentials {
-				username """${nexusUsername}"""  // project.nexusUsername  //"nexusAdmin" // "${nexusUsername}" // "admin"
-				password """${nexusPassword}""" // project.nexusPassword  //"t7jsqtnL" // "${nexusPassword}" // "admin123" 
+				username nexusUsername  // project.nexusUsername  //"nexusAdmin" // "${nexusUsername}" // "admin"
+				password nexusPassword // project.nexusPassword  //"t7jsqtnL" // "${nexusPassword}" // "admin123" 
 			}
             if (project.version.endsWith("-SNAPSHOT")) {
                 url = "${nexusUrl}/repository/maven-snapshots"
