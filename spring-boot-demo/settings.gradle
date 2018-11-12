@@ -2,7 +2,7 @@
 pluginManagement {
     repositories {
         maven { 
-            url "${nexusUrl}/repository/maven-public"
+            url "${nexusUrl}/repository/maven-central"
         }
     }
     // gradlePluginPortal() // Include public Gradle plugin portal
