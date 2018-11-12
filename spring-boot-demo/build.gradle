@@ -51,14 +51,13 @@ sourceSets {
 }
 
 configurations {
+    compile
     integrationTestImplementation.extendsFrom implementation
     integrationTestRuntimeOnly.extendsFrom runtimeOnly
 
     // include unit test dependencies for BDD tests (junit)
     cucumberTestCompile.extendsFrom testCompile
     cucumberTestRuntime.extendsFrom testRuntime
-    // cucumberTestCompile.extendsFrom implementation
-    // cucumberTestRuntime.extendsFrom runtimeOnly
 }
 
 // Ensure cucumber BDD tests run before check task & check task fails the build
@@ -75,7 +74,6 @@ tasks.withType(Test) {
 }
 
 repositories {
-    mavenLocal()
     // proxy nexus repository to retrieve package dependencies
     maven {
         // to call from Gradle container
