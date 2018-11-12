@@ -132,7 +132,7 @@ To see the application running, navigate to http://localhost:8081/api/books or u
 
 There are quite a few more tools in the toolchain that weren't covered in the quick start above. For example, Gradle runs many of the build tasks in the pipeline. The following diagram shows the entire pipeline:
 
-![image of the toolchain pipeline](./img/toolchain_demo_visuals-Demo Pipeline.png "The Toolchain Pipeline")
+![image of the toolchain pipeline](./img/toolchain.png "The Toolchain Pipeline")
 
 ## Tools Configuration
 
