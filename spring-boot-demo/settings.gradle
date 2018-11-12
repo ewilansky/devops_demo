@@ -4,8 +4,8 @@ pluginManagement {
         maven { 
             url "${nexusUrl}/repository/maven-central"
         }
+        gradlePluginPortal() // Include public Gradle plugin portal
     }
-    gradlePluginPortal() // Include public Gradle plugin portal
 }
 
 rootProject.name = 'spring-boot-demo'
