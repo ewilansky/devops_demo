@@ -1,6 +1,10 @@
 // define local plugin repository (in nexus) instead of using an external endpint:
-pluginRepositories {
-    maven { url "${nexusUrl}/repository/maven-public" }
+pluginManagement {
+    repositories {
+        maven { 
+            url "${nexusUrl}/repository/maven-public"
+        }
+    }
     // gradlePluginPortal() // Include public Gradle plugin portal
 }
 
