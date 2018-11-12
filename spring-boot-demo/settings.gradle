@@ -1,12 +1,12 @@
 // define local plugin repository (in nexus) instead of using an external endpint:
-pluginManagement {
-    repositories {
-        maven { 
-            url "${nexusUrl}/repository/maven-central"
-        }
-        gradlePluginPortal() // Include public Gradle plugin portal
-    }
-}
+// pluginManagement {
+//     repositories {
+//         maven { 
+//             url "${nexusUrl}/repository/maven-central"
+//         }
+//         gradlePluginPortal() // Include public Gradle plugin portal
+//     }
+// }
 
 rootProject.name = 'spring-boot-demo'
 
