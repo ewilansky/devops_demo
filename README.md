@@ -20,7 +20,7 @@ The Git client for your operating system
 
 1. In Docker for Mac, enable Kubernetes integration from the Docker > Preferences > Kubernetes tab.
 
-or
+      or
 
 1. In Docker for Windows, enabled Kubernetes integration from Docker > ??
 
