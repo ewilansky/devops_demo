@@ -16,8 +16,6 @@ plugins {
     // id "com.github.samueltbrown.cucumber" version "0.9"
 }
 
-// Removed this on 10-29, not necessary/wrong
-// group = 'org.springframework.boot'
 // and added this group:
 // app classifiers
 group = 'org.ahl.springbootdemo'
@@ -85,7 +83,7 @@ repositories {
     // above is instead of using external, public repositories
     // jcenter() or mavenCentral()
     // mavenCentral()
-    // mavenLocal()
+    mavenLocal()
 }
 
 def cukesVer = '4.0.0'
@@ -161,8 +159,6 @@ task integrationTest(type: Test) {
     // shouldRunAfter cucumberTest
 }
 
-
-
 // for Nexus gradle upload task. Uses variables defined in gradle.properties
 publishing {
     println nexusUsername
@@ -176,15 +172,14 @@ publishing {
     repositories {
         maven {
             credentials {
-				username nexusUsername  // project.nexusUsername  //"nexusAdmin" // "${nexusUsername}" // "admin"
-				password nexusPassword // project.nexusPassword  //"t7jsqtnL" // "${nexusPassword}" // "admin123" 
+				username nexusUsername 
+				password nexusPassword
 			}
             if (project.version.endsWith("-SNAPSHOT")) {
                 url = "${nexusUrl}/repository/maven-snapshots"
             } else {
                 url = "${nexusUrl}/repository/maven-releases"
             }
-            // url = "${nexusUrl}/repository/maven-snapshots"
         }
     }
 }
