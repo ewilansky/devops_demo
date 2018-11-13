@@ -16,7 +16,8 @@ node() {
             // commented lines for inspection
             // sh  'gradle buid --scan' // find build dependencies including transitive and build report
             // sh ' gradle dependencies' // just list the dependencies, no report
-            sh 'gradle bootJar -p /home/project --info'
+            sh 'gradle bootJar -p /home/project'
+            load 
         }
         stage('UnitTest') {
             // all unit test tasks, includes linting
@@ -35,26 +36,28 @@ node() {
         stage('Publish Package') {
             sh 'gradle publish -p /home/project --debug'
         }
-        stage('Retrieve App') {
-            // sh 'echo temporarily put jar in: $WORKSPACE'
-            sh 'curl -u admin:admin123 -X GET "http://package-repo:8081/repository/maven-snapshots/org/ahl/springbootdemo/spring-boot-demo/0.0.1-SNAPSHOT/spring-boot-demo-0.0.1-20181102.132114-1.jar" --output $WORKSPACE/app.jar'
-            stage('App Image Build') {
-                // NOTE: When building a different application, simply change the build-arg to point to the replacement jar
-                sh 'echo ls "$WORKSPACE"'
-                def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=$WORKSPACE/app.jar -f spring-boot-demo/Dockerfile .")
-            }
-        }
+        // stage('Retrieve App') {
+        //     // sh 'echo temporarily put jar in: $WORKSPACE'
+        //     sh 'curl -u admin:admin123 -X GET "http://package-repo:8081/repository/maven-snapshots/org/ahl/springbootdemo/spring-boot-demo/0.0.1-SNAPSHOT/spring-boot-demo-0.0.1-20181102.132114-1.jar" --output $WORKSPACE/app.jar'
+            
+        //     // stage('App Image Build') {
+        //     //     // NOTE: When building a different application, simply change the build-arg to point to the replacement jar
+        //     //     sh 'echo ls "$WORKSPACE"'
+        //     //     def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=$WORKSPACE/app.jar -f spring-boot-demo/Dockerfile .")
+        //     // }
+        // }
     }
 
-    // stage('App Image Build') {
+    stage('App Image Build') {
+        // retrieve artifact from Nexus
+        sh 'curl -u admin:admin123 -X GET "http://package-repo:8081/repository/maven-snapshots/org/ahl/springbootdemo/spring-boot-demo/0.0.1-SNAPSHOT/spring-boot-demo-0.0.1-20181102.132114-1.jar" --output $WORKSPACE/app.jar'
+        // NOTE: When building a different application, simply change the build-arg to point to the replacement jar
+        sh 'echo ls "workspace is now: $WORKSPACE"'
+        def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=$WORKSPACE/app.jar -f spring-boot-demo/Dockerfile .")
 
-    //     // NOTE: When building a different application, simply change the build-arg to point to the replacement jar
-    //     sh 'echo ls "workspace is now: $WORKSPACE"'
-    //     def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=$WORKSPACE/app.jar -f spring-boot-demo/Dockerfile .")
-
-    //     // sh 'echo In Jenkins def, outside of container'
-    //     sh 'echo $(docker --version)' // returns docker version on host
-    // }
+        // sh 'echo In Jenkins def, outside of container'
+        sh 'echo $(docker --version)' // returns docker version on host
+    }
 
     stage ('Deploy To Kube') {
         sh 'kubectl create -f /kube/deploy/app_set/sb-demo-deployment.yaml'
