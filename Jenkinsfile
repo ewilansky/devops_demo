@@ -35,20 +35,16 @@ node() {
             sh 'gradle publish -p /home/project --debug'
         }
         stage('Retrieve App') {
-            sh 'echo $(env.WORKSPACE)'
-            sh 'echo $WORKSPACE'
-            sh 'curl -u admin:admin123 -X GET "http://package-repo:8081/repository/maven-snapshots/org/ahl/springbootdemo/spring-boot-demo/0.0.1-SNAPSHOT/spring-boot-demo-0.0.1-20181102.132114-1.jar" --output /home/project/app.jar'
+            sh 'echo temporarily put jar in: $WORKSPACE'
+            sh 'curl -u admin:admin123 -X GET "http://package-repo:8081/repository/maven-snapshots/org/ahl/springbootdemo/spring-boot-demo/0.0.1-SNAPSHOT/spring-boot-demo-0.0.1-20181102.132114-1.jar" --output $WORKSPACE/app.jar'
         }
     }
 
     stage('App Image Build') {
 
         // NOTE: When building a different application, simply change the build-arg to point to the replacement jar
-        // sh 'echo $(pwd)'
-        // sh 'echo $(ls)'
-        // sh 'echo $(find spring-boot-demo/ -type d)'
-        sh 'echo $(ls -la ./spring-boot-demo/)'
-        def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=./spring-boot-demo/app.jar -f spring-boot-demo/Dockerfile .")
+        sh 'echo ls $WORKSPACE'
+        def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=$WORKSPACE/app.jar -f spring-boot-demo/Dockerfile .")
 
         // sh 'echo In Jenkins def, outside of container'
         sh 'echo $(docker --version)' // returns docker version on host
