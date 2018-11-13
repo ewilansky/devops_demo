@@ -15,7 +15,7 @@ node {
             // commented lines for inspection
             // sh  'gradle buid --scan' // find build dependencies including transitive and build report
             // sh ' gradle dependencies' // just list the dependencies, no report
-            sh 'gradle bootJar -p /home/project --scan'
+            sh 'gradle bootJar -p /home/project --info'
         }
         stage('UnitTest & Linting') {
             // all unit test tasks, includes linting
