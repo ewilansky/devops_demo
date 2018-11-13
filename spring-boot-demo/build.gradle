@@ -1,8 +1,8 @@
 plugins {
-    id 'com.gradle.build-scan' version '1.16'
+    // id 'com.gradle.build-scan' version '1.16'
 	id 'java'
 	id 'maven'
-	id 'org.springframework.boot' version '2.0.5.RELEASE'
+	// id 'org.springframework.boot' version '2.0.5.RELEASE'
 	id 'application'
     // sonarqube analysis
     id 'jacoco'
@@ -15,6 +15,8 @@ plugins {
     // source author. Also, the following plugin is no longer maintained
     // id "com.github.samueltbrown.cucumber" version "0.9"
 }
+
+apply plugin: 'org.springframework.boot' version '2.0.5.RELEASE'
 
 // and added this group:
 // app classifiers
@@ -186,11 +188,11 @@ tasks.withType(PublishToMavenLocal) {
 }
 
 // not using this for current project.
-buildScan {
-    // always accept the terms of service
-    termsOfServiceUrl = 'https://gradle.com/terms-of-service'
-    termsOfServiceAgree = 'yes'
+// buildScan {
+//     // always accept the terms of service
+//     termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+//     termsOfServiceAgree = 'yes'
 
-    // always publish a build scan
-    publishAlways()
-}
+//     // always publish a build scan
+//     publishAlways()
+// }
