@@ -1,4 +1,4 @@
-node {
+node() {
     checkout scm
     stage('Scrub Pipeline') {
         // important to cleanup pipeline artifacts
@@ -17,7 +17,7 @@ node {
             // sh ' gradle dependencies' // just list the dependencies, no report
             sh 'gradle bootJar -p /home/project --info'
         }
-        stage('UnitTest & Linting') {
+        stage('UnitTest') {
             // all unit test tasks, includes linting
             sh 'gradle test -p /home/project'
         }
@@ -42,10 +42,10 @@ node {
     stage('App Image Build') {
 
         // NOTE: When building a different application, simply change the build-arg to point to the replacement jar
-        sh 'echo $(pwd)'
-        sh 'echo $(ls)'
-        sh 'echo $(find spring-boot-demo/ -type d)'
-        sh 'echo $(find spring-boot-demo/build/libs/)'
+        // sh 'echo $(pwd)'
+        // sh 'echo $(ls)'
+        // sh 'echo $(find spring-boot-demo/ -type d)'
+        sh 'echo $(ls -la ./spring-boot-demo/)'
         def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=./spring-boot-demo/app.jar -f spring-boot-demo/Dockerfile .")
 
         // sh 'echo In Jenkins def, outside of container'
