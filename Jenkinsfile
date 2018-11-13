@@ -17,9 +17,8 @@ node() {
             // sh  'gradle buid --scan' // find build dependencies including transitive and build report
             // sh ' gradle dependencies' // just list the dependencies, no report
             sh 'gradle bootJar -p /home/project'
-            load 
         }
-        stage('UnitTest') {
+        stage('Unit Test') {
             // all unit test tasks, includes linting
             sh 'gradle test -p /home/project'
         }
