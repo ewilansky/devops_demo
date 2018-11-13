@@ -2,7 +2,7 @@ plugins {
     // id 'com.gradle.build-scan' version '1.16'
 	id 'java'
 	id 'maven'
-	// id 'org.springframework.boot' version '2.0.5.RELEASE'
+	id 'org.springframework.boot' version '2.0.5.RELEASE'
 	id 'application'
     // sonarqube analysis
     id 'jacoco'
@@ -16,7 +16,7 @@ plugins {
     // id "com.github.samueltbrown.cucumber" version "0.9"
 }
 
-apply plugin: 'org.springframework.boot' version '2.0.5.RELEASE'
+// apply plugin: 'org.springframework.boot' version '2.0.5.RELEASE'
 
 // and added this group:
 // app classifiers

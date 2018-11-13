@@ -14,7 +14,7 @@ pluginManagement {
 				username nexusUsername 
 				password nexusPassword
 			}
-            url "${nexusUrl}/repository/maven-central"
+            url "${nexusUrl}/repository/maven-public"
         }
         // gradlePluginPortal() // Include public Gradle plugin portal
         // mavenCentral()
