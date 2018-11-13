@@ -35,7 +35,7 @@ node {
             sh 'gradle publish -p /home/project --debug'
         }
         stage('Retrieve App') {
-            sh 'curl -u admin:admin123 -X GET "http://package-repo:8081/repository/maven-snapshots/org/ahl/springbootdemo/spring-boot-demo/0.0.1-SNAPSHOT/spring-boot-demo-0.0.1-20181102.132114-1.jar" --output /home/project/build/libs/app.jar'
+            sh 'curl -u admin:admin123 -X GET "http://package-repo:8081/repository/maven-snapshots/org/ahl/springbootdemo/spring-boot-demo/0.0.1-SNAPSHOT/spring-boot-demo-0.0.1-20181102.132114-1.jar" --output /home/project/app.jar'
         }
     }
 
@@ -46,7 +46,7 @@ node {
         sh 'echo $(ls)'
         sh 'echo $(find spring-boot-demo/ -type d)'
         sh 'echo $(find spring-boot-demo/build/libs/)'
-        def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=spring-boot-demo/build/libs/app.jar -f spring-boot-demo/Dockerfile .")
+        def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=./spring-boot-demo/app.jar -f spring-boot-demo/Dockerfile .")
 
         // sh 'echo In Jenkins def, outside of container'
         sh 'echo $(docker --version)' // returns docker version on host
