@@ -1,5 +1,5 @@
 def AppArtifactWs
-node('ci') {
+node() {
     checkout scm
     stage('Scrub Pipeline') {
         // important to cleanup pipeline artifacts
