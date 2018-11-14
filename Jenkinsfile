@@ -1,4 +1,3 @@
-def AppArtifactWs
 node() {
     checkout scm
     stage('Scrub Pipeline') {
@@ -75,10 +74,10 @@ node() {
         // sh 'echo $(docker --version)' // returns docker version on host
     }
 
-    // stage ('Deploy To Kube') {
-    //     sh 'kubectl create -f /kube/deploy/app_set/sb-demo-deployment.yaml'
-    // }
-    // stage('Configure Kube Load Balancer') {
-    //     sh 'kubectl create -f /kube/deploy/app_set/sb-demo-service.yaml'
-    // }
+    stage ('Deploy To Kube') {
+        sh 'kubectl create -f /kube/deploy/app_set/sb-demo-deployment.yaml'
+    }
+    stage('Configure Kube Load Balancer') {
+        sh 'kubectl create -f /kube/deploy/app_set/sb-demo-service.yaml'
+    }
 }
