@@ -68,7 +68,7 @@ node() {
         sh "echo contents of app dir..."
         sh "ls -la ${pwd()}/output/*"
 
-        def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=${pwd()}/output/app.jar -f spring-boot-demo/Dockerfile .") 
+        def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=./output/app.jar -f spring-boot-demo/Dockerfile .") 
         // def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=output/app.jar -f spring-boot-demo/Dockerfile .")
 
         // def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=./spring-boot-demo/build/libs/spring-boot-demo-0.0.1-SNAPSHOT.jar -f spring-boot-demo/Dockerfile .")
