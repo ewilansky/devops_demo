@@ -66,12 +66,12 @@ node() {
 
         // putting a comment here to see if I can push this update...
         sh "echo contents of app dir..."
-        sh "ls -la ${pwd()}/app/*"
+        sh "ls -la ${pwd()}/output/*"
 
-        // def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=${pwd()}/app -f spring-boot-demo/Dockerfile .")
-        
-        
-        // def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=$WORKSPACE/app.jar -f spring-boot-demo/Dockerfile .")
+        def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=${pwd()}/output/app.jar -f spring-boot-demo/Dockerfile .") 
+        // def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=output/app.jar -f spring-boot-demo/Dockerfile .")
+
+        // def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=./spring-boot-demo/build/libs/spring-boot-demo-0.0.1-SNAPSHOT.jar -f spring-boot-demo/Dockerfile .")
         // sh 'echo $(docker --version)' // returns docker version on host
     }
 
