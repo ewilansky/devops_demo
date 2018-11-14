@@ -38,8 +38,8 @@ node() {
         stage('Retrieve App') {
             // Make the output directory.
             sh "mkdir -p output"
-            AppArtifactWs = "${env.WORKSPACE}"
-            sh 'curl -u admin:admin123 -X GET "http://package-repo:8081/repository/maven-snapshots/org/ahl/springbootdemo/spring-boot-demo/0.0.1-SNAPSHOT/spring-boot-demo-0.0.1-20181102.132114-1.jar" --output output/app.jar'      
+            // AppArtifactWs = "${env.WORKSPACE}"
+            sh 'curl -u admin:admin123 -X GET "http://package-repo:8081/repository/maven-snapshots/org/ahl/springbootdemo/spring-boot-demo/0.0.1-SNAPSHOT/spring-boot-demo-0.0.1-20181102.132114-1.jar" --output ./output/app.jar'      
             
             stash name: 'app', includes: 'output/*'
         }
@@ -59,12 +59,14 @@ node() {
         // NOTE: When building a different application, simply change the build-arg to point to the replacement jar
         // sh 'echo ls "workspace is now: $WORKSPACE"'
         // Run unstash within app directory
+        sh "echo 'dir on app'"
         dir("app") {
             unstash "app"
         }
 
         // putting a comment here to see if I can push this update...
-        sh "ls -la ${pwd()}/app"
+        sh "echo 'contents of app dir...''"
+        sh "ls -la ${pwd()}/app/*"
 
         // def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=${pwd()}/app -f spring-boot-demo/Dockerfile .")
         
