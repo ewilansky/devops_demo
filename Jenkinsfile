@@ -38,7 +38,7 @@ node() {
         stage('Retrieve App') {
             AppArtifactWs = $WORKSPACE
             sh 'curl -u admin:admin123 -X GET "http://package-repo:8081/repository/maven-snapshots/org/ahl/springbootdemo/spring-boot-demo/0.0.1-SNAPSHOT/spring-boot-demo-0.0.1-20181102.132114-1.jar" --output $AppArtifactWs/app.jar'      
-            }
+        }
 
             // sh 'curl -u admin:admin123 -X GET "http://package-repo:8081/repository/maven-snapshots/org/ahl/springbootdemo/spring-boot-demo/0.0.1-SNAPSHOT/spring-boot-demo-0.0.1-20181102.132114-1.jar" --output $WORKSPACE/app.jar'
             // sh 'echo temporarily put jar in: $WORKSPACE'
@@ -47,8 +47,6 @@ node() {
             //     // NOTE: When building a different application, simply change the build-arg to point to the replacement jar
             //     sh 'echo ls "$WORKSPACE"'
             //     def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=$WORKSPACE/app.jar -f spring-boot-demo/Dockerfile .")
-            // }
-        }
     }
 
     stage('App Image Build') {
