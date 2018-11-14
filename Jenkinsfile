@@ -1,4 +1,4 @@
-def appArtifact
+def AppArtifactWs
 node() {
     checkout scm
     stage('Scrub Pipeline') {
@@ -36,12 +36,8 @@ node() {
             sh 'gradle publish -p /home/project --debug'
         }
         stage('Retrieve App') {
-            steps {
-                script {
-                    RETRIEVAL_WORKSPACE = WORKSPACE
-                    sh 'curl -u admin:admin123 -X GET "http://package-repo:8081/repository/maven-snapshots/org/ahl/springbootdemo/spring-boot-demo/0.0.1-SNAPSHOT/spring-boot-demo-0.0.1-20181102.132114-1.jar" --output $RETRIEVAL_WORKSPACE/app.jar'
-                }
-                
+            AppArtifactWs = $WORKSPACE
+            sh 'curl -u admin:admin123 -X GET "http://package-repo:8081/repository/maven-snapshots/org/ahl/springbootdemo/spring-boot-demo/0.0.1-SNAPSHOT/spring-boot-demo-0.0.1-20181102.132114-1.jar" --output $AppArtifactWs/app.jar'      
             }
 
             // sh 'curl -u admin:admin123 -X GET "http://package-repo:8081/repository/maven-snapshots/org/ahl/springbootdemo/spring-boot-demo/0.0.1-SNAPSHOT/spring-boot-demo-0.0.1-20181102.132114-1.jar" --output $WORKSPACE/app.jar'
@@ -60,11 +56,7 @@ node() {
         // sh 'curl -u admin:admin123 -X GET "http://package-repo:8081/repository/maven-snapshots/org/ahl/springbootdemo/spring-boot-demo/0.0.1-SNAPSHOT/spring-boot-demo-0.0.1-20181102.132114-1.jar" --output $WORKSPACE/app.jar'
         // NOTE: When building a different application, simply change the build-arg to point to the replacement jar
         // sh 'echo ls "workspace is now: $WORKSPACE"'
-        steps {
-            dir(RETRIEVAL_WORKSPACE) {
-                def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=$RETRIEVAL_WORKSPACE/app.jar -f spring-boot-demo/Dockerfile .")
-            }
-        }
+        def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=$AppArtifactWs/app.jar -f spring-boot-demo/Dockerfile .")
         // def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=$WORKSPACE/app.jar -f spring-boot-demo/Dockerfile .")
         // sh 'echo $(docker --version)' // returns docker version on host
     }
