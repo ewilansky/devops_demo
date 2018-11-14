@@ -38,7 +38,7 @@ node() {
         stage('Retrieve App') {
             AppArtifactWs = "${env.WORKSPACE}"
             sh 'curl -u admin:admin123 -X GET "http://package-repo:8081/repository/maven-snapshots/org/ahl/springbootdemo/spring-boot-demo/0.0.1-SNAPSHOT/spring-boot-demo-0.0.1-20181102.132114-1.jar" --output $AppArtifactWs/app.jar'      
-            stash '$AppArtifactWs/app.jar', 'app'
+            stash includes: '$AppArtifactWs/app.jar', name: 'app'
         }
 
             // sh 'curl -u admin:admin123 -X GET "http://package-repo:8081/repository/maven-snapshots/org/ahl/springbootdemo/spring-boot-demo/0.0.1-SNAPSHOT/spring-boot-demo-0.0.1-20181102.132114-1.jar" --output $WORKSPACE/app.jar'
