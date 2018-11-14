@@ -63,6 +63,7 @@ node() {
             unstash "app"
         }
 
+        // putting a comment here to see if I can push this update...
         sh "ls -la ${pwd()}/app"
 
         def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=${pwd()}/app -f spring-boot-demo/Dockerfile .")
