@@ -68,7 +68,7 @@ gradleew.*
 .gradle
 
 # Removing from SCM, this was an altenrative direction for jenkins, but decided not to build a custom image for jenkins
-jenkins_build_def/*
+jenkins_build_def/Jenkins_Dockerfile_old
 # docker-compose converted by kompose yaml files for kunbernetes deployments. These aren't being used, but useful local reference only
 
 # docker-compose converted by kompose yaml files for kunbernetes deployments. These aren't being used, but useful local reference only
