@@ -2,8 +2,6 @@ node() {
     checkout scm
     stage('Scrub Pipeline') {
         // important to cleanup pipeline artifacts
-        // add conditional logic here to find deployment
-        // remove app POD and any replicas
         sh 'kubectl delete deployments --ignore-not-found=true springboot-demo'
         // remove load balancer service
         sh 'kubectl delete services --ignore-not-found=true springboot-demo'
@@ -18,7 +16,7 @@ node() {
             sh 'gradle bootJar -p /home/project'
         }
         stage('Unit Test') {
-            // all unit test tasks, includes linting
+            // all unit test tasks
             sh 'gradle test -p /home/project'
         }
         stage('BDD Test') {
@@ -42,21 +40,10 @@ node() {
             
             stash name: 'app', includes: 'output/*'
         }
-
-            // sh 'curl -u admin:admin123 -X GET "http://package-repo:8081/repository/maven-snapshots/org/ahl/springbootdemo/spring-boot-demo/0.0.1-SNAPSHOT/spring-boot-demo-0.0.1-20181102.132114-1.jar" --output $WORKSPACE/app.jar'
-            // sh 'echo temporarily put jar in: $WORKSPACE'
-            
-            // stage('App Image Build') {
-            //     // NOTE: When building a different application, simply change the build-arg to point to the replacement jar
-            //     sh 'echo ls "$WORKSPACE"'
-            //     def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=$WORKSPACE/app.jar -f spring-boot-demo/Dockerfile .")
     }
 
     stage('App Image Build') {
-        // retrieve artifact from Nexus
-        // sh 'curl -u admin:admin123 -X GET "http://package-repo:8081/repository/maven-snapshots/org/ahl/springbootdemo/spring-boot-demo/0.0.1-SNAPSHOT/spring-boot-demo-0.0.1-20181102.132114-1.jar" --output $WORKSPACE/app.jar'
         // NOTE: When building a different application, simply change the build-arg to point to the replacement jar
-        // sh 'echo ls "workspace is now: $WORKSPACE"'
         // Run unstash within app directory
         sh "echo 'dir on app'"
         dir("app") {
@@ -68,10 +55,6 @@ node() {
         sh "ls -la ${pwd()}/output/*"
 
         def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=./output/app.jar -f spring-boot-demo/Dockerfile .") 
-        // def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=output/app.jar -f spring-boot-demo/Dockerfile .")
-
-        // def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=./spring-boot-demo/build/libs/spring-boot-demo-0.0.1-SNAPSHOT.jar -f spring-boot-demo/Dockerfile .")
-        // sh 'echo $(docker --version)' // returns docker version on host
     }
 
     stage ('Deploy To Kube') {
