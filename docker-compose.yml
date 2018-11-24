@@ -51,7 +51,7 @@ services:
   # add sonarqube as a service since it needs to materialize and be available during orchestration 
   # # activities, specifically collecting and reviewing the results of code analysis
   sonarqube: 
-    image: sonarqube:latest
+    image: sonarqube
     networks:
       tc-net:
         aliases: 
