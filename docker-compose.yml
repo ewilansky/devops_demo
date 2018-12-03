@@ -82,5 +82,25 @@ services:
       - ./nexus_home/nexus_data:/nexus-data
     container_name: nexus
 
+  git:
+    image: gogs/gogs
+    networks:
+      tc-net:
+        aliases:
+          - "git-repo"
+    ports:
+      - "10022:22"
+      - "10080:3000"
+    volumes:
+      - ./git_home/var/gogs:/data
+    container_name: gogs
+
+    # to resolve: 
+    # had to manually create gogs db in postgres
+    # had to manually run install at http://localhost:10080 and select postgres w/gogs db
+    # and postgres admin logon - see creds above in postgres section. Postgres at db:5432
+    # had to create account in gogs when browsing to http://localhost:10080. First time, 
+    # gogs went to http://localhost:3000, which failed
+
 networks:
   tc-net:
