@@ -76,6 +76,6 @@ kube_yamls/converted_infrastructure/*
 
 # the following directories are automatically created when running docker-compose to generate
 # containers from these images
-# nexus_home/*
-# postgres_home/*
-# sonar_home/*
+nexus_home/*
+postgres_home/*
+sonar_home/*
