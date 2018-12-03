@@ -15,21 +15,19 @@ node() {
             // sh ' gradle dependencies' // just list the dependencies, no report
             sh 'gradle bootJar -p /home/project'
         }
-        parallel {
-            stage('Unit Test') {
-                // all unit test tasks
-                sh 'gradle test -p /home/project'
-            }
-            stage('BDD Test') {
-                sh 'gradle cucumberTest -p /home/project'
-            }
-            stage('Integration Test') {
-                sh 'gradle integrationTest -p /home/project'
-            }
-            stage('Code Analysis') {
-                // run sonarqube
-                sh 'gradle sonarqube -p /home/project'
-            }
+        stage('Unit Test') {
+            // all unit test tasks
+            sh 'gradle test -p /home/project'
+        }
+        stage('BDD Test') {
+            sh 'gradle cucumberTest -p /home/project'
+        }
+        stage('Integration Test') {
+            sh 'gradle integrationTest -p /home/project'
+        }
+        stage('Code Analysis') {
+            // run sonarqube
+            sh 'gradle sonarqube -p /home/project'
         }
         stage('Publish Package') {
             sh 'gradle publish -p /home/project'
