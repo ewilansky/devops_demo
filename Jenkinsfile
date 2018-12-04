@@ -9,26 +9,40 @@ node() {
     }
     /* Docker pipeline plugin installed in Jenkins container */
     docker.image('gradle:latest').inside('--network=toolchain_demo_tc-net') {
+        def tasks = [:]
+
         stage('Build') {
             // commented lines for inspection
             // sh  'gradle buid --scan' // find build dependencies including transitive and build report
             // sh ' gradle dependencies' // just list the dependencies, no report
             sh 'gradle bootJar -p /home/project'
         }
-        stage('Unit Test') {
-            // all unit test tasks
-            sh 'gradle test -p /home/project'
+
+        tasks['unittest'] = {
+            stage('Unit Test') {
+                // all unit test tasks
+                sh 'gradle test -p /home/project'
+            }
         }
-        stage('BDD Test') {
-            sh 'gradle cucumberTest -p /home/project'
+        tasks['bddtest'] = {
+            stage('BDD Test') {
+                sh 'gradle cucumberTest -p /home/project'
+            }
         }
-        stage('Integration Test') {
-            sh 'gradle integrationTest -p /home/project'
+        tasks['integrationtest'] = {
+            stage('Integration Test') {
+                sh 'gradle integrationTest -p /home/project'
+            }
         }
-        stage('Code Analysis') {
-            // run sonarqube
-            sh 'gradle sonarqube -p /home/project'
+        tasks['codeanalysis'] = {
+            stage('Code Analysis') {
+                // run sonarqube
+                sh 'gradle sonarqube -p /home/project'
+            }
         }
+
+        parallel tasks
+
         stage('Publish Package') {
             sh 'gradle publish -p /home/project'
         }
