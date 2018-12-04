@@ -9,7 +9,8 @@ node() {
     }
     /* Docker pipeline plugin installed in Jenkins container */
     docker.image('gradle:latest').inside('--network=toolchain_demo_tc-net') {
-        def tasks = [:]
+        def UnitTestTasks = [:]
+        def IntTestAndAnalysisTasks = [:]
 
         stage('Build') {
             // commented lines for inspection
