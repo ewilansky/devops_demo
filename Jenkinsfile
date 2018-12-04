@@ -18,30 +18,31 @@ node() {
             sh 'gradle bootJar -p /home/project'
         }
 
-        tasks['unittest'] = {
-            stage('Unit Test') {
+        UnitTestTasks['Unit Tests'] = {
+            stage('Unit Tests') {
                 // all unit test tasks
                 sh 'gradle test -p /home/project'
             }
         }
-        tasks['bddtest'] = {
-            stage('BDD Test') {
+        UnitTestTasks['BDD Tests'] = {
+            stage('BDD Tests') {
                 sh 'gradle cucumberTest -p /home/project'
             }
         }
-        tasks['integrationtest'] = {
-            stage('Integration Test') {
+        IntTestAndAnalysisTasks['Integration Tests'] = {
+            stage('Integration Tests') {
                 sh 'gradle integrationTest -p /home/project'
             }
         }
-        tasks['codeanalysis'] = {
+        IntTestAndAnalysisTasks['Code Analysis'] = {
             stage('Code Analysis') {
                 // run sonarqube
                 sh 'gradle sonarqube -p /home/project'
             }
         }
 
-        parallel tasks
+        parallel UnitTestTasks
+        parallel IntTestAndAnalysisTasks
 
         stage('Publish Package') {
             sh 'gradle publish -p /home/project'
