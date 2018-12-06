@@ -160,6 +160,11 @@ publishing {
     println nexusPassword
     publications {
         springBootDemo(MavenPublication) {
+            // custom properties for naming the jar
+            groupId = 'org.ahl.springbootdemo'
+            artifactId = 'spring-boot-demo'
+            version = '0.1'
+
             // to publish the jar
             from components.java
         }
