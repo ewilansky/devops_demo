@@ -73,7 +73,16 @@ There are web-based UI's for Jenkins, Sonarqube and Nexus. To verify they are fu
 
 #### Jenkins
 
-http://localhost:8080  
+The first time you attempt to access the Jenkins UI, you will need to unlock it by setting an initial administrator password.
+
+1. On your host, browse to http://localhost:8080 and the following screen will appear:
+
+![image of the jenkins unlock page](./img/unlockjenkins.png "The Jenkins Unlock Page")
+
+The location of the initialAdminPassword is in the jenkins_home directory on your host. The  path starting from the toolchain_demo directory is: ./jenkins_home/secrets/initialAdminPassword. Following the remaining screens that Jenkins presents. You can accept the standard plugins for this simple setup.
+
+TODO: CONTINUE FROM HERE. JENKINS PLUGINS ARE REQUIRED, JENKINS FILE DEFINITION DIDN'T APPEAR AND SONARQUBE ISN'T OPERATIONAL
+
 logon id: admin  
 password: admin
 
@@ -92,6 +101,15 @@ To learn more about Jenkins, visit https://jenkins.io
 http://localhost:9000  
 login id: admin  
 password: admin
+
+A new sonar database was created for SonarQube when docker-compose ran. In this new database, you must generate a logon token. Gradle uses this token to access Sonarqube for code analysis. Therefore, when you logon, you will be presented with this screen:
+
+![image of the sonarqube set logon token page](./img/settokensonar.png "The SonarQube Set Logon Token Page")
+
+1. Enter sonar in the token name box and click Generate
+2. Copy the token value to your clipboard and click Continue
+3. Edit ./spring-boot-demo/gradle.properties and replace the token value for systemProp.sonar.login.
+4. Check-in the updated gradle.properties file to the SCM [TODO: SETUP LOCAL GIT SERVER]
 
 If you ran the pipeline successfully, you will see the spring-boot-demo project appearing. Click on the spring-boot-demo link to see code metrics in SonarQube.
 

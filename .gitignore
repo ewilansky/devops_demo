@@ -80,3 +80,4 @@ nexus_home/*
 postgres_home/*
 sonar_home/*
 git_home/*
+img/*
