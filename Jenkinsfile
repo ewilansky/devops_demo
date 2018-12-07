@@ -9,7 +9,8 @@ node() {
     }
     /* Docker pipeline plugin installed in Jenkins container */
     // switching to gradle 5 alpine image so holding onto prior 4.10 image reference: gradle:latest
-    docker.image('gradle:jre8-alpine').inside('--network=toolchain_demo_tc-net') {
+    // 5.0.0 reference: gradle:jre8-alpine
+    docker.image('gradle:latest').inside('--network=toolchain_demo_tc-net') {
         def UnitTestTasks = [:]
         def IntTestAndAnalysisTasks = [:]
 
