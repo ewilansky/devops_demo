@@ -5,6 +5,12 @@ RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.12.0/b
 RUN chmod +x ./kubectl
 RUN mv ./kubectl /usr/local/bin/kubectl
 RUN mkdir /root/.kube
+
+# kubeconfig has a reference to a specific docker host type, either
+# docker.for.mac.local or docker.for.windows.local. This must be adjusted
+# based on where the docker host is running in this demo. For a production system
+# kubernetes would be running at a stable host endpoint. See kube-config for this 
+# setting
 COPY kube-config /root/.kube/config
 
 # alternative that makes the container too big...

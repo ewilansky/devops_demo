@@ -163,7 +163,7 @@ publishing {
             // custom properties for naming the jar
             groupId = 'org.ahl.springbootdemo'
             artifactId = 'spring-boot-demo'
-            version = '0.1'
+            // version = '0.5-SNAPSHOT'
 
             // to publish the jar
             from components.java

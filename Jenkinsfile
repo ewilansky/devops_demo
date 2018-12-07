@@ -8,7 +8,8 @@ node() {
         sh 'rm -f /home/project/build/libs/*' // -f to avoid failure if dir is empty
     }
     /* Docker pipeline plugin installed in Jenkins container */
-    docker.image('gradle:latest').inside('--network=toolchain_demo_tc-net') {
+    // switching to gradle 5 alpine image so holding onto prior 4.10 image reference: gradle:latest
+    docker.image('gradle:jre8-alpine').inside('--network=toolchain_demo_tc-net') {
         def UnitTestTasks = [:]
         def IntTestAndAnalysisTasks = [:]
 
@@ -52,7 +53,10 @@ node() {
             // Make the output directory.
             sh "mkdir -p output"
             // AppArtifactWs = "${env.WORKSPACE}"
+            // TODO: create a shell script that queries the snapshot repository for assets
+            // finds the latest version of the asset and then gets the timestamped name for download
             sh 'curl -u admin:admin123 -X GET "http://package-repo:8081/repository/maven-snapshots/org/ahl/springbootdemo/spring-boot-demo/0.0.1-SNAPSHOT/spring-boot-demo-0.0.1-20181203.175519-7.jar" --output ./output/app.jar'      
+            // sh 'curl -u admin:admin123 -X GET "http://package-repo:8081/repository/maven-snapshots/org/ahl/springbootdemo/spring-boot-demo/0.5-SNAPSHOT/" --output ./output/app.jar'      
             
             stash name: 'app', includes: 'output/*'
         }

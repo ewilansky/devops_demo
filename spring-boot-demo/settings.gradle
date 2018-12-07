@@ -1,12 +1,5 @@
 // define local plugin repository (in nexus) instead of using an external endpint:
 pluginManagement {
-    // resolutionStrategy {
-    //     eachPlugin {
-    //         if (requested.id.namespace == 'org.springframework.boot') {
-    //             useModule('org.springframework.boot:spring-boot-gradle-plugin:2.0.5.RELEASE')
-    //         }
-    //     }
-    // }
 
     repositories {
         maven { 
@@ -16,7 +9,7 @@ pluginManagement {
 			}
             url "${nexusUrl}/repository/maven-public"
         }
-        // gradlePluginPortal() // Include public Gradle plugin portal
+
         // mavenCentral()
         // mavenLocal()
     }
