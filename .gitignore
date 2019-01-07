@@ -82,3 +82,6 @@ img/*
 
 # keep secrets out of source control
 secrets/*
+
+# keep build dir out of source control
+spring-boot-demo/build/*
