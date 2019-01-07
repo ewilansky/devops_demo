@@ -3,7 +3,7 @@ plugins {
 	id 'java'
 	id 'maven'
 	id 'org.springframework.boot' version '2.0.5.RELEASE'
-	id 'application'
+    id 'application'
     // sonarqube analysis
     id 'jacoco'
     id 'org.sonarqube' version '2.6.2'
@@ -12,8 +12,7 @@ plugins {
     id 'maven-publish'
     // cucumber bdd plugin
     // decided not to use a plugin for this capability, none provided by cucumber
-    // source author. Also, the following plugin is no longer maintained
-    // id "com.github.samueltbrown.cucumber" version "0.9"
+    // source author.
 }
 
 // apply plugin: 'org.springframework.boot' version '2.0.5.RELEASE'
@@ -75,16 +74,16 @@ tasks.withType(Test) {
     reports.html.destination = file("${reporting.baseDir}/${name}")
 }
 
+// repository credentials specified in settings.gradle instead of here
 repositories {
-    // proxy nexus repository to retrieve package dependencies
+    // use local nexus repository to retrieve package dependencies
     maven {
         // to call from Gradle container
         url "${nexusUrl}/repository/maven-public"
     }
-    // above is instead of using external, public repositories
-    // jcenter() or mavenCentral()
-    // mavenCentral()
-
+     // above is instead of using external, public repositories
+     // jcenter() or mavenCentral()
+     // mavenCentral()
 }
 
 def cukesVer = '4.0.0'
