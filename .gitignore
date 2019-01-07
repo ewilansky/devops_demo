@@ -79,3 +79,6 @@ postgres_home/*
 sonar_home/*
 git_home/*
 img/*
+
+# keep secrets out of source control
+secrets/*
