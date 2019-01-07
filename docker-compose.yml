@@ -40,8 +40,8 @@ services:
       - "5432:5432"
     restart: always
     environment:
-      POSTGRES_PASSWORD: t7jsqtnL
-      POSTGRES_USER: admin
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres-passwd
+      POSTGRES_USER_FILE: /run/secrets/postgres-user
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       # contains the database(s) on the host
@@ -50,6 +50,11 @@ services:
   
   # add sonarqube as a service since it needs to materialize and be available during orchestration 
   # # activities, specifically collecting and reviewing the results of code analysis
+
+  # TODO: create a docker file to copy an entrypoint into the image. First look at the entrypoint that Sonarqube
+  # is using in it's base image in case that entrypoint is overwridden by a new one. The new entrypoint should read
+  # the username and password values from /run/secrets and set the corresponding environment variables for 
+  # jdbc username and jdbc password.
   sonarqube: 
     image: sonarqube
     networks:
@@ -60,9 +65,17 @@ services:
       - "9000:9000"
       - "9092:9092"
     environment:
+      # - sonar.jdbc.username=admin
       SONARQUBE_JDBC_USERNAME: admin
+      # SONARQUBE_JDBC_USERNAME: /run/secrets/sonarqube-user
       SONARQUBE_JDBC_PASSWORD: t7jsqtnL 
+      # - sonar.jdbc.password=t7jsqtnl
+      # SONARQUBE_JDBC_PASSWORD: /run/secrets/sonarqube-passwd
       SONARQUBE_JDBC_URL: jdbc:postgresql://db/sonar
+      # - sonar.jdbc.url=jdbc:postgresql://db/sonar
+    secrets:
+      - sonarqube-passwd
+      - sonarqube-user
     volumes:
       - ./sonar_home/conf:/opt/sonarqube/conf
       - ./sonar_home/data:/opt/sonarqube/data
@@ -104,3 +117,13 @@ services:
 
 networks:
   tc-net:
+
+secrets:
+  postgres-user:
+    file: ./secrets/postgres_usr.txt
+  postgres-passwd:
+    file: ./secrets/postgres_password.txt
+  sonarqube-user:
+    file: ./secrets/sonarqube_usr.txt
+  sonarqube-passwd:
+    file: ./secrets/sonarqube_password.txt
