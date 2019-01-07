@@ -56,8 +56,7 @@ node() {
             // AppArtifactWs = "${env.WORKSPACE}"
             // TODO: create a shell script that queries the snapshot repository for assets
             // finds the latest version of the asset and then gets the timestamped name for download
-            sh 'curl -u admin:admin123 -X GET "http://package-repo:8081/repository/maven-snapshots/org/ahl/springbootdemo/spring-boot-demo/0.0.1-SNAPSHOT/spring-boot-demo-0.0.1-20181203.175519-7.jar" --output ./output/app.jar'      
-            // sh 'curl -u admin:admin123 -X GET "http://package-repo:8081/repository/maven-snapshots/org/ahl/springbootdemo/spring-boot-demo/0.5-SNAPSHOT/" --output ./output/app.jar'      
+            sh 'curl -u admin:admin123 -X GET "http://package-repo:8081/repository/maven-snapshots/org/ahl/springbootdemo/spring-boot-demo/0.0.1-SNAPSHOT/spring-boot-demo-0.0.1-20190107.023521-1.jar" --output ./output/app.jar'      
             
             stash name: 'app', includes: 'output/*'
         }
@@ -65,6 +64,7 @@ node() {
 
     stage('App Image Build') {
         // NOTE: When building a different application, simply change the build-arg to point to the replacement jar
+        
         // Run unstash within app directory
         sh "echo 'dir on app'"
         dir("app") {
