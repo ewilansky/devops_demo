@@ -66,9 +66,9 @@ node() {
             // finds the latest version of the asset and then gets the timestamped name for download
             // sh 'curl -u admin:admin123 -X GET "http://package-repo:8081/repository/maven-snapshots/org/ahl/springbootdemo/spring-boot-demo/0.0.1-SNAPSHOT/spring-boot-demo-0.0.1-20190107.023521-1.jar" --output ./output/app.jar'      
             // sh "curl -L -u admin:admin123 -X GET 'http://package-repo:8081/service/rest/v1/search/assets/download?group=org.ahl.springbootdemo&name=spring-boot-demo&maven.extension=jar&md5=${artifactMd5Hash}' --output ./output/app.jar"
-            sh "curl -L -u ${user} -X GET '${apiBase}?group=${group}&name=${name}&maven.extension=jar&md5=${artifactMd5Hash}' --output ./output/app.jar"
             sh echo "curl -L -u ${user} -X GET '${apiBase}?group=${group}&name=${name}&maven.extension=jar&md5=${artifactMd5Hash}' --output ./output/app.jar"
-
+            sh "curl -L -u ${user} -X GET '${apiBase}?group=${group}&name=${name}&maven.extension=jar&md5=${artifactMd5Hash}' --output ./output/app.jar"
+            
             stash name: 'app', includes: 'output/*'
         }
     }
