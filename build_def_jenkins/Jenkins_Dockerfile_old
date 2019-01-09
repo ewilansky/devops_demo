@@ -1,0 +1,24 @@
+FROM jenkins/jenkins:latest AS build
+USER root
+# the next two Environment settings hide erroneous warning about apt-utils not being
+# installed and a api key setting that is perfectly fine, but considered dangerous usage
+# by the apt-key call in the curl request
+ENV DEBIAN_FRONTEND="noninteractive"
+ENV APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE="DontWarn"
+LABEL author="ethan@arrowheadlabs.io"
+
+RUN apt-get update && \
+    apt-get -y install apt-transport-https \
+      ca-certificates \
+      curl \
+      gnupg2 \
+      software-properties-common && \
+    curl -fsSL https://download.docker.com/linux/$(. /etc/os-release; echo "$ID")/gpg > /tmp/dkey; apt-key add /tmp/dkey && \
+    add-apt-repository \
+      "deb [arch=amd64] https://download.docker.com/linux/$(. /etc/os-release; echo "$ID") \
+      $(lsb_release -cs) \
+      stable" && \
+   apt-get update && \
+apt-get -y install docker-ce
+
+ENV DEBIAN_FRONTEND=teletype

@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3.5'
 
 services:
   jenkins:
@@ -7,7 +7,7 @@ services:
     # this doesn't require a custom image, it's smaller and contains the 
     # embedded docker client
     # image: jenkinsci/blueocean:latest
-    build: ./jenkins_build_def
+    build: ./build_def_jenkins
     image: ahl/jenkins:v1
     user: root
     networks:
@@ -57,6 +57,8 @@ services:
   # jdbc username and jdbc password.
   sonarqube: 
     image: sonarqube
+    # build: ./build_def_sonar
+    # image: ahl/sonarqube:v1
     networks:
       tc-net:
         aliases: 
@@ -67,10 +69,8 @@ services:
     environment:
       # - sonar.jdbc.username=admin
       SONARQUBE_JDBC_USERNAME: admin
-      # SONARQUBE_JDBC_USERNAME: /run/secrets/sonarqube-user
       SONARQUBE_JDBC_PASSWORD: t7jsqtnL 
       # - sonar.jdbc.password=t7jsqtnl
-      # SONARQUBE_JDBC_PASSWORD: /run/secrets/sonarqube-passwd
       SONARQUBE_JDBC_URL: jdbc:postgresql://db/sonar
       # - sonar.jdbc.url=jdbc:postgresql://db/sonar
     secrets:
