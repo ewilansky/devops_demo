@@ -8,8 +8,8 @@ node() {
         sh 'rm -f /home/project/build/libs/*' // -f to avoid failure if dir is empty
     }
     /* Docker pipeline plugin installed in Jenkins container */
-    // switching to gradle 5 alpine image so holding onto prior 4.10 image reference: gradle:latest
-    // 5.0.0 reference: gradle:jre8-alpine
+    // gradle 4.10 image reference: gradle:latest
+    // gradle 5.0.0 reference: gradle:jre8-alpine
     docker.image('gradle:latest').inside('--network=toolchain_demo_tc-net') {
         def UnitTestTasks = [:]
         def IntTestAndAnalysisTasks = [:]
@@ -59,16 +59,9 @@ node() {
             
             // artifact output directory
             sh "mkdir -p output"
-
-
-            echo "artifact md5 hash is: ${artifactMd5Hash}"
-            // TODO: create a shell script that queries the snapshot repository for assets
-            // finds the latest version of the asset and then gets the timestamped name for download
-            // sh 'curl -u admin:admin123 -X GET "http://package-repo:8081/repository/maven-snapshots/org/ahl/springbootdemo/spring-boot-demo/0.0.1-SNAPSHOT/spring-boot-demo-0.0.1-20190107.023521-1.jar" --output ./output/app.jar'      
-            // sh "curl -L -u admin:admin123 -X GET 'http://package-repo:8081/service/rest/v1/search/assets/download?group=org.ahl.springbootdemo&name=spring-boot-demo&maven.extension=jar&md5=${artifactMd5Hash}' --output ./output/app.jar"
-            sh "echo curl -L -u ${user} -X GET '${apiBase}?group=${group}&name=${name}&maven.extension=jar&md5=${artifactMd5Hash}' --output ./output/app.jar"
+            // retrieve the artifact from nexus maven2 repo
             sh "curl -L -u ${user} -X GET '${apiBase}?group=${group}&name=${name}&maven.extension=jar&md5=${artifactMd5Hash}' --output ./output/app.jar"
-            
+            // stash for retrieval during image build
             stash name: 'app', includes: 'output/*'
         }
     }
@@ -82,7 +75,6 @@ node() {
             unstash "app"
         }
 
-        // putting a comment here to see if I can push this update...
         sh "echo contents of app dir..."
         sh "ls -la ${pwd()}/output/*"
 
