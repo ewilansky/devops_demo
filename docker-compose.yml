@@ -1,4 +1,4 @@
-version: '3.5'
+version: '3.7'
 
 services:
   jenkins:
@@ -59,9 +59,9 @@ services:
   # the username and password values from /run/secrets and set the corresponding environment variables for 
   # jdbc username and jdbc password.
   sonarqube: 
-    image: sonarqube
-    # build: ./build_def_sonar
-    # image: ahl/sonarqube:v1
+    # image: sonarqube
+    build: ./build_def_sonar
+    image: ahl.sonar:v1
     networks:
       tc-net:
         aliases: 
@@ -69,16 +69,14 @@ services:
     ports: 
       - "9000:9000"
       - "9092:9092"
-    environment:
-      # - sonar.jdbc.username=admin
-      SONARQUBE_JDBC_USERNAME: admin
-      SONARQUBE_JDBC_PASSWORD: t7jsqtnL 
-      # - sonar.jdbc.password=t7jsqtnl
-      SONARQUBE_JDBC_URL: jdbc:postgresql://db/sonar
-      # - sonar.jdbc.url=jdbc:postgresql://db/sonar
     secrets:
-      - sonarqube-passwd
-      - sonarqube-user
+      # bind mounting secrets to a unique target because sonarqube already 
+      # has a /run folder that appears to be preventing 
+      # the projection of /run/secrets into the container
+       - source: sonarqube-passwd
+         target: /usr/local/secrets/sonarqube-passwd
+       - source: sonarqube-user
+         target: /usr/local/secrets/sonarqube-user
     volumes:
       - ./sonar_home/conf:/opt/sonarqube/conf
       - ./sonar_home/data:/opt/sonarqube/data
@@ -111,7 +109,7 @@ services:
       - ./git_home/var/gogs:/data
     container_name: gogs
 
-    # to resolve: 
+    # to resolve for automating setup: 
     # had to manually create gogs db in postgres
     # had to manually run install at http://localhost:10080 and select postgres w/gogs db
     # and postgres admin logon - see creds above in postgres section. Postgres at db:5432

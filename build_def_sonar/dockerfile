@@ -1,0 +1,8 @@
+FROM sonarqube:latest
+LABEL maintainer="ethan@arrowheadlabs.io"
+
+# created a custom image from the base because sonarqube base image
+# doesn't currently support docker secrets
+COPY ./setrun-env.sh /usr/local
+# overriding base image entrypoint
+ENTRYPOINT ["/usr/local/setrun-env.sh"]
