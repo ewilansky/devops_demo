@@ -59,7 +59,7 @@ node() {
             
             // artifact output directory
             sh "mkdir -p output"
-            // retrieve the artifact from nexus maven2 repo
+            // retrieve the artifact from the nexus maven2 repo
             sh "curl -L -u ${user} -X GET '${apiBase}?group=${group}&name=${name}&maven.extension=jar&md5=${artifactMd5Hash}' --output ./output/app.jar"
             // stash for retrieval during image build
             stash name: 'app', includes: 'output/*'
