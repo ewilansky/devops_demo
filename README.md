@@ -169,6 +169,54 @@ The spring-boot-demo jar is packaged in the openjdk:8-jdk-alpine image by docker
 
 ## Configuring Secrets
 
-Each tool in the CI/CD pipeline uses different methods for storing secrets. This section details how to configure each tool requiring a logon with credentials stored securely or at least separate of the actual infrastructure as code files.  
+Tools in the CI/CD toolchain use credentials for access control. This section details how to configure each tool requiring a logon with credentials stored locally and outside of source control.
 
-**TODO:** fill in this section for each toolchain tool
+### Secrets setup in this Toolchain Demo to Secre Credentials
+
+1. Create a directory at the root of this project and name it **secrets**
+2. In the subsections below, you will create two text files, one for the user account name and the other for the password following this convention:
+
+   [*toolname*]_usr.txt and [*toolname*]_password.txt where *toolname* is the specific tool, such as postgres or sonarqube.
+
+At the root of docker-compose.yml, Docker secrets are globally configured:
+
+    secrets:
+      postgres-user:
+        file: ./secrets/postgres_usr.txt
+      postgres-passwd:
+        file: ./secrets/postgres_password.txt
+      sonarqube-user:
+        file: ./secrets/sonarqube_usr.txt
+     sonarqube-passwd:
+        file: ./secrets/sonarqube_password.txt
+
+and then locally configured to scope each credential set down to the right service. How the secrets are locally scoped are described in the tool-specific sections next.
+
+### Postgres Credential Management
+
+The official Postgres image supports the use of Docker secrets by recognizing certain variable names followed by _FILE. You can read more about this in the official Postgres Docker repository at **TODO**. In the case of this demonstration, Docker secrets are passed to the Postgres container using the following two variable names and values in the db service section of docker-compose.yml:
+
+    POSTGRES_PASSWORD_FILE: /run/secrets/postgres-passwd
+    POSTGRES_USER_FILE: /run/secrets/postgres-user
+
+These secrets defined globally in docker-compose-yml are scoped to the Postgres container via the simple secrets syntax also in the db service section of docker-compose.yml:
+
+    secrets:
+      - postgres-user
+      - postgres-passwd
+
+### Sonarqube Credential Management
+
+The official Sonarqube image does not support Docker secrets. Therefore, this toolchain demo includes a custom Sonarqube image contained in the **build_def_sonar** folder. When this image is built, Docker copies the setrun-env.sh script into the image via dockerfile. This script looks in the /usr/local/secrets folder inside the image for credential information.
+
+The Sonarqube service section of Docker-compose.yml locally binds /usr/local/secrets into the container, as shown:
+
+    secrets:  
+       - source: sonarqube-passwd  
+         target: /usr/local/secrets/sonarqube-passwd
+       - source: sonarqube-user  
+         target: /usr/local/secrets/sonarqube-user
+
+### Nexus Repository Credential Management
+
+TODO
