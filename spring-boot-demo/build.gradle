@@ -184,7 +184,7 @@ publishing {
 }
 
 // to filter where each publication gets deployed. This could be useful when
-// switching to environment branches
+// switching environment branches
 tasks.withType(PublishToMavenLocal) {
     onlyIf {
         publication == publishing.publications.springBootDemo

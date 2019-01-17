@@ -51,13 +51,6 @@ services:
       - ./postgres_home/data:/var/lib/postgresql/data/pgdata
     container_name: postgres
   
-  # add sonarqube as a service since it needs to materialize and be available during orchestration 
-  # # activities, specifically collecting and reviewing the results of code analysis
-
-  # TODO: create a docker file to copy an entrypoint into the image. First look at the entrypoint that Sonarqube
-  # is using in it's base image in case that entrypoint is overwridden by a new one. The new entrypoint should read
-  # the username and password values from /run/secrets and set the corresponding environment variables for 
-  # jdbc username and jdbc password.
   sonarqube: 
     build: ./build_def_sonar
     image: ahl.sonar:v1
