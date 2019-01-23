@@ -51,12 +51,15 @@ node() {
             sh 'gradle publish -p /home/project'
         }
         stage('Retrieve App') {
-            user = "admin:admin123"
-            apiBase = "http://package-repo:8081/service/rest/v1/search/assets/download"
-            artifactMd5Hash = "1373ba65e2f2845af90e479e4bf7f40b"
-            group = "org.ahl.springbootdemo"
-            name = "spring-boot-demo"
-            
+            withCredentials([file(credentialsId: 'nexus_usr', variable: 'NEXUS_USR'), file(credentialsId: 'NEXUS_PASSWORD', variable: 'nexus_password')]) {
+                // user = "admin:admin123"
+                user = $NEXUS_USR:$NEXUS_PASSWORD
+                apiBase = "http://package-repo:8081/service/rest/v1/search/assets/download"
+                artifactMd5Hash = "1373ba65e2f2845af90e479e4bf7f40b"
+                group = "org.ahl.springbootdemo"
+                name = "spring-boot-demo"
+            }
+
             // artifact output directory
             sh "mkdir -p output"
             // retrieve the artifact from the nexus maven2 repo
