@@ -101,6 +101,18 @@ services:
       - ./git_home/var/gogs:/data
     container_name: gogs
 
+  nginx:
+    build: ./build_def_nginx
+    image: ahl.nginx:v1
+    networks:
+      tc-net:
+        aliases: 
+          - "reverse-proxy"
+    ports:
+       - "443:443"
+       - "18443:18443"
+    container_name: nginx
+
     # to resolve for automating setup: 
     # had to manually create gogs db in postgres
     # had to manually run install at http://localhost:10080 and select postgres w/gogs db
