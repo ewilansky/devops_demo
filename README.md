@@ -12,21 +12,27 @@ The continuous deployment (CD) part of the pipeline relies on Kubernetes as the 
 
 ## Prerequisites
 
-Docker v. 8.06.1-ce for the Mac or Windows
+Docker v. 1.8 or later for OS X or Windows
 16 GB of RAM
 The Git client for your operating system
 
 ## Setup Instructions Specific to Your Host Operating System
 
+These instructions are current as of Docker v 2.0.0.3. If you are on a later version, configuration might be different.
+
 1. In Docker for Mac, enable Kubernetes integration from the Docker > Preferences > Kubernetes tab.
 
       or
 
-1. In Docker for Windows, enabled Kubernetes integration from Docker > ??
+1. In Docker for Windows, enable Kubernetes integration from Docker > Settings > Kubernetes option.
 
 ### Setup instructions for Mac or Windows systems
 
-1. From the Kubernetes tab, ensure or select the Kubernetes orchestration radio button.
+1. From the Kubernetes tab/option:
+
+    OSX: ensure or select the Kubernetes orchestration radio button.
+
+    Windows: ensure or select the Deploy Docker Stacks to Kubernetes by default check box.
 
 2. Once Docker and Kubernetes are started, open a command prompt.
 
