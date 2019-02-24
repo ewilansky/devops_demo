@@ -31,7 +31,7 @@ services:
     container_name: jenkins
 
   db: 
-    image: postgres
+    image: postgres:10.7
     networks:
       tc-net:
         aliases: 
