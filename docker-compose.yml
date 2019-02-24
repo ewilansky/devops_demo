@@ -83,7 +83,7 @@ services:
         aliases:
           - "package-repo"
     ports:
-      - "8088:8081"
+      - "8081:8081"
     volumes:
       - ./nexus_home/nexus_data:/nexus-data
     container_name: nexus
@@ -109,8 +109,13 @@ services:
         aliases: 
           - "reverse-proxy"
     ports:
-       - "443:443"
-       - "18443:18443"
+       - "18445:18445"
+       - "18446:18446"
+       - "18447:18447"
+    
+    # to debug nginx:
+    command: [nginx-debug, '-g', 'daemon off;']
+    
     container_name: nginx
 
     # to resolve for automating setup: 

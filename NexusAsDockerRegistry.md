@@ -140,13 +140,30 @@ In Nexus, you will create three repositories for the Docker registry: docker (ho
 
 ### Testing the Working Example
 
-login to docker Nexus registry:
+login to the docker (hosted) registry:
 
-`docker login mac.my`
+```console
+$ docker login mac.my:18446
+
+Username: admin
+Password:
+Login Succeeded
+```
 
 push to docker (hosted) repository:
 
-`docker push mac.my/tibcobe5.5hotfix`
+```console
+$ docker push mac.my:18446/tibcobe:v5.5
+
+The push refers to repository [mac.my:18446/tibcobe]
+691118773b39: Pushing [==============>     ]
+4b7d93055d87: Pushed
+663e8522d78b: Pushed
+283fb404ea94: Pushed
+bebe7ce6215a: Pushed
+
+v5.5: digest: sha256:2c3146d4c8791...
+```
 
 search the registry for an image starting with tibcobe:
 
