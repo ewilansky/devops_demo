@@ -47,15 +47,27 @@ In the working example, there are three actors, the Docker client, an nginx reve
 
 I have created a toolchain demo in my public github repository. There is nothing in this repository specific to SWA. However, the open source tools used in this repo are the ones recommended by SWA APT.
 
-### First Step: Pulling and Composing Images and Running Containers
+### Important Certificate Warning and Prerequisites
+
+You can either use your own certificates (including self-signed certs) if you're familiar with creating your own or you can use the ones I've provided. I generated all of these certificates, including the private key using OpenSSL. This certificate chain and key aren't used for anything but local development. Do not consider using these certificates in anything but your local development environment. Since the private key is anything but private, use it only for your local development environment. With that important warning in mind, here's how you use the included certificates and key.
+
+1. Using git, clone: https://github.com/ewilansky/toolchain_demo.git 
+
+2. In the ./build_dev_nginx, you'll find the two certificates. If you run into SSL errors when you start the site in a later step, add these certificates to your local certificate store and trust them.
+
+3. Update your hosts file to include an alias for my.dev for your loopback address. Here's an example:
+
+    `127.0.0.1 localhost my.dev`
+
+    Later, you will be using my.dev to interact with Nexus.
+
+### Pulling and Composing Images and Running Containers
 
 After cloning the toolchain demo, you will render two containers, one for nginx and one for Nexus.
 
-1. Using git, clone: https://github.com/ewilansky/toolchain_demo.git
+1. Change to the root directory of the solution (the directory containingdocker-compose.yml)
 
-2. Change to the root directory of the solution (the directory containingdocker-compose.yml)
-
-3. Matrialize containers for nginx and Nexus 3:
+2. Matrialize containers for nginx and Nexus 3:
 
     ```console
     $ docker-compose up -d nginx nexus
@@ -96,7 +108,7 @@ After cloning the toolchain demo, you will render two containers, one for nginx 
 
     ```
 
-4. Verify that nginx is functional:
+3. Verify that nginx is functional:
 
     ```console
     $ docker exec -it nginx service nginx status
@@ -104,11 +116,11 @@ After cloning the toolchain demo, you will render two containers, one for nginx 
     [ ok ] nginx is running.
     ```
 
-5. Verify that Nexus is functional by browsing to http://localhost:8088
+4. Verify that Nexus is functional by browsing to http://localhost:8088
 
-6. Logon to Nexus with the default Nexus credentials (user: admin, password: admin123)
+5. Logon to Nexus with the default Nexus credentials (user: admin, password: admin123)
 
-7. At the command line with the Docker client, you can also verify that both containers (nginx and Nexus are running):
+6. At the command line with the Docker client, you can also verify that both containers (nginx and Nexus are running):
 
    ```console
    $ docker ps
@@ -122,7 +134,7 @@ After cloning the toolchain demo, you will render two containers, one for nginx 
 
    nginx is listening on ports 443 and 18443, both configured as encrypted (SSL) endpoints. Port 80 appears in docker ps, but isn't used and doesn't send traffic to Nexus.
 
-### Second Step: Create Nexus Repositories to Serve as Docker Registries
+### Creating Nexus Repositories to Serve as Docker Registries
 
 In Nexus, you will create three repositories for the Docker registry: docker (hosted), docker (proxy), and docker (group). This follows the guidance provided by Sonatype and aligns the repositories to the nginx reverse proxy.
 
@@ -156,7 +168,7 @@ push to docker (hosted) repository:
 $ docker push mac.my:18446/tibcobe:v5.5
 
 The push refers to repository [mac.my:18446/tibcobe]
-691118773b39: Pushing [==============>     ]
+691118773b39: Pushing [==============>             ]
 4b7d93055d87: Pushed
 663e8522d78b: Pushed
 283fb404ea94: Pushed
@@ -165,13 +177,21 @@ bebe7ce6215a: Pushed
 v5.5: digest: sha256:2c3146d4c8791...
 ```
 
-search the registry for an image starting with tibcobe:
+search the registry for an image starting with tibco (some columns removed for brevity):
 
-`docker search mac.my/tibcobe*`
+```console
+$ docker search mac.my:18447/tibco*
+
+NAME                               DESCRIPTION         STARS
+mac.my:18447/tibcobe:v5.5                              0
+```
 
 pull from docker (group) repository:
 
-`docker pull mac.my/tibcobe5.5hotfix:v1`
+```console
+$ docker pull mac.my:18447/tibcobe:v5.5
+
+```
 
 pull through docker (proxy) repository via docker (group):
 
