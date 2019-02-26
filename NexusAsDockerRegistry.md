@@ -2,9 +2,9 @@
 
 Sonatype has provided documentation and some blog posts for configuring Nexus 3 as a Docker registry. Some of the blog post references appear at the end. Here is their help documenation:
 
-- https://help.sonatype.com/repomanager3/private-registry-for-docker
+- <https://help.sonatype.com/repomanager3/private-registry-for-docker>
   
-  This is the most complete guidance on using Nexus 3 as a Docker registry. However, I found it hard to follow without a better understanding of the expected end-behavior resulting from following their configuration guidance.
+  This is the most complete guidance on using Nexus 3 as a Docker registry. However, I found it hard to follow without a better understanding of the expected end-behavior resulting from following their configuration guidance. Also, the configuration doesn't address running all components (including Nexus) from a Docker container. The solution I document here is fully containerized and uses encryption to a reverse proxy to protect access.
 
 ## Suggested Approach
 
@@ -16,13 +16,13 @@ Sonatype has provided documentation and some blog posts for configuring Nexus 3 
 
 If you aren't familiar with things like a Docker registry, Docker images or Docker containers, please visit <https://docs.docker.com/> to learn more about Docker. That will help you get the most out of this post.
 
-The general idea is that SWA should have some control or at least be able to monitor what docker images are made available or are being used in a Docker registry. An internal registry hosted in Nexus 3 satisfies that requirement. Nexus uses the concept of repositories as storage endpoints for artifacts, such as JAR files. Repositories also serve as the model for storing Docker images.
+The general idea is that a company should have some control or at least be able to monitor what docker images are made available or are being used in a Docker registry. An internal registry hosted in Nexus 3 satisfies that requirement. Nexus uses the concept of repositories as storage endpoints for artifacts, such as JAR files. Repositories also serve as the model for storing Docker images.
 
 ### Workflow
 
-The general workflow in a CI/CD pipeline is that a development team would continue to push compiled artifacts, like JAR or WAR files into a Nexus repository, the maven2 (hosted) repository type upon the succesful completion of a build. Later in the same pipeline, the orchestrator, Jenkins in this case, would retrieve an image from a Nexus repository, docker (group) repository type and then deploy a compiled artifact into the Docker image in order to create a new Docker image. That new Docker image would then be pushed back to a Nexus repository, docker (hosted) repository type. Further down in the pipeline, Jenkins would then pull the new Docker image containing the compiled artifact and deploy the image as a running Docker container into an environment, such as Dev, iTest, QA, Prod.
+The general workflow in a CI/CD pipeline is that a development team would continue to push compiled artifacts, like JAR or WAR files into a Nexus repository, the maven2 (hosted) repository type upon the succesful completion of a build. Later in the same pipeline, the orchestrator, Jenkins for example, would retrieve an image from a Nexus repository, docker (group) repository type and then deploy a compiled artifact into the Docker image in order to create a new Docker image. That new Docker image would then be pushed back to a Nexus repository, docker (hosted) repository type. Further down in the pipeline, Jenkins would then pull the new Docker image containing the compiled artifact and deploy the image as a running Docker container into an environment, such as Dev, QA or Prod.
 
-The third repository type used for Docker is docker (proxy). It's to this repository that any missing base images can be retrieved. The docker (proxy) can be configured to connect to Docker hub or perhaps SWA will prefer to proxy their Amazon ECR (elastic container repository) endpoint instead. The use of the hosted, group and proxy repository types are a common pattern in Nexus for all Nexus repository types or recipes, as it's called in Nexus.
+The third repository type used for Docker is docker (proxy). It's to this repository that any missing base images can be retrieved. The docker (proxy) can be configured to connect to Docker hub or perhaps some other docker registry, such as Amazon ECR (Elastic Container Registry) endpoint instead. The use of the hosted, group and proxy repository types are a common pattern in Nexus for all Nexus repository types or recipes, as it's called in Nexus.
 
 ### Docker Client Interaction
 
@@ -45,13 +45,13 @@ In the working example, there are three actors, the Docker client, an nginx reve
 
 ## Working Example
 
-I have created a toolchain demo in my public github repository. There is nothing in this repository specific to SWA. However, the open source tools used in this repo are the ones recommended by SWA APT.
+I have created a toolchain demo in my public github repository. There is nothing in this repository specific to a company. However, the open source tools used in this repo are commonly used by many organizations.
 
 ### Important Certificate Warning and Prerequisites
 
 You can either use your own certificates (including self-signed certs) if you're familiar with creating your own or you can use the ones I've provided. I generated all of these certificates, including the private key using OpenSSL. This certificate chain and key aren't used for anything but local development. Do not consider using these certificates in anything but your local development environment. Since the private key is anything but private, use it only for your local development environment. With that important warning in mind, here's how you use the included certificates and key.
 
-1. Using git, clone: https://github.com/ewilansky/toolchain_demo.git 
+1. Using git, clone: <https://github.com/ewilansky/toolchain_demo.git>
 
 2. In the ./build_dev_nginx, you'll find the two certificates. If you run into SSL errors when you start the site in a later step, add these certificates to your local certificate store and trust them.
 
@@ -116,7 +116,7 @@ After cloning the toolchain demo, you will render two containers, one for nginx 
     [ ok ] nginx is running.
     ```
 
-4. Verify that Nexus is functional by browsing to http://localhost:8088
+4. Verify that Nexus is functional by browsing to <http://localhost:8088> then browse securely using <https://my.dev:18445>
 
 5. Logon to Nexus with the default Nexus credentials (user: admin, password: admin123)
 
@@ -126,13 +126,13 @@ After cloning the toolchain demo, you will render two containers, one for nginx 
    $ docker ps
 
    CONTAINER ID        IMAGE                    COMMAND                    PORTS                                                    NAMES
-   23a9c341169f        ahl.nginx:v1             "nginx -g 'daemon of…"     0.0.0.0:443->443/tcp, 80/tcp, 0.0.0.0:18443->18443/tcp   nginx
+   23a9c341169f        ahl.nginx:v1             "nginx -g 'daemon of…"     0.0.0.0:18445->18445/tcp, 80/tcp, 0.0.0.0:18446->18446/tcp   nginx
    9bb2a5820c1c        sonatype/nexus3:latest   "sh -c ${SONATYPE_DI…"     0.0.0.0:8088->8081/tcp                                   nexus
    ```
 
-   some columns are omitted for clarity
+   some columns are omitted for clarity and not all exposed ports are shown for nginx.
 
-   nginx is listening on ports 443 and 18443, both configured as encrypted (SSL) endpoints. Port 80 appears in docker ps, but isn't used and doesn't send traffic to Nexus.
+   nginx is listening on ports 18445, 18446 and 18447, all configured as encrypted (SSL) endpoints. Port 80 appears in docker ps, but isn't used and doesn't send traffic to Nexus.
 
 ### Creating Nexus Repositories to Serve as Docker Registries
 
@@ -155,7 +155,7 @@ In Nexus, you will create three repositories for the Docker registry: docker (ho
 login to the docker (hosted) registry:
 
 ```console
-$ docker login mac.my:18446
+$ docker login my.dev:18446
 
 Username: admin
 Password:
@@ -165,9 +165,9 @@ Login Succeeded
 push to docker (hosted) repository:
 
 ```console
-$ docker push mac.my:18446/tibcobe:v5.5
+$ docker push my.dev:18446/tibcobe:v5.5
 
-The push refers to repository [mac.my:18446/tibcobe]
+The push refers to repository [my.dev:18446/tibcobe]
 691118773b39: Pushing [==============>             ]
 4b7d93055d87: Pushed
 663e8522d78b: Pushed
@@ -180,25 +180,24 @@ v5.5: digest: sha256:2c3146d4c8791...
 search the registry for an image starting with tibco (some columns removed for brevity):
 
 ```console
-$ docker search mac.my:18447/tibco*
+$ docker search my.dev:18447/tibco*
 
 NAME                               DESCRIPTION         STARS
-mac.my:18447/tibcobe:v5.5                              0
+my.dev:18447/tibcobe:v5.5                              0
 ```
 
 pull from docker (group) repository:
 
 ```console
-$ docker pull mac.my:18447/tibcobe:v5.5
-
+$ docker pull my.dev:18447/tibcobe:v5.5
+...
 ```
 
 pull through docker (proxy) repository via docker (group):
 
-`docker pull mac.my:18443/ubuntu:latest`
+`docker pull my.dev:18447/ubuntu:latest`
 
 ## Aspects of Setup
-
 
 ### Additional References
 
