@@ -1,15 +1,15 @@
 # Nexus 3 as Docker Registry
 
-Sonatype has provided documentation and some blog posts for configuring Nexus 3 as a Docker registry. Some of the blog post references appear at the end. Here is their help documenation:
+Sonatype provides documentation and blog posts for configuring Nexus 3 as a Docker registry. Some of the blog post references appear at the end. Here is their help documenation:
 
 - <https://help.sonatype.com/repomanager3/private-registry-for-docker>
   
-  This is the most complete guidance on using Nexus 3 as a Docker registry. However, I found it hard to follow without a better understanding of the expected end-behavior resulting from following their configuration guidance. Also, the configuration doesn't address running all components (including Nexus) from a Docker container. The solution I document here is fully containerized and uses encryption to a reverse proxy to protect access.
+  This is the most complete guidance on using Nexus 3 as a Docker registry. However, I found it hard to follow without a better understanding of the expected end-behavior resulting from following their configuration guidance. Also, the configuration doesn't address running all components (including Nexus) from a Docker container. The solution I document here is fully containerized and uses encrypted connections to a reverse proxy to front access to Nexus 3. This approach simplifies SSL/TLS configuration to Nexus 3 and potentially other endpoints behind the proxy.
 
 ## Suggested Approach
 
 1. Read the Overview section.
-2. Get the working example.
+2. Get and run the working example.
 3. Review the Aspects of Setup section.
 
 ## Overview
@@ -148,7 +148,7 @@ In Nexus, you will create three repositories for the Docker registry: docker (ho
 
    This is the repository that will recieve images that you push from the Docker client into Nexus.
 
-5. 
+5. **TODO: will replace this with a script to create the three repositories**
 
 ### Testing the Working Example
 
