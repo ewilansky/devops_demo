@@ -8,9 +8,10 @@ Sonatype provides documentation and blog posts for configuring Nexus 3 as a Dock
 
 ## Suggested Approach
 
-1. Read the Overview section.
-2. Get and run the working example.
-3. Review the Aspects of Setup section.
+1. Ensure you have the Docker daemon running locally.
+2. Read the Overview section.
+3. Get the working example and run the relatively simple setup.
+4. Test the working example to interact with a Nexus hosted Docker registry.
 
 ## Overview
 
@@ -136,21 +137,23 @@ After cloning the toolchain demo, you will render two containers, one for nginx 
 
 ### Creating Nexus Repositories to Serve as Docker Registries
 
-In Nexus, you will create three repositories for the Docker registry: docker (hosted), docker (proxy), and docker (group). This follows the guidance provided by Sonatype and aligns the repositories to the nginx reverse proxy.
+Three repositories serve Docker: docker (hosted), docker (proxy), and docker (group). This follows the guidance provided by Sonatype and aligns the repositories to the nginx reverse proxy. These repositories can be created manually or via scripting automation, as shown here. Bash scripts are provided. **TODO: create windows batch file equivalents.** Also, you must have cURL installed locally since the scripts interact with the Nexus RESTful API using cURL. 
 
-1. If you're not already signed-into Nexus from an earlier step, make sure you logon using Nexus default credentials (user: admin, password: admin123).
+1. At the command line, navigate to the nexus_setup directory.
 
-2. From the cog in the top navigation bar, go to Server administration and configuration.
+2. Run ./setup.sh
 
-3. Click repositories, then click Create repository.
+3. In a browser, navigate to https://my.dev:18445 and logon with the default credentials (user: admin, password: admin123)
 
-4. Select the docker (hosted) recipe.
+4. Click the cog in the top navigation and review the three repositories that were created:
 
-   This is the repository that will recieve images that you push from the Docker client into Nexus.
+   - docker-internal - repository to serve as the Docker registry to host Docker images you push to Nexus
 
-5. **TODO: will replace this with a script to create the three repositories**
+   - docker-proxy - repository to host images from some other Docker registry when the images are not available locally
 
-### Testing the Working Example
+   - docker-all - repository to pull and search for Docker images. This repository contains a reference to the other Docker repositories.
+
+## Testing the Working Example
 
 login to the docker (hosted) registry:
 
@@ -190,21 +193,33 @@ pull from docker (group) repository:
 
 ```console
 $ docker pull my.dev:18447/tibcobe:v5.5
+
+v5.5: Pulling from tibcobe
 ...
+Digest: sha256:2c3146d4c8791dbdc58a44af8dd410bba2ed711c628f78b52b01277b6cdcbe4a
+Status: Downloaded newer image for my.dev:18447/tibcobe:v5.5
 ```
 
 pull through docker (proxy) repository via docker (group):
 
-`docker pull my.dev:18447/ubuntu:latest`
-
-## Aspects of Setup
+```console
+$ docker pull my.dev:18447/ubuntu:latest
+atest: Pulling from ubuntu
+...
+Digest: sha256:be159ff0e12a38fd2208022484bee14412680727ec992680b66cdead1ba76d19
+Status: Downloaded newer image for my.dev:18447/ubuntu:latest
+```
 
 ### Additional References
 
-- https://blog.sonatype.com/using-nexus-3-as-your-repository-part-3-docker-images
+- <https://blog.sonatype.com/running-the-nexus-platform-behind-nginx-using-docker>
+
+  Excellent post on how to automate aspects of Nexus configuration, nginx reverse proxy and details on docker-compose (one part of a three-part series). I'm using the scripts Curtis Yanko provides here: <https://github.com/CMYanko/demo-iq-server/tree/master/nginx/nexus-repository> as a starting-point for auto-generating a set of Nexus repositories to serve as a Docker registry endpoint.
+
+- <https://blog.sonatype.com/using-nexus-3-as-your-repository-part-3-docker-images>
 
   Describes how to use Nexus 3 as a Docker registry. It's not bad, but a bit out of date and requires that the Docker client send data to Nexus 3 unencrypted (over HTTP)
 
-- https://blog.sonatype.com/maxences-technical-corner
+- <https://blog.sonatype.com/maxences-technical-corner>
 
   Describes how to run Nexus 3 as a Docker container over SSL. However, it uses a self-signed certificate so it won't be trusted by default. Also, the SSL configuration probably won't be persisted when the container is deleted. The SSL configuration should either be in a Docker mounted volume or be copied over in a Dockerfile on image creation.
