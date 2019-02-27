@@ -39,13 +39,13 @@ These instructions are current as of Docker v 2.0.0.3. If you are on a later ver
 
 1. From the Kubernetes tab/option, ensure or select the Deploy Docker Stacks to Kubernetes by default check box.
 
-### OS X Increase Resource Allocation
+#### OS X Increase Resource Allocation
 
 1. From the Advanced tab, increase **CPUs** to a minimum of 4, **Memory** to a minimum of 7 GB and **Swap** to 2 GB
 
 2. Click Apply & Restart
 
-### Windows Increase Resource Allocation
+#### Windows Increase Resource Allocation
 
 1. From the Advanced tab, increase **CPUs** to a minimum of 2, **Memory** to a minimum of 7168 MB and **Swap** to 2048 MB
 
