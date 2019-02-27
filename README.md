@@ -15,63 +15,102 @@ The continuous deployment (CD) part of the pipeline relies on Kubernetes as the 
 Docker v. 1.8 or later for OS X or Windows
 16 GB of RAM
 The Git client for your operating system
+The cURL client for your operating system
 
-## Setup Instructions Specific to Your Host Operating System
+### Configuring Docker After Setup in OS X or Windows
 
-These instructions are current as of Docker v 2.0.0.3. If you are on a later version, configuration might be different.
+These instructions are current as of Docker v 2.0.0.3. If you are on a later version, configuration might be different. Follow the operating system-specific sections for your host operating system. All of the steps are either completed from Docker > Preferences in OS X or Docker > Settings in Windows.
+
+#### OS X Enable Kubernetes
 
 1. In Docker for Mac, enable Kubernetes integration from the Docker > Preferences > Kubernetes tab.
 
-      or
+#### Windows Enable Kubernetes
 
 1. In Docker for Windows, enable Kubernetes integration from Docker > Settings > Kubernetes option.
 
-### Setup instructions for Mac or Windows systems
+2. After clicking Apply, follow the instructions to complete the installation.
 
-1. From the Kubernetes tab/option:
+#### OS X Configure Orchestration
 
-    OSX: ensure or select the Kubernetes orchestration radio button.
+1. From the Kubernetes tab/option, ensure or select the Kubernetes orchestration radio button.
 
-    Windows: ensure or select the Deploy Docker Stacks to Kubernetes by default check box.
+#### Windows Configure Orchestration
 
-2. Once Docker and Kubernetes are started, open a command prompt.
+1. From the Kubernetes tab/option, ensure or select the Deploy Docker Stacks to Kubernetes by default check box.
 
-3. Navigate to a directory where you want to clone this project/repository.
+### OS X Increase Resource Allocation
 
-4. Clone the repository:
+1. From the Advanced tab, increase **CPUs** to a minimum of 4, **Memory** to a minimum of 7 GB and **Swap** to 2 GB
 
-   `git clone https://github.com/ewilansky/toolchain_demo.git`
+2. Click Apply & Restart
 
-5. Change directory to the root of the repository:
+### Windows Increase Resource Allocation
 
-   `cd toolchain_demo`
+1. From the Advanced tab, increase **CPUs** to a minimum of 2, **Memory** to a minimum of 7168 MB and **Swap** to 2048 MB
 
-6. Verify that there are no containers already running:
-  
-   `docker ps`
+2. Click Apply
 
-   If this command returns containers, I suggest you stop any running containers. This is a good idea to ensure you have enough memory resources to run the containers and to avoid port collisions.
-   In bash, you can stop all running containers by typing:
+### Clone the Toolchain Demo Repository
 
-   `docker stop $(docker ps -q)`
+1. Once Docker and Kubernetes are restarted, open a command prompt.
 
-7. Start the long-running pipeline tools (see Long Running Containers for details)
+2. Navigate to a directory where you want to clone this project/repository.
 
-   `docker-compose up -d`
+3. Clone the repository:
 
-   This command will start four containers that support the pipeline. You should see something like this:  
-  
-   Creating network "toolchain_demo_tc-net" with the default driver  
-   Creating nexus     ... done  
-   Creating sonarqube ... done  
-   Creating jenkins   ... done  
-   Creating postgres  ... done  
+   ``` console
+   git clone https://github.com/ewilansky/toolchain_demo.git`
+   ```
 
-8. To verify the containers are running:
+4. Change directory to the root of the repository:
 
-   `docker ps`
+   ``` console
+   cd toolchain_demo
+   ```
 
-   This command should return the names of four containers: nexus, jenkins, sonarqube and postgres. If you see nore containers, you already run Docker and have running containers. Unless you have significant memory resources, I suggest you stop the other containers while running this demonstration. Also, it's possible that existing, running containers could be using the same ports configured for this demonstration. Stopping the other running containers is sufficient to avoid port collisions. If you're not sure how to stop containers, read about the *docker stop* command option.
+5. Verify that there are no containers already running:
+
+   ``` console
+   $ docker ps
+
+     CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+   ```
+
+   Notice that no running containers were returned. If `docker ps` returns containers, I suggest you stop any running containers. This is a good idea to ensure you have enough memory resources to run the containers and to avoid port collisions.
+
+6. Start the pipeline containers:
+
+   ``` console
+   $ docker-compose up -d
+   ...
+   a bunch of image build commands and some warning for non-existent images
+   ... then,
+   Starting nginx     ... done
+   Starting gogs      ... done
+   Starting postgres  ... done
+   Starting nexus     ... done
+   Creating sonarqube ... done
+   Creating jenkins   ... done
+   ```
+
+   The previous command started six containers that support the pipeline.
+
+7. To verify the containers are running:
+
+   ``` console
+   $ docker ps
+
+   CONTAINER ID        IMAGE                    COMMAND                  CREATED              PORTS                                           NAMES
+   3dd98f433c97        ahl/jenkins:v1           "/sbin/tini -- /usr/…"   About a minute ago   0.0.0.0:8080->8080/tcp, 0.0.0.0:50000->50000/tcp   jenkins
+   0114a4067be5        ahl.sonar:v1             "/usr/local/setrun-e…"   About a minute ago   0.0.0.0:9000->9000/tcp, 0.0.0.0:9092->9092/tcp     sonarqube
+   c237e61eafcf        ahl.nginx:v1             "nginx-debug -g 'dae…"   30 hours ago         80/tcp, 0.0.0.0:18445-18447->18445-18447/tcp       nginx
+   ef81714a53a3        postgres:10.7            "docker-entrypoint.s…"   3 days ago           0.0.0.0:5432->5432/tcp                             postgres
+   5c835c8fdc25        gogs/gogs                "/app/gogs/docker/st…"   3 days ago           0.0.0.0:10022->22/tcp, 0.0.0.0:10080->3000/tcp     gogs
+   293d34ce83b6        sonatype/nexus3:latest   "sh -c ${SONATYPE_DI…"   4 days ago           0.0.0.0:8081->8081/tcp                             nexus
+   ```
+
+   If you see nore containers, you already run Docker and have running containers. Unless you have significant memory resources, you should stop the other containers while running this demonstration. Also, it's possible that existing, running containers could be using the same ports configured for this demonstration. Stopping the other running containers is sufficient to avoid port collisions. If you're not sure how to stop containers, read about the `docker stop` command option.
 
 ### Running the toolchain
 
