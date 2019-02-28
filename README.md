@@ -105,6 +105,12 @@ For this demo, use your favorite text editor to write the following credential v
 
 3. In all files with a prefix ending in _password.txt, use this value: `t7jsqtnL`
 
+### Setting Hostname Alias
+
+1. This solution uses a certificate for the reverse proxy. The certificate commonname (CN) is my.dev. Therefore, add this hostname to your hosts file. The entry should look something like this:
+
+   `127.0.0.1 localhost my.dev`
+
 ### Starting the Pipeline
 
 1. Verify that there are no containers already running:
@@ -117,7 +123,7 @@ For this demo, use your favorite text editor to write the following credential v
 
    Notice that no running containers were returned. If `docker ps` returns containers, I suggest you stop any running containers. This is a good idea to ensure you have enough memory resources to run the containers and to avoid port collisions.
 
-2. Start the pipeline containers:
+2. Ensure that you are in the toolchain_demo directory and then start the pipeline containers:
 
    ``` console
    $ docker-compose up -d
