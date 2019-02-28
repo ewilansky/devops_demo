@@ -69,7 +69,43 @@ These instructions are current as of Docker v 2.0.0.3. If you are on a later ver
    cd toolchain_demo
    ```
 
-5. Verify that there are no containers already running:
+### Configuring Credentials
+
+This solution uses Docker secrets to demonstrate an approach for protecting account credentials. Credentials should never be stored in source control, which is why I did not make these files part of the demonstration. Therefore, before running this solution, you must follow these steps.
+
+#### OS X
+
+1. From bash in the toolchain_demo directory, type:
+
+  ``` console
+    $ ./scaffoldsecrets.sh
+
+    secrets directory and files created. Please add passwords
+  ```
+
+#### Windows
+
+1. From powershell in the toolchain_demo directory, type:
+
+   ``` console
+   ./scaffoldsecrets.ps1
+
+   secrets directory and files created. Please add passwords
+   ```
+
+#### OS X and Windows
+
+For this demo, use your favorite text editor to write the following credential values to the first line of the file. Be careful to not add spaces to the end of the values you enter. Note in a non-demonstration environment, be sure to use different credentials.
+
+1. In the nexus_usr.txt file, use this value: `nexusadmin`
+
+2. In all other files with a prefix ending in _usr.txt, use this value: `admin`
+
+3. In all files with a prefix ending in _password.txt, use this value: `t7jsqtnL`
+
+### Starting the Pipeline
+
+1. Verify that there are no containers already running:
 
    ``` console
    $ docker ps
@@ -79,7 +115,7 @@ These instructions are current as of Docker v 2.0.0.3. If you are on a later ver
 
    Notice that no running containers were returned. If `docker ps` returns containers, I suggest you stop any running containers. This is a good idea to ensure you have enough memory resources to run the containers and to avoid port collisions.
 
-6. Start the pipeline containers:
+2. Start the pipeline containers:
 
    ``` console
    $ docker-compose up -d
@@ -96,7 +132,7 @@ These instructions are current as of Docker v 2.0.0.3. If you are on a later ver
 
    The previous command started six containers that support the pipeline.
 
-7. To verify the containers are running:
+3. To verify the containers are running:
 
    ``` console
    $ docker ps
