@@ -53,7 +53,7 @@ services:
   
   sonarqube: 
     build: ./build_def_sonar
-    image: ahl.sonar:v1
+    image: ahl/sonar:v1
     networks:
       tc-net:
         aliases: 
@@ -103,7 +103,7 @@ services:
 
   nginx:
     build: ./build_def_nginx
-    image: ahl.nginx:v1
+    image: ahl/nginx:v1
     networks:
       tc-net:
         aliases: 
