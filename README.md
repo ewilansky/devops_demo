@@ -93,6 +93,8 @@ This solution uses Docker secrets to demonstrate an approach for protecting acco
    secrets directory and files created. Please add passwords
    ```
 
+   >Note: If you are unable to run this script because of your powershell execution policy, you have two choices. Either allow the script to run unrestricted or manually create the secrets directory and all files specified in the script. To change your powershell execution policy, search the web for powershell set-executionpolicy.
+
 #### OS X and Windows
 
 For this demo, use your favorite text editor to write the following credential values to the first line of the file. Be careful to not add spaces to the end of the values you enter. Note in a non-demonstration environment, be sure to use different credentials.
@@ -248,18 +250,19 @@ While the gradle wrapper (gradlew) is part of the project, the pipeline does not
 
 The spring-boot-demo jar is packaged in the openjdk:8-jdk-alpine image by docker in the pipeline. This image is the source of the container that gets deployed into Kubernetes.
 
-## Configuring Secrets
+## More About the Use of Docker Secrets in this Demonstration
 
-Tools in the CI/CD toolchain use credentials for access control. This section details how to configure each tool requiring a logon with credentials stored locally and outside of source control.
+Tools in the CI/CD toolchain use credentials for access control. This section provides more information on how logon credentials stored locally and outside of source control are used by systems requiring credentials.
 
-### Secrets setup in this Toolchain Demo to Secre Credentials
+### Secrets setup in this Toolchain Demo to Secure Credentials
 
-1. Create a directory at the root of this project and name it **secrets**
-2. In the subsections below, you will create two text files, one for the user account name and the other for the password following this convention:
+1. The scaffolding script run in the Configuring Credentials section earlier, created a secrets directory and populated it with files used by various Docker containers. The convention used for these files are:
 
    [*toolname*]_usr.txt and [*toolname*]_password.txt where *toolname* is the specific tool, such as postgres or sonarqube.
 
-At the root of docker-compose.yml, Docker secrets are globally configured:
+   Docker also allows you to configure secrets in memory rather than using files. This is a perfectly fine way to do it as well and some people prefer it.
+
+At the root of docker-compose.yml, Docker secrets are globally configured. For example:
 
     secrets:
       postgres-user:
