@@ -83,7 +83,7 @@ services:
         aliases:
           - "package-repo"
     ports:
-      - "8081:8081"
+      - "8088:8081"
     volumes:
       - ./nexus_home/nexus_data:/nexus-data
     container_name: nexus
