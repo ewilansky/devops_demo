@@ -1,6 +1,7 @@
 FROM sonarqube:latest
 LABEL maintainer="ethan@arrowheadlabs.io"
 
+USER root
 # created a custom image from the base because sonarqube base image
 # doesn't currently support docker secrets
 COPY ./setrun-env.sh /usr/local
