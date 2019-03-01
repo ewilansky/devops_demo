@@ -4,7 +4,7 @@ Sonatype provides documentation and blog posts for configuring Nexus 3 as a Dock
 
 - <https://help.sonatype.com/repomanager3/private-registry-for-docker>
   
-  This is the most complete guidance on using Nexus 3 as a Docker registry. However, I found it hard to follow without a better understanding of the expected end-behavior resulting from following their configuration guidance. Also, the configuration doesn't address running all components (including Nexus) from a Docker container. The solution I document here is fully containerized and uses encrypted connections to a reverse proxy to front access to Nexus 3. This approach simplifies SSL/TLS configuration to Nexus 3 and potentially other endpoints behind the proxy.
+  This is Sonatype's most complete guidance on using Nexus 3 as a Docker registry. However, I found it hard to follow without a better understanding of the expected end-behavior resulting from following their configuration guidance. Also, the configuration doesn't address running all components (including Nexus) from a Docker container. The solution I document here is fully containerized and uses encrypted connections to a reverse proxy to front access to Nexus 3. This approach simplifies SSL/TLS configuration to Nexus 3 and potentially other endpoints behind the proxy.
 
 ## Suggested Approach
 
