@@ -8,16 +8,16 @@ Sonatype provides documentation and blog posts for configuring Nexus 3 as a Dock
 
 ## Suggested Approach
 
-1. Ensure you have the Docker daemon running locally.
+1. Ensure you have the Docker daemon running locally. If you're using Docker for Windows, ensure that it is configured to run Linux containers.
 2. Read the Overview section.
-3. Get the working example and run the relatively simple setup.
-4. Test the working example to interact with a Nexus hosted Docker registry.
+3. Read the Working Example section and carefully work through the relatively brief setup.
+4. Read and try the steps in the Testing the Working Example section to interact with a Nexus hosted Docker registry.
 
 ## Overview
 
 If you aren't familiar with things like a Docker registry, Docker images or Docker containers, please visit <https://docs.docker.com/> to learn more about Docker. That will help you get the most out of this post.
 
-The general idea is that a company should have some control or at least be able to monitor what docker images are made available or are being used in a Docker registry. An internal registry hosted in Nexus 3 satisfies that requirement. Nexus uses the concept of repositories as storage endpoints for artifacts, such as JAR files. Repositories also serve as the model for storing Docker images.
+Many organizations want to have insight into what docker images are made available to their development or operations groups in a managed Docker registry. An internal registry hosted in Nexus 3 satisfies that requirement. Nexus uses the concept of repositories as storage endpoints for artifacts, such as JAR files. Repositories also serve as the model for storing Docker images.
 
 ### Workflow
 
@@ -38,7 +38,7 @@ Well documented in Sonatype help is the fact that Docker doesn't use a context-p
 
 #### Encryption
 
-By default, the Docker client expects that it will communicate with an endpoint over an encrypted connection (SSL) via HTTPS. Either Nexus 3 can be configured to serve content via HTTPS or you can configure a reverse proxy that accepts encrypted requests from a Docker client and then forwards the request to Nexus 3 unencrypted via HTTP. Either way, some endpoint has to be configured to use HTTPS and most reverse proxy's are easier to configure for HTTPS than Nexus is. However, either approach will work. In my example, I use a reverse proxy to handle the HTTPS request from a Docker client and route it Nexus via HTTP.
+By default, the Docker client expects that it will communicate with an endpoint over an encrypted connection (SSL) via HTTPS. Either Nexus 3 can be configured to serve content via HTTPS or you can configure a reverse proxy that accepts encrypted requests from a Docker client and then forwards the request to Nexus 3 unencrypted via HTTP. Either way, some endpoint has to be configured to use HTTPS and most reverse proxy's are easier to configure for HTTPS than Nexus is. However, either approach will work. In my example, I use a reverse proxy to handle the HTTPS request from a Docker client and route it to Nexus via HTTP.
 
 ### Containers Everywhere
 
@@ -54,7 +54,7 @@ You can either use your own certificates (including self-signed certs) if you're
 
 1. Using git, clone: <https://github.com/ewilansky/toolchain_demo.git>
 
-2. In the ./build_dev_nginx, you'll find the two certificates. If you run into SSL errors when you start the site in a later step, add these certificates to your local certificate store and trust them.
+2. In the ./build_dev_nginx, you'll find a certificate (.pem file) and a key. You are likely to run into SSL errors when you start the site in a later step because the root certificate I generated will not be in your Trusted Root Certification Authorities store in Windows or your login store in OS X. To avoid these errors, you must add the root certificate to one of these stores and fully trust it. If you are not comfortable doing this, I suggest you used self-signed certificates. It if helps at all, I created this certificate chain using OpenSSL from my local computer. As I mentioned earlier, it shouldn't be used for anything but local testing, but is otherwise inocuous. 
 
 3. Update your hosts file to include an alias for my.dev for your loopback address. Here's an example:
 
@@ -137,7 +137,7 @@ After cloning the toolchain demo, you will render two containers, one for nginx 
 
 ### Creating Nexus Repositories to Serve as Docker Registries
 
-Three repositories serve Docker: docker (hosted), docker (proxy), and docker (group). This follows the guidance provided by Sonatype and aligns the repositories to the nginx reverse proxy. These repositories can be created manually or via scripting automation, as shown here. Bash scripts are provided. **TODO: create windows batch file equivalents.** Also, you must have cURL installed locally since the scripts interact with the Nexus RESTful API using cURL. 
+Three repositories serve Docker: docker (hosted), docker (proxy), and docker (group). This follows the guidance provided by Sonatype and aligns the repositories to the nginx reverse proxy. These repositories can be created manually or via scripting automation, as shown here. Bash scripts are provided. **TODO: create windows batch file equivalents.** Also, you must have cURL installed locally since the scripts interact with the Nexus RESTful API using cURL.
 
 1. At the command line, navigate to the nexus_setup directory.
 

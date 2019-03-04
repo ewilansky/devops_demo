@@ -12,7 +12,7 @@ The continuous deployment (CD) part of the pipeline relies on Kubernetes as the 
 
 ## Prerequisites
 
-Docker v. 1.8 or later for OS X or Windows
+Docker v. 1.8 or later for OS X or Windows. If you are running Docker for Windows, ensure that you have it configured to run Linux containers.
 16 GB of RAM
 The Git client for your operating system
 The cURL client for your operating system
@@ -170,8 +170,6 @@ The first time you attempt to access the Jenkins UI, you will need to unlock it 
 
 The location of the initialAdminPassword is in the jenkins_home directory on your host. The  path starting from the toolchain_demo directory is: ./jenkins_home/secrets/initialAdminPassword. Following the remaining screens that Jenkins presents. You can accept the standard plugins for this simple setup.
 
-TODO: CONTINUE FROM HERE. JENKINS PLUGINS ARE REQUIRED, JENKINS FILE DEFINITION DIDN'T APPEAR AND SONARQUBE ISN'T OPERATIONAL
-
 logon id: admin  
 password: admin
 
@@ -183,7 +181,7 @@ Alternatively, you can use the Blue Ocean plugin UI to run the project.
 2. From the Blue Ocean UI, click the Demo Pipeline project then click the Branches tab.
 3. Hover your mouse to the far right of the row to reveal the Play icon and click it to run the job.
 
-To learn more about Jenkins, visit https://jenkins.io
+To learn more about Jenkins, visit <https://jenkins.io>
 
 #### Sonarqube
 
@@ -198,11 +196,15 @@ A new sonar database was created for SonarQube when docker-compose ran. In this 
 1. Enter sonar in the token name box and click Generate
 2. Copy the token value to your clipboard and click Continue
 3. Edit ./spring-boot-demo/gradle.properties and replace the token value for systemProp.sonar.login.
-4. Check-in the updated gradle.properties file to the SCM [TODO: SETUP LOCAL GIT SERVER]
+4. Check-in the updated gradle.properties file to the local SCM:
+
+    ```console
+    git push local
+    ```
 
 If you ran the pipeline successfully, you will see the spring-boot-demo project appearing. Click on the spring-boot-demo link to see code metrics in SonarQube.
 
-To learn more about Sonarqube, visit https://www.sonarqube.org
+To learn more about Sonarqube, visit <https://www.sonarqube.org>
 
 #### Nexus
 
@@ -233,7 +235,7 @@ To verify that the container has been built and deployed to Kubernetes:
    `kubectl get services`  
    You should see two entries, one for the Kubernetes cluster IP and a second one for the spring-bootdemo load balancer.  
 
-To see the application running, navigate to http://localhost:8081/api/books or use curl. In either case, the application will return two JSON formatted book entries.
+To see the application running, navigate to <http://localhost:8081/api/books> or use curl. In either case, the application will return two JSON formatted book entries.
 
 ## More About This Demonstration
 
