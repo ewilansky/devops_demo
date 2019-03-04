@@ -54,7 +54,7 @@ You can either use your own certificates (including self-signed certs) if you're
 
 1. Using git, clone: <https://github.com/ewilansky/toolchain_demo.git>
 
-2. In the ./build_dev_nginx, you'll find a certificate (.pem file) and a key. You are likely to run into SSL errors when you start the site in a later step because the root certificate I generated will not be in your Trusted Root Certification Authorities store in Windows or your login store in OS X. To avoid these errors, you must add the root certificate to one of these stores and fully trust it. If you are not comfortable doing this, I suggest you used self-signed certificates. It if helps at all, I created this certificate chain using OpenSSL from my local computer. As I mentioned earlier, it shouldn't be used for anything but local testing, but is otherwise inocuous. 
+2. In the ./build_dev_nginx, you'll find a certificate (.pem file) and a key. You are likely to run into SSL errors when you start the site in a later step because the root certificate I generated will not be in your Trusted Root Certification Authorities store in Windows or your login store in OS X. To avoid these errors, you must add the root certificate to one of these stores and fully trust it. If you are not comfortable doing this, I suggest you used self-signed certificates. It if helps at all, I created this certificate chain using OpenSSL from my local computer. As I mentioned earlier, it shouldn't be used for anything but local testing, but is otherwise inocuous.
 
 3. Update your hosts file to include an alias for my.dev for your loopback address. Here's an example:
 

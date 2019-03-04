@@ -52,7 +52,6 @@ node() {
         }
         stage('Retrieve App') {
             withCredentials([file(credentialsId: 'nexus_usr', variable: 'NEXUS_USR'), file(credentialsId: 'NEXUS_PASSWORD', variable: 'nexus_password')]) {
-                // user = "admin:admin123"
                 user = $NEXUS_USR + ':' + $NEXUS_PASSWORD
                 apiBase = "http://package-repo:8081/service/rest/v1/search/assets/download"
                 artifactMd5Hash = "1373ba65e2f2845af90e479e4bf7f40b"
