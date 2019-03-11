@@ -4,6 +4,13 @@ LABEL maintainer="ethan@arrowheadlabs.io"
 USER root
 # created a custom image from the base because sonarqube base image
 # doesn't currently support docker secrets
+# COPY sonar.propertes /opt/sonarqube/conf/
+# RUN 'mkdir -p /opt/sonarqube/conf/'
+# COPY ./sonar.propertes /opt/sonarqube/conf/
+
 COPY ./setrun-env.sh /usr/local
+
+# elasticsearch (required by sonarqube) will no longer run as user root
+USER sonarqube
 # overriding base image entrypoint
 ENTRYPOINT ["/usr/local/setrun-env.sh"]

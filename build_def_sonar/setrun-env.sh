@@ -1,12 +1,15 @@
 #!/usr/bin/env bash
 
-# bind mounting secrets to a unique target because sonarqube already has a /run folder that is preventing 
-# the projection of /run/secrets into the container
-user=$(cat /usr/local/secrets/sonarqube-user)
-export SONARQUBE_JDBC_USERNAME="$user"
-pass=$(cat /usr/local/secrets/sonarqube-passwd)
-export SONARQUBE_JDBC_PASSWORD="$pass"
+user=$(cat /run/secrets/postgres-user)
+pass=$(cat /run/secrets/postgres-passwd)
 
+# using environment variables now, but considering changing this to write these property 
+# values to /opt/sonarqube/conf/sonar.properties:
+#sonar.jdbc.username=
+#sonar.jdbc.password=
+#sonar.jdbc.url
+export SONARQUBE_JDBC_USERNAME="$user"
+export SONARQUBE_JDBC_PASSWORD="$pass"
 export SONARQUBE_JDBC_URL=jdbc:postgresql://db/sonar
 
 # exec call transfers pid 1 to the upstream entrypoint so that signals get handled correctly. 
