@@ -8,9 +8,9 @@ node() {
         sh 'rm -f /home/project/build/libs/*' // -f to avoid failure if dir is empty
     }
     /* Docker pipeline plugin installed in Jenkins container */
-    // gradle 4.10 image reference: gradle:latest
-    // gradle 5.0.0 reference: gradle:jre8-alpine
-    docker.image('gradle:latest').inside('--network=toolchain_demo_tc-net') {
+    // gradle 4.10 image reference: gradle:4.10.3-jdk-slim
+    // gradle 5.x reference: gradle:latest
+    docker.image('gradle:4.10.3-jdk-slim').inside('--network=toolchain_demo_tc-net') {
         def UnitTestTasks = [:]
         def IntTestAndAnalysisTasks = [:]
 
