@@ -54,6 +54,7 @@ services:
   sonarqube: 
     build: ./build_def_sonar
     image: ahl/sonar:v1
+    # user: sonarqube
     networks:
       tc-net:
         aliases: 
@@ -62,19 +63,16 @@ services:
       - "9000:9000"
       - "9092:9092"
     secrets:
-      # bind mounting secrets to a unique target because sonarqube already 
-      # has a /run folder that appears to be preventing 
-      # the projection of /run/secrets into the container
-       - source: sonarqube-passwd
-         target: /usr/local/secrets/sonarqube-passwd
-       - source: sonarqube-user
-         target: /usr/local/secrets/sonarqube-user
+      # using postgres creds because Sonar connects to postgres
+       - postgres-passwd
+       - postgres-user
     volumes:
+      # currently projecting conf, but not using any custom values yet
       - ./sonar_home/conf:/opt/sonarqube/conf
       - ./sonar_home/data:/opt/sonarqube/data
       - ./sonar_home/extensions:/opt/sonarqube/extensions
       - ./sonar_home/bundled-plugins:/opt/sonarqube/lib/bundled-plugins
-    container_name: sonarqube
+    container_name: sonar
 
   nexus:
     image: sonatype/nexus3:latest

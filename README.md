@@ -25,11 +25,27 @@ These instructions are current as of Docker v 2.0.0.3. If you are on a later ver
 
 1. In Docker for Mac, enable Kubernetes integration from the Docker > Preferences > Kubernetes tab.
 
+2. Copy the config file from your kubernetes installation to the demo directory build_def_jenkins folder and name it kube-config:
+
+    ``` console
+    cp $HOME/.kube/config ./build_def_jenkins/kube-config
+    ```
+
+   This step is required so that the Jenkins container can interact with the Kubernetes cluster running on your Docker Desktop host.
+
+3. Open the kube-config file you just copied and update the server: value to:
+
+    `server: https://docker.for.mac.localhost:6443`
+
+    This step is required so that the Kubernetes client (kubectl) can communicate with the Docker for Desktop host running Kubernetes.
+
 #### Windows Enable Kubernetes
 
 1. In Docker for Windows, enable Kubernetes integration from Docker > Settings > Kubernetes option.
 
 2. After clicking Apply, follow the instructions to complete the installation.
+
+3. **TBD**: get a similar copy command together, as shown in step 2 for OS X above.
 
 #### OS X Configure Orchestration
 
@@ -299,15 +315,17 @@ These secrets, defined globally in docker-compose-yml, are scoped to the Postgre
 
 ### Sonarqube Credential Management
 
-The official Sonarqube image does not support Docker secrets. Therefore, this toolchain demo includes a custom Sonarqube image contained in the **build_def_sonar** folder. When this image is built, Docker copies the setrun-env.sh script into the image via dockerfile. This script looks in the /usr/local/secrets folder inside the image for credential information.
+The official Sonarqube image does not directly support Docker secrets. Therefore, this toolchain demo includes a custom Sonarqube image contained in the **build_def_sonar** folder. When this image is built, Docker copies the setrun-env.sh script into the image via dockerfile. This script looks in the /run/secrets folder inside the image for credential information.
 
-The Sonarqube service section of Docker-compose.yml locally binds /usr/local/secrets into the container, as shown:
+The Sonarqube service section of Docker-compose.yml locally binds /run/secrets into the container:
 
     secrets:  
-       - source: sonarqube-passwd  
-         target: /usr/local/secrets/sonarqube-passwd
-       - source: sonarqube-user  
-         target: /usr/local/secrets/sonarqube-user
+       - postgres-passwd  
+       - postgres-user  
+
+The /run/secrets location is the default mount-point in a container for secrets.
+
+Sonarqube connects to the PosgresSql db, also running in a container. Therefore, Sonarqube uses Postgres credentials.
 
 ### Nexus Repository Credential Management
 
