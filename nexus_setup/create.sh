@@ -3,8 +3,6 @@
 
 jsonFile=$1
 
-curl -v -u admin:admin123 DELETE 
-
 printf "Creating Integration API Script from $jsonFile\n\n"
 
 curl -v -u admin:admin123 --header "Content-Type: application/json" 'http://localhost:8081/service/rest/v1/script/' -d @$jsonFile
