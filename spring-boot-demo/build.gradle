@@ -36,7 +36,7 @@ sourceSets {
     main {
         java {
             // 'main/java'
-            sourceSets.main.output.classesDir.filter = new File(buildDir, "classes/main")
+            sourceSets.main.output.classesDir = new File(buildDir, "classes/main")
         }
     }
     integrationTest {
