@@ -1,5 +1,5 @@
-import jenkins.model.*
-jenkins = Jenkins.instance
+// import jenkins.model.*
+// jenkins = Jenkins.instance
 
 node() {
     checkout scm
