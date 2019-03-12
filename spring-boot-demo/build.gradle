@@ -169,6 +169,8 @@ publishing {
         }
     }
     repositories {
+        println 'maven user is $nexusUsername'
+        println 'nexus password is $nexusPassword'
         maven {
             credentials {
 				username nexusUsername
