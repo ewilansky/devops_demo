@@ -5,7 +5,7 @@ pluginManagement {
         maven { 
             credentials {
 				username "$nexusUsername" 
-				password "$nexusPassword" s
+				password "$nexusPassword"
 			}
             url "${nexusUrl}/repository/maven-public"
         }
