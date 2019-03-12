@@ -155,8 +155,8 @@ task integrationTest(type: Test) {
 
 // for Nexus gradle upload task. Uses variables defined in gradle.properties
 publishing {
-    println 'nexus username is: ' nexusUsername
-    println 'nexus password is: ' nexusPassword
+    // println 'nexus username is: ' nexusUsername
+    // println 'nexus password is: ' nexusPassword
     publications {
         springBootDemo(MavenPublication) {
             // custom properties for naming the jar
