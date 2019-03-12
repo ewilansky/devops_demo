@@ -173,12 +173,12 @@ publishing {
         }
     }
     repositories {
-        println 'maven user: ' username
-        println 'nexus password is:' password
+        // println 'maven user: ' username
+        // println 'nexus password is:' password
         maven {
             credentials {
-				username username
-				password password
+				username 'admin'
+				password "admin123"
                 // username getProperty('username')
 				// password getProperty('password')
 				
