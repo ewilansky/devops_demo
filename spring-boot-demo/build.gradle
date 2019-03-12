@@ -173,8 +173,8 @@ publishing {
             credentials {
 				// username nexusUsername
 				// password nexusPassword
-                username 'admin'
-				password 'admin123'
+                username getProperty('user')
+				password getProperty('password')
 				
 			}
             if (project.version.endsWith("-SNAPSHOT")) {
