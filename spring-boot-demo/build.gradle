@@ -78,6 +78,10 @@ tasks.withType(Test) {
 repositories {
     // use local nexus repository to retrieve package dependencies
     maven {
+        credentials {
+            username 'admin'
+            password 'admin123'
+        }
         // to call from Gradle container
         url "${nexusUrl}/repository/maven-public"
     }
@@ -169,12 +173,12 @@ publishing {
         }
     }
     repositories {
-        println 'maven user: ' nexusUsername
-        println 'nexus password is:' nexusPassword
+        println 'maven user: ' username
+        println 'nexus password is:' password
         maven {
             credentials {
-				username nexusUsername
-				password nexusPassword
+				username username
+				password password
                 // username getProperty('username')
 				// password getProperty('password')
 				

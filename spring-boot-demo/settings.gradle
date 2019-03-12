@@ -3,8 +3,8 @@ pluginManagement {
     repositories {
         maven { 
             credentials {
-				nexusUsername 'admin'
-				nexusPassword "admin123"
+				username 'admin'
+				password "admin123"
 			}
             url "${nexusUrl}/repository/maven-public"
         }
