@@ -173,7 +173,7 @@ publishing {
             credentials {
 				// username nexusUsername
 				// password nexusPassword
-                username getProperty('user')
+                username getProperty('username')
 				password getProperty('password')
 				
 			}
