@@ -173,8 +173,6 @@ publishing {
         }
     }
     repositories {
-        // println 'maven user: ' username
-        // println 'nexus password is:' password
         maven {
             credentials {
 				username 'admin'
