@@ -54,8 +54,8 @@ node() {
             sh 'gradle publish -p /home/project'
         }
         stage('Retrieve App') {
-            withCredentials([file(credentialsId: 'nexus_usr', variable: 'NEXUS_USR'), file(credentialsId: 'nexus_password', variable: 'NEXUS_PASSWORD')]) {
-                user = ${NEXUS_USR} + ':' + ${NEXUS_PASSWORD}
+            withCredentials([file(credentialsId: 'nexus_usr.txt', variable: 'NEXUS_USR'), file(credentialsId: 'nexus_password.txt', variable: 'NEXUS_PASSWORD')]) {
+                user = $NEXUS_USR + ':' + $NEXUS_PASSWORD
                 apiBase = "http://package-repo:8081/service/rest/v1/search/assets/download"
                 artifactMd5Hash = "1373ba65e2f2845af90e479e4bf7f40b"
                 group = "org.ahl.springbootdemo"
