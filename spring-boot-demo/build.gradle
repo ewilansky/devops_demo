@@ -171,8 +171,11 @@ publishing {
     repositories {
         maven {
             credentials {
-				username nexusUsername
-				password nexusPassword
+				// username nexusUsername
+				// password nexusPassword
+                username 'admin'
+				password 'admin123'
+				
 			}
             if (project.version.endsWith("-SNAPSHOT")) {
                 url = "${nexusUrl}/repository/maven-snapshots"

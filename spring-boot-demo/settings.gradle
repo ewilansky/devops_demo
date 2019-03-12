@@ -1,6 +1,5 @@
 // define local plugin repository (in nexus) instead of using an external endpoint:
 pluginManagement {
-
     repositories {
         maven { 
             credentials {
