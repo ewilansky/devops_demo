@@ -83,5 +83,8 @@ git_home/*
 # keep secrets out of source control
 secrets/*
 
+# keep my testing files that I name with .scratch out of source control
+*.scratch
+
 # keep build dir out of source control
 spring-boot-demo/build/*
