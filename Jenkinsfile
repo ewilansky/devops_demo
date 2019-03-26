@@ -1,4 +1,5 @@
 pipeline {
+    // adjust to name of jenkins node: Manage Jenkins > Manage Nodes
     agent { label 'master' }
 
     options {
@@ -12,12 +13,10 @@ pipeline {
             }
         }
         stage('Scrub Pipeline') {
+            // master is not a deployment branch so there's nothing to clean-up in that case
+            when { not { branch 'master'} }
             steps {
-                // important to cleanup pipeline artifacts
-                sh 'kubectl delete deployments --ignore-not-found=true springboot-demo'
-                // remove load balancer service
-                sh 'kubectl delete services --ignore-not-found=true springboot-demo'
-                sh 'rm -f /home/project/build/libs/*' // -f to avoid failure if dir is empty
+                cleanKubernetesDeploy()
             }
         }
         stage("Start Gradle Container") {
@@ -29,6 +28,10 @@ pipeline {
                     image 'gradle:4.10.3-jdk-slim' 
                     args '--network=toolchain_demo_tc-net'                    
                 }
+            }
+            when {
+                beforeAgent true
+                branch 'master'
             }
             stages {
                 stage('Build') {
@@ -76,10 +79,10 @@ pipeline {
                     }
                 }
             } // end gradle task stages
-        } // end CI tasks in docker container      
-
-
+        } // end CI tasks in docker container   
         stage('Retrieve App') {
+            // master is not a deployment branch so there's nothing to retrieve in that case
+            when { not { branch 'master'} }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'nexus', usernameVariable: 'NEXUS_USR', passwordVariable: 'NEXUS_PASSWORD')]) {   
                     script {
@@ -96,12 +99,7 @@ pipeline {
                     }
                 }
             }
-            // steps {
-            //     // stash for retrieval during image build
-            //     // stash name: 'app', includes: 'output/*'
-            // }
         }
-
         stage('App Image Build') {
             // NOTE: When building a different application, simply change the build-arg to point to the replacement jar
             steps {
@@ -110,15 +108,16 @@ pipeline {
                 }
             }
         }
-
         stage ('Kubernetes') {
+            // master is not a deployment branch so there's nothing to deploy in that case
+            when { not { branch 'master'} }
             stages {
                 stage ('Deploy to K8') {
                     steps {
                         sh 'kubectl create -f /kube/deploy/app_set/sb-demo-deployment.yaml'
                     }
                 }
-                stage ('Create K8 LB'){
+                stage ('Create K8 Ld. Blncr.s'){
                     steps {
                         sh 'kubectl create -f /kube/deploy/app_set/sb-demo-service.yaml'
                     }
@@ -127,7 +126,6 @@ pipeline {
         }
     }
 }
-
 
 def downloadArtifact(String user, String url) {
   def newUrl = url
@@ -149,4 +147,12 @@ def buildAppImage() {
 
     // currently in the Jenkins workspace in the Jenkins container
     def custom_app_image = docker.build("springboot", "--build-arg JAR_FILE=./output/app.jar -f /home/project/Dockerfile .") 
+}
+
+def cleanKubernetesDeploy() {
+    // important to cleanup pipeline artifacts
+    sh 'kubectl delete deployments --ignore-not-found=true springboot-demo'
+    // remove load balancer service
+    sh 'kubectl delete services --ignore-not-found=true springboot-demo'
+    sh 'rm -f /home/project/build/libs/*' // -f to avoid failure if dir is empty
 }
