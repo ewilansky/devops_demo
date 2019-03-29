@@ -18,15 +18,15 @@ services:
       - "8080:8080"
       - "50000:50000"
     volumes:
-      - ./jenkins_home:/var/jenkins_home
+      - jenkins_home:/var/jenkins_home
       # run Docker from the host system when the container calls it. Note, Docker is stll 
       # required in the jenkins container
       - /var/run/docker.sock:/var/run/docker.sock
       # adding a bind for the Gradle build so the Gradle container can run the code. 
       # the Gradle container isn't specified here because the Jenkins agent bootstraps the build
-      - ./spring-boot-demo:/home/project
+      - spring_boot_demo:/home/project
       # for kubernetes yamls
-      - ./kube_yamls:/kube/deploy
+      - kube_yamls:/kube/deploy
 
     container_name: jenkins
 
@@ -48,7 +48,7 @@ services:
       - postgres-passwd
     volumes:
       # contains the database(s) on the host
-      - ./postgres_home/data:/var/lib/postgresql/data/pgdata
+      - postgres_home:/var/lib/postgresql/data/pgdata
     container_name: postgres
   
   sonarqube: 
@@ -68,10 +68,10 @@ services:
        - postgres-user
     volumes:
       # currently projecting conf, but not using any custom values yet
-      - ./sonar_home/conf:/opt/sonarqube/conf
-      - ./sonar_home/data:/opt/sonarqube/data
-      - ./sonar_home/extensions:/opt/sonarqube/extensions
-      - ./sonar_home/bundled-plugins:/opt/sonarqube/lib/bundled-plugins
+      - sonar_home_conf:/opt/sonarqube/conf
+      - sonar_home_data:/opt/sonarqube/data
+      - sonar_home_ext:/opt/sonarqube/extensions
+      - sonar_home_plug:/opt/sonarqube/lib/bundled-plugins
     container_name: sonar
 
   nexus:
@@ -83,7 +83,9 @@ services:
     ports:
       - "8088:8081"
     volumes:
-      - ./nexus_home/nexus_data:/nexus-data
+      # - ./nexus_home/nexus_data:/nexus-data
+      - nexus_home:/nexus-data
+
     container_name: nexus
 
   git:
@@ -96,7 +98,8 @@ services:
       - "10022:22"
       - "10080:3000"
     volumes:
-      - ./git_home/var/gogs:/data
+      # - ./git_home/var/gogs:/data
+      - git_home:/data
     container_name: gogs
 
   nginx:
@@ -125,6 +128,74 @@ services:
 
 networks:
   tc-net:
+
+volumes:
+  jenkins_home:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: "${PWD}/jenkins_home"
+  spring_boot_demo:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: "${PWD}/spring-boot-demo"
+  kube_yamls:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: "${PWD}/kube_yamls"
+  kube_yamls:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: "${PWD}/kube_yamls"
+  postgres_home:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: "${PWD}/postgres_home/data"
+  sonar_home_conf:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: "${PWD}/sonar_home/conf"
+  sonar_home_data:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: "${PWD}/sonar_home/data"
+  sonar_home_ext:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: "${PWD}/sonar_home/extensions"
+  sonar_home_plug:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: "${PWD}/sonar_home/lib/bundled-plugins"
+  nexus_home:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: "${PWD}/nexus_home/nexus_data"
+  git_home:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: "${PWD}/git_home/var/gogs"
 
 secrets:
   postgres-user:
