@@ -77,6 +77,7 @@ kube_yamls/converted_infrastructure/*
 nexus_home/*
 postgres_home/*
 sonar_home/*
+!sonar_home/conf
 git_home/*
 # img/*
 
